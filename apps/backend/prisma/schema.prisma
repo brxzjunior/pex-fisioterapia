@@ -1,0 +1,146 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ----------------------------------------------------
+// ENUMS
+// ----------------------------------------------------
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum PatientStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum ActivityPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ActivityStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// ----------------------------------------------------
+// MODELS
+// ----------------------------------------------------
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  name            String
+  avatarUrl       String?  @map("avatar_url")
+  googleId        String?  @unique @map("google_id")
+  phone           String?
+  professionalBio String?  @map("professional_bio")
+  specialties     String?  // Ex: "Ortopedia, Fisioterapia Esportiva, Pilates"
+  role            UserRole @default(ADMIN)
+
+  patients        Patient[]
+  appointments    Appointment[]
+  activities      Activity[]
+  historyEntries  PatientHistory[]
+
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Patient {
+  id                  String        @id @default(uuid())
+  userId              String        @map("user_id")
+  user                User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  fullName            String        @map("full_name")
+  birthDate           DateTime?     @map("birth_date")
+  phone               String
+  email               String?
+  address             String?
+  status              PatientStatus @default(ACTIVE)
+  administrativeNotes String?       @map("administrative_notes")
+
+  appointments        Appointment[]
+  activities          Activity[]
+  history             PatientHistory[]
+
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @updatedAt @map("updated_at")
+
+  @@map("patients")
+}
+
+model Appointment {
+  id              String            @id @default(uuid())
+  userId          String            @map("user_id")
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  patientId       String            @map("patient_id")
+  patient         Patient           @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  scheduledAt     DateTime          @map("scheduled_at")
+  durationMinutes Int               @default(60) @map("duration_minutes")
+  type            String            // Ex: "Avaliação Inicial", "Sessão Fisioterapia", "Pilates Clínico", "Retorno"
+  status          AppointmentStatus @default(SCHEDULED)
+  notes           String?
+
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  @@map("appointments")
+}
+
+model Activity {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  patientId   String?          @map("patient_id")
+  patient     Patient?         @relation(fields: [patientId], references: [id], onDelete: SetNull)
+
+  title       String
+  description String?
+  category    String           @default("Geral") // Ex: "Contato", "Material", "Documentação", "Acompanhamento"
+  priority    ActivityPriority @default(MEDIUM)
+  status      ActivityStatus   @default(PENDING)
+  dueDate     DateTime?        @map("due_date")
+
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@map("activities")
+}
+
+model PatientHistory {
+  id          String   @id @default(uuid())
+  patientId   String   @map("patient_id")
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  actionType  String   @map("action_type") // Ex: "PATIENT_CREATED", "APPOINTMENT_SCHEDULED", "APPOINTMENT_COMPLETED", "NOTE_ADDED"
+  description String
+
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("patient_history")
+}

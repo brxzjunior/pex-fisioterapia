@@ -1,0 +1,23 @@
+{
+  "name": "fisio-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FisioPro - Sistema de Gestão e Portfólio para Fisioterapia (PEX ADS)",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspaces"
+  },
+  "keywords": [
+    "fisioterapia",
+    "gestao",
+    "portfolio",
+    "ads",
+    "pex"
+  ],
+  "author": "",
+  "license": "MIT"
+}
