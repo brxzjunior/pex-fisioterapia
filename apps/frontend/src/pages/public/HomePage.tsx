@@ -63,14 +63,14 @@ export const HomePage: React.FC = () => {
                 <span>Atendimento Personalizado & Fisioterapia Integrada</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-[1.15]">
                 Recupere seu bem-estar,{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-500">
                   movimento e saúde.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 {profile.professionalBio}
               </p>
 
@@ -87,20 +87,20 @@ export const HomePage: React.FC = () => {
 
                 <a
                   href="#servicos"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-semibold px-6 py-3.5 rounded-2xl transition-colors shadow-sm"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 font-semibold px-6 py-3.5 rounded-2xl transition-colors shadow-sm"
                 >
                   <span>Conhecer Serviços</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
 
-              <div className="flex items-center justify-center lg:justify-start gap-6 pt-4 text-xs font-medium text-slate-500">
+              <div className="flex items-center justify-center lg:justify-start gap-6 pt-4 text-xs font-medium text-slate-500 dark:text-slate-400">
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-brand-600" />
+                  <MapPin className="w-4 h-4 text-brand-600 dark:text-brand-400" />
                   <span>Atendimento em Clínica e Domiciliar</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-brand-600" />
+                  <Clock className="w-4 h-4 text-brand-600 dark:text-brand-400" />
                   <span>Horários Flexíveis</span>
                 </div>
               </div>
@@ -111,23 +111,23 @@ export const HomePage: React.FC = () => {
               <div className="relative w-full max-w-sm">
                 <div className="absolute -inset-2 bg-gradient-to-r from-brand-400 to-teal-300 rounded-3xl blur-xl opacity-30 animate-pulse" />
 
-                <div className="relative bg-white rounded-3xl p-6 shadow-xl border border-slate-100 space-y-6">
-                  <div className="h-64 rounded-2xl bg-gradient-to-tr from-brand-100 via-teal-50 to-slate-100 flex items-center justify-center border border-brand-100/50 relative overflow-hidden">
+                <div className="relative bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-xl border border-slate-100 dark:border-slate-800 space-y-6 transition-colors">
+                  <div className="h-64 rounded-2xl bg-gradient-to-tr from-brand-100 dark:from-slate-800 via-teal-50 dark:via-slate-800/60 to-slate-100 dark:to-slate-900 flex items-center justify-center border border-brand-100/50 dark:border-slate-700/50 relative overflow-hidden">
                     <HeartPulse className="w-20 h-20 text-brand-400/40" />
-                    <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-xl border border-white/60 shadow-sm flex items-center gap-3">
+                    <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-3 rounded-xl border border-white/60 dark:border-slate-700 shadow-sm flex items-center gap-3">
                       <div className="p-2 bg-brand-500 rounded-lg text-white">
                         <Award className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-xs font-bold text-slate-800">{profile.name}</p>
-                        <p className="text-[11px] text-slate-500">Fisioterapeuta</p>
+                        <p className="text-xs font-bold text-slate-800 dark:text-white">{profile.name}</p>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">Fisioterapeuta</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-2 text-center">
-                    <h2 className="text-xl font-bold text-slate-900">{profile.name}</h2>
-                    <p className="text-xs text-brand-700 font-medium">Reabilitação & Fisioterapia Integrada</p>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">{profile.name}</h2>
+                    <p className="text-xs text-brand-700 dark:text-brand-400 font-medium">Reabilitação & Fisioterapia Integrada</p>
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 justify-center">
@@ -150,40 +150,40 @@ export const HomePage: React.FC = () => {
       {/* Áreas de Atuação / Serviços */}
       <section id="servicos" className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-brand-600 mb-2">Serviços</h2>
-          <p className="text-3xl font-extrabold text-slate-900 tracking-tight">Tratamentos Especializados</p>
-          <p className="text-sm text-slate-500 mt-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-2">Serviços</h2>
+          <p className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Tratamentos Especializados</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
             Metodologias modernas adaptadas às necessidades do seu corpo e rotina.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-brand-50 text-brand-600 rounded-xl inline-block mb-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+            <div className="p-3 bg-brand-50 dark:bg-brand-950/60 text-brand-600 dark:text-brand-400 rounded-xl inline-block mb-4">
               <Activity className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 mb-2">Fisioterapia Ortopédica</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-2">Fisioterapia Ortopédica</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Tratamento de dores articulares, musculares, hérnias de disco, tendinites e reabilitação pós-operatória.
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-teal-50 text-teal-600 rounded-xl inline-block mb-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+            <div className="p-3 bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 rounded-xl inline-block mb-4">
               <HeartPulse className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 mb-2">Pilates Clínico & Postura</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-2">Pilates Clínico & Postura</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Fortalecimento do core, reeducação postural e ganho de flexibilidade com controle biomecânico rigoroso.
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow">
-            <div className="p-3 bg-cyan-50 text-cyan-600 rounded-xl inline-block mb-4">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+            <div className="p-3 bg-cyan-50 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-400 rounded-xl inline-block mb-4">
               <UserCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-slate-900 mb-2">Fisioterapia Desportiva</h3>
-            <p className="text-xs text-slate-600 leading-relaxed">
+            <h3 className="font-bold text-slate-900 dark:text-white mb-2">Fisioterapia Desportiva</h3>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
               Prevenção de lesões esportivas, recuperação muscular acelerada e retorno seguro à prática física.
             </p>
           </div>
@@ -192,43 +192,43 @@ export const HomePage: React.FC = () => {
 
       {/* Como Funciona o Atendimento */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 shadow-sm">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 p-8 sm:p-12 shadow-sm transition-colors">
           <div className="text-center max-w-xl mx-auto mb-10">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-brand-600 mb-1">Como Funciona</h2>
-            <h3 className="text-2xl font-bold text-slate-900">Seu Ciclo de Cuidado</h3>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400 mb-1">Como Funciona</h2>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Seu Ciclo de Cuidado</h3>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-2">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-xs flex items-center justify-center mx-auto">
                 1
               </div>
-              <h4 className="font-bold text-sm text-slate-800">Contato Inicial</h4>
-              <p className="text-xs text-slate-500">Agendamento prático e alinhamento de sintomas via WhatsApp.</p>
+              <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Contato Inicial</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Agendamento prático e alinhamento de sintomas via WhatsApp.</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-2">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-xs flex items-center justify-center mx-auto">
                 2
               </div>
-              <h4 className="font-bold text-sm text-slate-800">Avaliação Biomecânica</h4>
-              <p className="text-xs text-slate-500">Análise de mobilidade, postura e causas primárias da dor.</p>
+              <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Avaliação Biomecânica</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Análise de mobilidade, postura e causas primárias da dor.</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-2">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-xs flex items-center justify-center mx-auto">
                 3
               </div>
-              <h4 className="font-bold text-sm text-slate-800">Sessões & Tratamento</h4>
-              <p className="text-xs text-slate-500">Exercícios terapêuticos e terapia manual direcionada.</p>
+              <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Sessões & Tratamento</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Exercícios terapêuticos e terapia manual direcionada.</p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-2">
+            <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 text-center space-y-2">
               <div className="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-xs flex items-center justify-center mx-auto">
                 4
               </div>
-              <h4 className="font-bold text-sm text-slate-800">Alta & Manutenção</h4>
-              <p className="text-xs text-slate-500">Orientações contínuas para prevenir novas queixas e dores.</p>
+              <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100">Alta & Manutenção</h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Orientações contínuas para prevenir novas queixas e dores.</p>
             </div>
           </div>
         </div>

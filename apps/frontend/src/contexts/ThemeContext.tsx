@@ -25,10 +25,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const root = document.documentElement;
+    const body = document.body;
     if (theme === 'dark') {
       root.classList.add('dark');
+      body.classList.add('dark');
     } else {
       root.classList.remove('dark');
+      body.classList.remove('dark');
     }
     localStorage.setItem('fisio_theme', theme);
   }, [theme]);
