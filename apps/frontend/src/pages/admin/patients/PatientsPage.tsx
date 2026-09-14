@@ -164,13 +164,13 @@ export const PatientsPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header com Ações */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
         <div>
-          <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">
+          <span className="text-xs font-semibold text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">
             Gerenciamento
           </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-2">Pacientes</h1>
-          <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-2">Pacientes</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-0.5">
             Cadastro, histórico e acompanhamento de pacientes atendidos.
           </p>
         </div>
@@ -185,7 +185,7 @@ export const PatientsPage: React.FC = () => {
       </div>
 
       {/* Barra de Filtros e Busca */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center transition-colors">
         <div className="relative w-full md:w-96">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           <input
@@ -193,7 +193,7 @@ export const PatientsPage: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nome ou telefone..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
+            className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
           />
         </div>
 
@@ -205,7 +205,7 @@ export const PatientsPage: React.FC = () => {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
                 statusFilter === filter
                   ? 'bg-brand-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {filter === 'ALL' && 'Todos'}
@@ -217,11 +217,11 @@ export const PatientsPage: React.FC = () => {
       </div>
 
       {/* Tabela de Pacientes (Desktop) e Cards (Mobile) */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
         {loading ? (
           <div className="p-8 space-y-4">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-slate-100 rounded-xl animate-pulse" />
+              <div key={i} className="h-12 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />
             ))}
           </div>
         ) : patients.length > 0 ? (
@@ -230,7 +230,7 @@ export const PatientsPage: React.FC = () => {
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/75 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                  <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                     <th className="py-3.5 px-6">Paciente</th>
                     <th className="py-3.5 px-6">Contato</th>
                     <th className="py-3.5 px-6">Status</th>
@@ -238,11 +238,11 @@ export const PatientsPage: React.FC = () => {
                     <th className="py-3.5 px-6 text-right">Ações</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs text-slate-700 dark:text-slate-300">
                   {patients.map((pt) => (
-                    <tr key={pt.id} className="hover:bg-slate-50/80 transition-colors">
+                    <tr key={pt.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
                       <td className="py-4 px-6">
-                        <p className="font-bold text-slate-900 text-sm">{pt.fullName}</p>
+                        <p className="font-bold text-slate-900 dark:text-white text-sm">{pt.fullName}</p>
                         {pt.birthDate && (
                           <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
                             <Calendar className="w-3 h-3" />
@@ -304,38 +304,40 @@ export const PatientsPage: React.FC = () => {
             </div>
 
             {/* Versão Mobile (Cards) */}
-            <div className="md:hidden divide-y divide-slate-100 p-3 space-y-3">
+            <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800 p-3 space-y-3">
               {patients.map((pt) => (
-                <div key={pt.id} className="p-4 bg-slate-50 rounded-xl space-y-3 border border-slate-100">
+                <div key={pt.id} className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl space-y-3 border border-slate-100 dark:border-slate-700/60">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="font-bold text-slate-900 text-base">{pt.fullName}</p>
-                      <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
-                        <Phone className="w-3.5 h-3.5 text-brand-600" />
+                      <p className="font-bold text-slate-900 dark:text-white text-base">{pt.fullName}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
+                        <Phone className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
                         {pt.phone}
                       </p>
                     </div>
                     <span
                       className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
-                        pt.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                        pt.status === 'ACTIVE'
+                          ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300'
+                          : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
                       }`}
                     >
                       {pt.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-200/60 text-xs">
-                    <span className="text-slate-500">{pt._count?.appointments ?? 0} atendimentos</span>
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60 text-xs">
+                    <span className="text-slate-500 dark:text-slate-400">{pt._count?.appointments ?? 0} atendimentos</span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleViewDetails(pt.id)}
-                        className="p-2 bg-white border border-slate-200 text-brand-600 rounded-lg"
+                        className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-brand-600 dark:text-brand-400 rounded-lg"
                       >
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleOpenEditModal(pt)}
-                        className="p-2 bg-white border border-slate-200 text-slate-700 rounded-lg"
+                        className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
@@ -347,8 +349,8 @@ export const PatientsPage: React.FC = () => {
           </>
         ) : (
           <div className="p-12 text-center">
-            <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-slate-700">Nenhum paciente encontrado</p>
+            <Users className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">Nenhum paciente encontrado</p>
             <p className="text-xs text-slate-400 mt-1">
               Cadastre um novo paciente para começar a registrar atendimentos.
             </p>
@@ -365,15 +367,15 @@ export const PatientsPage: React.FC = () => {
 
       {/* Modal de Cadastro / Edição */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-              <h2 className="text-lg font-bold text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 {editingPatient ? 'Editar Paciente' : 'Novo Paciente'}
               </h2>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -381,7 +383,7 @@ export const PatientsPage: React.FC = () => {
 
             <form onSubmit={handleSavePatient} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
                   Nome Completo *
                 </label>
                 <input
@@ -390,7 +392,7 @@ export const PatientsPage: React.FC = () => {
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   placeholder="Ex: Ana Maria dos Santos"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
                 />
               </div>
 
