@@ -29,6 +29,68 @@ export async function authRoutes(app: FastifyInstance) {
   });
 
   /**
+   * GET /api/auth/google/callback
+   * Recebe o código temporário da Google, valida e autentica o usuário
+   */
+  app.get('/google/callback', async (request: FastifyRequest, reply: FastifyReply) => {
+    const callbackQuerySchema = z.object({
+      code: z.string().optional(),
+      error: z.string().optional(),
+    });
+
+    const { code, error } = callbackQuerySchema.parse(request.query);
+
+    if (error || !code) {
+      return reply.redirect(`${env.FRONTEND_URL}/login?error=oauth_denied`);
+    }
+
+    try {
+      const googleUser = await AuthService.exchangeGoogleCode(code);
+
+      // Busca ou cria o usuário pelo googleId ou email
+      let user = await prisma.user.findFirst({
+        where: {
+          OR: [{ googleId: googleUser.id }, { email: googleUser.email }],
+        },
+      });
+
+      if (!user) {
+        user = await prisma.user.create({
+          data: {
+            googleId: googleUser.id,
+            email: googleUser.email,
+            name: googleUser.name,
+            avatarUrl: googleUser.picture || null,
+            role: 'ADMIN',
+            professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica e pilates clínico.',
+            specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reabilitação Postural',
+          },
+        });
+      } else if (!user.googleId) {
+        // Vincula o Google ID caso a conta já existisse pelo e-mail
+        user = await prisma.user.update({
+          where: { id: user.id },
+          data: { googleId: googleUser.id, avatarUrl: googleUser.picture || user.avatarUrl },
+        });
+      }
+
+      const token = AuthService.generateToken({
+        sub: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      });
+
+      setSessionCookie(reply, token);
+
+      return reply.redirect(`${env.FRONTEND_URL}/admin/dashboard`);
+    } catch (err) {
+      request.log.error(err);
+      return reply.redirect(`${env.FRONTEND_URL}/login?error=oauth_failed`);
+    }
+  });
+
+  /**
    * POST /api/auth/dev-login
    * Login facilitado para testes locais e banca acadêmica
    * Cria ou busca o usuário padrão da fisioterapeuta

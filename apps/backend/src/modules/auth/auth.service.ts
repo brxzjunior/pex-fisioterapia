@@ -48,4 +48,41 @@ export class AuthService {
     const qs = new URLSearchParams(options);
     return `${rootUrl}?${qs.toString()}`;
   }
+
+  /**
+   * Troca o código temporário recebido da Google pelo token de acesso e dados do perfil
+   */
+  static async exchangeGoogleCode(code: string): Promise<{ id: string; email: string; name: string; picture?: string }> {
+    // 1. Troca o código temporário pelo token de acesso
+    const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        code,
+        client_id: env.GOOGLE_CLIENT_ID,
+        client_secret: env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: env.GOOGLE_REDIRECT_URI,
+        grant_type: 'authorization_code',
+      }),
+    });
+
+    if (!tokenResponse.ok) {
+      const errText = await tokenResponse.text();
+      console.error('Erro ao trocar código com o Google:', errText);
+      throw new Error('Falha ao autenticar com o Google.');
+    }
+
+    const tokenData = (await tokenResponse.json()) as { access_token: string; id_token: string };
+
+    // 2. Busca os dados do usuário autenticado usando o access_token
+    const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+      headers: { Authorization: `Bearer ${tokenData.access_token}` },
+    });
+
+    if (!userResponse.ok) {
+      throw new Error('Falha ao obter perfil do usuário no Google.');
+    }
+
+    return (await userResponse.json()) as { id: string; email: string; name: string; picture?: string };
+  }
 }
