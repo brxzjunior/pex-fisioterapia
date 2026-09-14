@@ -9,9 +9,11 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // 401 em /auth/me é o comportamento padrão quando o visitante ainda não fez login
     if (error.response && error.response.status === 401) {
-      // Se não estiver na página de login, pode redirecionar ou limpar o estado
-      console.warn('Sessão expirada ou não autorizada.');
+      if (!error.config?.url?.includes('/auth/me')) {
+        console.warn('Sessão expirada ou não autorizada.');
+      }
     }
     return Promise.reject(error);
   }
