@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { ThemeToggle } from './ThemeToggle';
 import {
   Activity,
   LayoutDashboard,
@@ -33,22 +34,25 @@ export const DashboardLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors">
       {/* Mobile Topbar */}
-      <div className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
+      <div className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between sticky top-0 z-30 transition-colors">
         <div className="flex items-center gap-2">
           <div className="p-1.5 bg-brand-500 rounded-lg text-white">
             <Activity className="w-5 h-5" />
           </div>
-          <span className="font-bold text-slate-900">Fisio<span className="text-brand-600">Pro</span></span>
+          <span className="font-bold text-slate-900 dark:text-white">Fisio<span className="text-brand-600 dark:text-brand-400">Pro</span></span>
         </div>
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg"
-          aria-label="Abrir menu"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+            aria-label="Abrir menu"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar Desktop e Mobile Drawer */}
@@ -68,12 +72,15 @@ export const DashboardLayout: React.FC = () => {
                 Fisio<span className="text-brand-400">Pro</span>
               </span>
             </div>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden text-slate-400 hover:text-white"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-1">
+              <ThemeToggle className="hidden md:flex bg-slate-800 border-slate-700 hover:bg-slate-700" />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="md:hidden text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           {/* Badge Perfil Profissional */}
