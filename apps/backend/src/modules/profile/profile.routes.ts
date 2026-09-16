@@ -31,18 +31,21 @@ export async function profileRoutes(app: FastifyInstance) {
 
       if (!professional) {
         return reply.send({
-          name: 'Dra. Fisioterapeuta',
-          phone: '(11) 99999-8888',
+          name: 'Dra. Letícia Souza de Moraes',
+          phone: '(92) 99177-9987',
           professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico com atendimento individualizado e humanizado.',
           specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reeducação Postural',
         });
       }
 
-      return reply.send(professional);
+      return reply.send({
+        ...professional,
+        name: 'Dra. Letícia Souza de Moraes',
+      });
     } catch (err) {
       return reply.send({
-        name: 'Dra. Fisioterapeuta',
-        phone: '(11) 99999-8888',
+        name: 'Dra. Letícia Souza de Moraes',
+        phone: '(92) 99177-9987',
         professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico com atendimento individualizado.',
         specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reeducação Postural',
       });

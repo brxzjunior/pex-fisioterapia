@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { env } from '../../config/env.js';
 
 export interface UserTokenPayload {
@@ -11,6 +13,118 @@ export interface UserTokenPayload {
 export class AuthService {
   private static TOKEN_EXPIRATION = '7d'; // 7 dias de validade
   public static COOKIE_NAME = 'fisio_session';
+
+  /**
+   * Lista de domínios descartáveis ou temporários bloqueados
+   */
+  private static BLOCKED_DOMAINS = [
+    'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com',
+    'throwawaymail.com', 'yopmail.com', 'sharklasers.com', 'dispostable.com',
+    'trashmail.com', 'getairmail.com', 'fakeinbox.com'
+  ];
+
+  /**
+   * Valida se o e-mail atende a critérios rigorosos de formato, TLD e não pertence a provedores descartáveis
+   */
+  static validateEmailPolicy(email: string): { valid: boolean; reason?: string } {
+    const trimmed = email.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    
+    if (!emailRegex.test(trimmed)) {
+      return { valid: false, reason: 'Formato de e-mail inválido ou malformado.' };
+    }
+
+    const domain = trimmed.split('@')[1];
+    if (this.BLOCKED_DOMAINS.includes(domain)) {
+      return { valid: false, reason: 'E-mails temporários ou descartáveis não são permitidos por segurança.' };
+    }
+
+    const parts = domain.split('.');
+    if (parts.length < 2) {
+      return { valid: false, reason: 'Domínio de e-mail incompleto.' };
+    }
+
+    const tld = parts[parts.length - 1];
+    if (tld.length < 2) {
+      return { valid: false, reason: 'Extensão de domínio de e-mail inválida.' };
+    }
+
+    // Domínios fictícios comuns bloqueados
+    const blockedGeneric = ['teste.com', 'test.com', 'exemplo.com', 'example.com', 'eu.com', 'voce.com'];
+    if (blockedGeneric.includes(domain)) {
+      return { valid: false, reason: 'Domínio fictício ou de teste não permitido.' };
+    }
+
+    return { valid: true };
+  }
+
+  /**
+   * Gera código numérico de 6 dígitos para verificação de e-mail (válido por 15 minutos)
+   */
+  static generateVerificationCode(): { code: string; expires: Date } {
+    // Código de 6 dígitos criptograficamente seguro
+    const code = Math.floor(100000 + crypto.randomInt(900000)).toString();
+    const expires = new Date(Date.now() + 1000 * 60 * 15); // 15 minutos
+    return { code, expires };
+  }
+
+  /**
+   * Validação robusta de complexidade de senha:
+   * Mínimo 8 caracteres, com letra maiúscula, minúscula, número e caractere especial.
+   */
+  static validatePasswordStrength(password: string): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    if (password.length < 8) {
+      errors.push('A senha deve conter no mínimo 8 caracteres.');
+    }
+    if (!/[A-Z]/.test(password)) {
+      errors.push('A senha deve conter pelo menos uma letra maiúscula (A-Z).');
+    }
+    if (!/[a-z]/.test(password)) {
+      errors.push('A senha deve conter pelo menos uma letra minúscula (a-z).');
+    }
+    if (!/[0-9]/.test(password)) {
+      errors.push('A senha deve conter pelo menos um número (0-9).');
+    }
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password)) {
+      errors.push('A senha deve conter pelo menos um caractere especial (!@#$%^&* etc.).');
+    }
+
+    // Bloqueia senhas com sequências óbvias
+    const weakPatterns = ['12345678', 'password', 'senha123', 'admin123', 'qwertyuiop'];
+    if (weakPatterns.some(pattern => password.toLowerCase().includes(pattern))) {
+      errors.push('A senha é muito fraca e contém sequências óbvias.');
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors,
+    };
+  }
+
+  /**
+   * Hasheia senha com salt bcrypt
+   */
+  static async hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
+  }
+
+  /**
+   * Compara senha em texto com hash
+   */
+  static async comparePassword(password: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(password, hash);
+  }
+
+  /**
+   * Gera token aleatório para recuperação de senha
+   */
+  static generateResetToken(): { token: string; expires: Date } {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 1000 * 60 * 60); // 1 hora de validade
+    return { token, expires };
+  }
 
   /**
    * Gera um token JWT assinado para o usuário autenticado

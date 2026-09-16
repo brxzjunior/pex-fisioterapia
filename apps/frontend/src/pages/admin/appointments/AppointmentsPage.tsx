@@ -77,7 +77,6 @@ export const AppointmentsPage: React.FC = () => {
   }, [statusFilter]);
 
   const handleOpenModal = () => {
-    // Sugere o horário atual formatado para datetime-local
     const now = new Date();
     now.setMinutes(0, 0, 0);
     now.setHours(now.getHours() + 1);
@@ -118,7 +117,7 @@ export const AppointmentsPage: React.FC = () => {
     newStatus: 'CONFIRMED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED'
   ) => {
     try {
-      await api.patch(`/appointments/${id}`, { status: newStatus });
+      await api.patch(`/appointments/${id}/status`, { status: newStatus });
       fetchAppointments();
     } catch (err) {
       alert('Erro ao atualizar status do atendimento.');
@@ -129,65 +128,73 @@ export const AppointmentsPage: React.FC = () => {
     switch (status) {
       case 'SCHEDULED':
         return (
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-            Agendado
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 border border-stone-200 dark:border-stone-700">
+            AGENDADO
           </span>
         );
       case 'CONFIRMED':
         return (
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200">
-            Confirmado
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-stone-200 dark:bg-stone-700 text-stone-900 dark:text-stone-100 border border-stone-300 dark:border-stone-600">
+            CONFIRMADO
           </span>
         );
       case 'IN_PROGRESS':
         return (
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200 animate-pulse">
-            Em Andamento
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 animate-pulse">
+            EM ATENDIMENTO
           </span>
         );
       case 'COMPLETED':
         return (
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-            Finalizado
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-stone-100 dark:bg-stone-800 text-stone-500 border border-stone-200 dark:border-stone-700">
+            CONCLUÍDO
           </span>
         );
       case 'CANCELLED':
         return (
-          <span className="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-            Cancelado
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-stone-100 dark:bg-stone-800 text-stone-400 border border-stone-200 dark:border-stone-700">
+            CANCELADO
           </span>
         );
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header com Ações */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+    <div className="space-y-4 max-w-[1600px] mx-auto text-stone-900 dark:text-stone-100 font-sans">
+      
+      {/* Header Cirúrgico */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-stone-900/90 p-5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm transition-colors">
         <div>
-          <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">
-            Agenda Clínica
-          </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-2">Atendimentos</h1>
-          <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-            Controle de sessões, evolução de status e fluxo do paciente.
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-700 font-semibold">
+              Módulo Agenda
+            </span>
+            <span className="font-mono text-xs text-stone-500 tabular-nums">
+              Total: {appointments.length} atendimento(s)
+            </span>
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-stone-950 dark:text-stone-100 mt-1">
+            Agenda Clínica de Atendimentos
+          </h1>
+          <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+            Controle de sessões, evolução de status e fluxo do paciente no consultório.
           </p>
         </div>
 
         <button
           onClick={handleOpenModal}
-          className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-brand-600/20 transition-all self-start sm:self-auto"
+          className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-medium text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Novo Agendamento</span>
         </button>
       </div>
 
-      {/* Filtros por Status */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between overflow-x-auto gap-2">
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
-          <Filter className="w-4 h-4 text-brand-600" />
-          <span>Status:</span>
+      {/* Filtros por Status Neutros */}
+      <div className="bg-white dark:bg-stone-900/90 p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm flex items-center justify-between overflow-x-auto gap-3">
+        <div className="flex items-center gap-2 text-xs font-mono text-stone-400 uppercase tracking-wider">
+          <Filter className="w-3.5 h-3.5 text-stone-400" />
+          <span>Filtro de Status:</span>
         </div>
 
         <div className="flex items-center gap-1.5">
@@ -202,10 +209,10 @@ export const AppointmentsPage: React.FC = () => {
             <button
               key={item.id}
               onClick={() => setStatusFilter(item.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all whitespace-nowrap ${
                 statusFilter === item.id
-                  ? 'bg-brand-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 font-bold shadow-sm'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700'
               }`}
             >
               {item.label}
@@ -215,63 +222,63 @@ export const AppointmentsPage: React.FC = () => {
       </div>
 
       {/* Lista de Atendimentos */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-8 space-y-4">
+          <div className="p-6 space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-slate-100 rounded-xl animate-pulse" />
+              <div key={i} className="h-16 bg-stone-100 dark:bg-stone-800 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : appointments.length > 0 ? (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-stone-200/60 dark:divide-stone-800/80">
             {appointments.map((apt) => {
               const date = new Date(apt.scheduledAt);
               return (
                 <div
                   key={apt.id}
-                  className="p-4 sm:p-6 hover:bg-slate-50/70 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="p-4 hover:bg-stone-50/60 dark:hover:bg-stone-800/40 transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="p-3 bg-brand-50 text-brand-600 rounded-2xl flex flex-col items-center justify-center shrink-0 border border-brand-100/60 min-w-[64px]">
-                      <span className="text-[10px] font-bold uppercase text-brand-500">
+                  <div className="flex items-start gap-4">
+                    <div className="p-2.5 bg-stone-100 dark:bg-stone-800 rounded-lg flex flex-col items-center justify-center shrink-0 border border-stone-200 dark:border-stone-700 min-w-[64px] font-mono">
+                      <span className="text-[10px] uppercase text-stone-400 font-semibold">
                         {date.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')}
                       </span>
-                      <span className="text-xl font-extrabold text-brand-700 leading-none my-0.5">
+                      <span className="text-lg font-bold text-stone-900 dark:text-stone-100 leading-none my-0.5 tabular-nums">
                         {date.getDate()}
                       </span>
-                      <span className="text-[10px] font-medium text-slate-500">
+                      <span className="text-[10px] text-stone-500 tabular-nums">
                         {date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </div>
 
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                        <h3 className="font-semibold text-stone-950 dark:text-stone-100 text-sm">
                           {apt.patient.fullName}
                         </h3>
                         {getStatusBadge(apt.status)}
                       </div>
 
-                      <p className="text-xs font-medium text-slate-600 flex items-center gap-1.5">
-                        <CalendarCheck className="w-3.5 h-3.5 text-brand-600" />
+                      <p className="text-xs text-stone-500 dark:text-stone-400 flex items-center gap-1.5 font-mono">
+                        <CalendarCheck className="w-3.5 h-3.5 text-stone-400" />
                         {apt.type} • {apt.durationMinutes} min
                       </p>
 
                       {apt.notes && (
-                        <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
-                          <FileText className="w-3.5 h-3.5 text-slate-400" />
+                        <p className="text-xs text-stone-600 dark:text-stone-300 flex items-center gap-1 mt-0.5 font-sans">
+                          <FileText className="w-3.5 h-3.5 text-stone-400 shrink-0" />
                           {apt.notes}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Ações de Transição de Status */}
-                  <div className="flex items-center gap-1.5 self-end md:self-center flex-wrap">
+                  {/* Ações Rápidas de Status Neutras */}
+                  <div className="flex items-center gap-2 self-end md:self-center flex-wrap">
                     {apt.status === 'SCHEDULED' && (
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'CONFIRMED')}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-800 text-xs font-semibold rounded-xl border border-cyan-200 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-mono font-semibold rounded-lg border border-stone-300 dark:border-stone-600 transition-colors"
                         title="Confirmar presença com o paciente"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
@@ -282,7 +289,7 @@ export const AppointmentsPage: React.FC = () => {
                     {(apt.status === 'SCHEDULED' || apt.status === 'CONFIRMED') && (
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'IN_PROGRESS')}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold rounded-xl border border-amber-200 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 text-xs font-mono font-semibold rounded-lg transition-colors shadow-sm"
                         title="Iniciar sessão de atendimento"
                       >
                         <PlayCircle className="w-3.5 h-3.5" />
@@ -293,18 +300,18 @@ export const AppointmentsPage: React.FC = () => {
                     {apt.status === 'IN_PROGRESS' && (
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'COMPLETED')}
-                        className="inline-flex items-center gap-1 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 text-xs font-mono font-semibold rounded-lg shadow-sm transition-colors"
                         title="Concluir sessão e arquivar no histórico"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>Finalizar Sessão</span>
+                        <span>Finalizar</span>
                       </button>
                     )}
 
                     {apt.status !== 'COMPLETED' && apt.status !== 'CANCELLED' && (
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'CANCELLED')}
-                        className="inline-flex items-center gap-1 p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors"
+                        className="p-1.5 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded border border-transparent hover:border-stone-300 dark:hover:border-stone-700 transition-colors"
                         title="Cancelar Atendimento"
                       >
                         <XCircle className="w-4 h-4" />
@@ -316,15 +323,15 @@ export const AppointmentsPage: React.FC = () => {
             })}
           </div>
         ) : (
-          <div className="p-12 text-center">
-            <Calendar className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-slate-700">Nenhum atendimento nesta categoria</p>
-            <p className="text-xs text-slate-400 mt-1">
-              Agende uma nova sessão de fisioterapia para organizar a agenda.
+          <div className="p-14 text-center">
+            <Calendar className="w-8 h-8 text-stone-300 dark:text-stone-700 mx-auto mb-2" />
+            <p className="text-xs font-semibold text-stone-700 dark:text-stone-300">Nenhum atendimento nesta categoria</p>
+            <p className="text-[11px] text-stone-400 mt-0.5">
+              Agende uma nova sessão de fisioterapia para organizar a rotina do consultório.
             </p>
             <button
               onClick={handleOpenModal}
-              className="mt-4 inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 text-xs font-medium px-3.5 py-2 rounded-lg transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Agendar Atendimento</span>
@@ -333,23 +340,30 @@ export const AppointmentsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Modal de Agendamento */}
+      {/* Modal de Agendamento Sóbrio */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-              <h2 className="text-lg font-bold text-slate-900">Novo Agendamento</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 dark:border-stone-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3 mb-4">
+              <div>
+                <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
+                  Novo Horário
+                </span>
+                <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
+                  Agendar Atendimento Clínico
+                </h2>
+              </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateAppointment} className="space-y-4">
+            <form onSubmit={handleCreateAppointment} className="space-y-4 text-xs font-sans">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Paciente *
                 </label>
                 {patients.length > 0 ? (
@@ -357,7 +371,7 @@ export const AppointmentsPage: React.FC = () => {
                     required
                     value={formData.patientId}
                     onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   >
                     {patients.map((pt) => (
                       <option key={pt.id} value={pt.id}>
@@ -366,7 +380,7 @@ export const AppointmentsPage: React.FC = () => {
                     ))}
                   </select>
                 ) : (
-                  <p className="text-xs text-rose-500">
+                  <p className="text-xs text-stone-500">
                     Nenhum paciente cadastrado ativo. Cadastre um paciente primeiro.
                   </p>
                 )}
@@ -374,7 +388,7 @@ export const AppointmentsPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Data e Horário *
                   </label>
                   <input
@@ -382,18 +396,18 @@ export const AppointmentsPage: React.FC = () => {
                     required
                     value={formData.scheduledAt}
                     onChange={(e) => setFormData({ ...formData, scheduledAt: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Duração (minutos) *
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Duração da Sessão *
                   </label>
                   <select
                     value={formData.durationMinutes}
                     onChange={(e) => setFormData({ ...formData, durationMinutes: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   >
                     <option value={30}>30 minutos</option>
                     <option value={45}>45 minutos</option>
@@ -404,8 +418,8 @@ export const AppointmentsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Tipo / Especialidade do Atendimento *
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  Tipo / Linha de Cuidado *
                 </label>
                 <input
                   type="text"
@@ -413,35 +427,35 @@ export const AppointmentsPage: React.FC = () => {
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                   placeholder="Ex: Avaliação Fisioterapêutica, Pilates Clínico, Ortopedia"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Observações da Sessão
                 </label>
                 <textarea
                   rows={3}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  placeholder="Ex: Sessão focada em fortalecimento de manguito rotador; trazer roupas confortáveis."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  placeholder="Ex: Queixa álgica em ombro direito; trazer exames de imagem."
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-200 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl text-slate-600 text-sm font-medium hover:bg-slate-100 transition-colors"
+                  className="px-3.5 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={patients.length === 0}
-                  className="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-md shadow-brand-600/20 transition-all disabled:opacity-50"
+                  className="px-4 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-semibold shadow-sm transition-colors disabled:opacity-50"
                 >
                   Confirmar Agendamento
                 </button>

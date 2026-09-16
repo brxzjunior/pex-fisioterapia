@@ -35,31 +35,33 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-        <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">
+    <div className="space-y-4 max-w-4xl mx-auto text-stone-900 dark:text-stone-100 font-sans">
+      {/* Header Cirúrgico */}
+      <div className="bg-white dark:bg-stone-900/90 p-5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm transition-colors">
+        <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-700 font-semibold">
           Configuração Profissional
         </span>
-        <h1 className="text-2xl font-bold text-slate-900 mt-2">Meu Perfil</h1>
-        <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-          Estes dados alimentam a sua apresentação na área pública (portfólio e contatos).
+        <h1 className="text-xl font-bold text-stone-950 dark:text-stone-100 mt-1 tracking-tight">
+          Perfil Profissional & Apresentação
+        </h1>
+        <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+          Estes dados alimentam diretamente a apresentação na landing page pública e links de contato.
         </p>
       </div>
 
-      {/* Formulário de Perfil */}
-      <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+      {/* Formulário de Perfil Sóbrio */}
+      <form onSubmit={handleSubmit} className="bg-white dark:bg-stone-900/90 p-6 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5 transition-colors text-xs">
         {savedSuccess && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl flex items-center gap-2 text-xs font-semibold">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>Perfil atualizado com sucesso! As alterações já estão visíveis no seu portfólio.</span>
+          <div className="p-3.5 bg-stone-100 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-stone-900 dark:text-stone-100 rounded-lg flex items-center gap-2 font-medium">
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+            <span>Perfil atualizado com sucesso! As alterações já estão ativas na área pública.</span>
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-brand-600" />
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-stone-400" />
               Nome Profissional *
             </label>
             <input
@@ -67,60 +69,60 @@ export const ProfilePage: React.FC = () => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Dra. Seu Nome"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+              placeholder="Dra. Letícia Souza de Moraes"
+              className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5 text-brand-600" />
-              Telefone / WhatsApp de Contato
+            <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-stone-400" />
+              Telefone / WhatsApp de Atendimento
             </label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="(11) 99999-8888"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+              placeholder="(92) 99177-9987"
+              className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-            <Award className="w-3.5 h-3.5 text-brand-600" />
-            Especialidades e Áreas de Atuação
+          <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
+            <Award className="w-3.5 h-3.5 text-stone-400" />
+            Especialidades Clínicas
           </label>
           <input
             type="text"
             value={specialties}
             onChange={(e) => setSpecialties(e.target.value)}
             placeholder="Ex: Fisioterapia Ortopédica, Pilates Clínico, Reabilitação Postural, Desportiva"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+            className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
           />
-          <p className="text-[11px] text-slate-400 mt-1">Separe as especialidades por vírgulas.</p>
+          <p className="text-[10px] text-stone-400 mt-1 font-mono">Separe as especialidades por vírgula.</p>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-            <BookOpen className="w-3.5 h-3.5 text-brand-600" />
-            Apresentação / Biografia Profissional
+          <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
+            <BookOpen className="w-3.5 h-3.5 text-stone-400" />
+            Biografia & Filosofia de Atendimento
           </label>
           <textarea
             rows={4}
             value={professionalBio}
             onChange={(e) => setProfessionalBio(e.target.value)}
-            placeholder="Conte um pouco sobre sua formação, metodologia de atendimento e compromisso com a saúde e recuperação dos pacientes..."
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none leading-relaxed"
+            placeholder="Metodologia de atendimento, compromisso com a literatura científica contemporânea..."
+            className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none leading-relaxed"
           />
         </div>
 
-        <div className="pt-4 border-t border-slate-100 flex justify-end">
+        <div className="pt-3 border-t border-stone-200 dark:border-stone-800 flex justify-end">
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm shadow-md shadow-brand-600/20 transition-all disabled:opacity-50"
+            className="px-5 py-2.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-semibold text-xs shadow-sm transition-colors disabled:opacity-50"
           >
             {saving ? 'Salvando...' : 'Salvar Alterações'}
           </button>

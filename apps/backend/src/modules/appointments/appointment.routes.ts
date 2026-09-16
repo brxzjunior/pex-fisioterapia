@@ -35,14 +35,17 @@ export async function appointmentRoutes(app: FastifyInstance) {
   });
 
   /**
-   * PATCH /api/appointments/:id
-   * Atualiza status ou dados de uma sessão
+   * PATCH /api/appointments/:id e /api/appointments/:id/status
+   * Atualiza status ou dados/notas de uma sessão
    */
-  app.patch('/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+  const handleUpdateAppointment = async (request: FastifyRequest, reply: FastifyReply) => {
     const userId = request.user!.sub;
     const { id } = z.object({ id: z.string().uuid() }).parse(request.params);
     const body = updateAppointmentSchema.parse(request.body);
     const updated = await AppointmentService.update(userId, id, body);
     return reply.send(updated);
-  });
+  };
+
+  app.patch('/:id', handleUpdateAppointment);
+  app.patch('/:id/status', handleUpdateAppointment);
 }

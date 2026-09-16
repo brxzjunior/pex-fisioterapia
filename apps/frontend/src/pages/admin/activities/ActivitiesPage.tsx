@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../../services/api';
 import {
-  CheckSquare,
   Plus,
   CheckCircle2,
   Trash2,
   X,
-  User,
   Clock,
-  Tag,
 } from 'lucide-react';
 
 interface PatientOption {
@@ -69,7 +66,7 @@ export const ActivitiesPage: React.FC = () => {
       const res = await api.get<PatientOption[]>('/patients', { params: { status: 'ACTIVE' } });
       setPatients(res.data);
     } catch (err) {
-      console.error('Erro ao carregar pacientes:', err);
+      console.error('Erro ao buscar pacientes:', err);
     }
   };
 
@@ -95,8 +92,8 @@ export const ActivitiesPage: React.FC = () => {
     try {
       await api.post('/activities', {
         ...formData,
-        patientId: formData.patientId || null,
-        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : null,
+        patientId: formData.patientId || undefined,
+        dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
       });
       setModalOpen(false);
       fetchActivities();
@@ -116,7 +113,7 @@ export const ActivitiesPage: React.FC = () => {
   };
 
   const handleDeleteActivity = async (id: string) => {
-    if (!window.confirm('Tem certeza que deseja excluir esta tarefa?')) return;
+    if (!window.confirm('Deseja realmente remover esta atividade?')) return;
     try {
       await api.delete(`/activities/${id}`);
       fetchActivities();
@@ -126,32 +123,40 @@ export const ActivitiesPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header com Ações */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+    <div className="space-y-4 max-w-[1600px] mx-auto text-stone-900 dark:text-stone-100 font-sans">
+      
+      {/* Header Cirúrgico */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-stone-900/90 p-5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm transition-colors">
         <div>
-          <span className="text-xs font-semibold text-brand-700 bg-brand-50 px-2.5 py-1 rounded-md border border-brand-200">
-            Produtividade
-          </span>
-          <h1 className="text-2xl font-bold text-slate-900 mt-2">Atividades & Tarefas</h1>
-          <p className="text-slate-500 text-xs sm:text-sm mt-0.5">
-            Organização de pendências internas, materiais e acompanhamento de pacientes.
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-700 font-semibold">
+              Módulo Operacional
+            </span>
+            <span className="font-mono text-xs text-stone-500 tabular-nums">
+              Total: {activities.length} atividade(s)
+            </span>
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-stone-950 dark:text-stone-100 mt-1">
+            Atividades Clínicas & Gestão Interna
+          </h1>
+          <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+            Checklist de pendências, protocolos domiciliares e preparo de materiais.
           </p>
         </div>
 
         <button
           onClick={handleOpenModal}
-          className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-brand-600/20 transition-all self-start sm:self-auto"
+          className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-medium text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Nova Atividade</span>
         </button>
       </div>
 
-      {/* Barra de Filtros */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+      {/* Barra de Filtros Neutros */}
+      <div className="bg-white dark:bg-stone-900/90 p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col md:flex-row gap-3 justify-between items-center transition-colors">
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto">
-          <span className="text-xs font-medium text-slate-400">Status:</span>
+          <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider">Status:</span>
           {[
             { id: 'ALL', label: 'Todas' },
             { id: 'PENDING', label: 'Pendentes' },
@@ -160,10 +165,10 @@ export const ActivitiesPage: React.FC = () => {
             <button
               key={item.id}
               onClick={() => setStatusFilter(item.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all whitespace-nowrap ${
                 statusFilter === item.id
-                  ? 'bg-brand-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 font-bold shadow-sm'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700'
               }`}
             >
               {item.label}
@@ -172,7 +177,7 @@ export const ActivitiesPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto">
-          <span className="text-xs font-medium text-slate-400">Prioridade:</span>
+          <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider">Prioridade:</span>
           {[
             { id: 'ALL', label: 'Todas' },
             { id: 'HIGH', label: 'Alta' },
@@ -182,10 +187,10 @@ export const ActivitiesPage: React.FC = () => {
             <button
               key={item.id}
               onClick={() => setPriorityFilter(item.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all whitespace-nowrap ${
                 priorityFilter === item.id
-                  ? 'bg-slate-800 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 font-bold shadow-sm'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700'
               }`}
             >
               {item.label}
@@ -195,85 +200,68 @@ export const ActivitiesPage: React.FC = () => {
       </div>
 
       {/* Lista de Atividades */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-8 space-y-4">
+          <div className="p-6 space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-16 bg-slate-100 rounded-xl animate-pulse" />
+              <div key={i} className="h-14 bg-stone-100 dark:bg-stone-800 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : activities.length > 0 ? (
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-stone-200/60 dark:divide-stone-800/80">
             {activities.map((act) => {
               const isCompleted = act.status === 'COMPLETED';
               return (
                 <div
                   key={act.id}
-                  className={`p-4 sm:p-5 transition-colors flex items-start justify-between gap-4 ${
-                    isCompleted ? 'bg-slate-50/60 opacity-70' : 'hover:bg-slate-50/70'
+                  className={`p-4 transition-colors flex items-start justify-between gap-4 ${
+                    isCompleted ? 'bg-stone-50/50 dark:bg-stone-900/40 opacity-60' : 'hover:bg-stone-50/60 dark:hover:bg-stone-800/40'
                   }`}
                 >
                   <div className="flex items-start gap-3.5">
                     <button
                       onClick={() => handleToggleComplete(act)}
-                      className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center transition-colors ${
+                      className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center transition-colors ${
                         isCompleted
-                          ? 'bg-emerald-600 border-emerald-600 text-white'
-                          : 'border-slate-300 hover:border-brand-500 bg-white'
+                          ? 'bg-stone-900 dark:bg-stone-100 border-stone-900 dark:border-stone-100 text-white dark:text-stone-900'
+                          : 'border-stone-300 dark:border-stone-600 hover:border-stone-500 bg-white dark:bg-stone-800'
                       }`}
                     >
-                      {isCompleted && <CheckCircle2 className="w-4 h-4" />}
+                      {isCompleted && <CheckCircle2 className="w-3.5 h-3.5" />}
                     </button>
 
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
-                          className={`font-bold text-sm ${
-                            isCompleted ? 'line-through text-slate-400' : 'text-slate-900'
+                          className={`text-xs font-semibold ${
+                            isCompleted ? 'line-through text-stone-400' : 'text-stone-900 dark:text-stone-100'
                           }`}
                         >
                           {act.title}
                         </span>
 
-                        <span
-                          className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
-                            act.priority === 'HIGH'
-                              ? 'bg-rose-50 text-rose-700 border-rose-200'
-                              : act.priority === 'LOW'
-                              ? 'bg-slate-100 text-slate-600 border-slate-200'
-                              : 'bg-amber-50 text-amber-700 border-amber-200'
-                          }`}
-                        >
-                          {act.priority === 'HIGH'
-                            ? 'Alta'
-                            : act.priority === 'LOW'
-                            ? 'Baixa'
-                            : 'Média'}
+                        <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
+                          {act.priority === 'HIGH' ? 'Prioridade Alta' : act.priority === 'LOW' ? 'Baixa' : 'Média'}
                         </span>
 
-                        <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                          <Tag className="w-3 h-3 text-slate-400" />
+                        <span className="font-mono text-[9px] uppercase px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500">
                           {act.category}
                         </span>
                       </div>
 
                       {act.description && (
-                        <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
+                        <p className="text-xs text-stone-500 dark:text-stone-400">
                           {act.description}
                         </p>
                       )}
 
-                      <div className="flex items-center gap-4 text-xs text-slate-400 flex-wrap pt-0.5">
+                      <div className="flex items-center gap-3 pt-1 text-[11px] text-stone-400 font-mono">
                         {act.patient && (
-                          <span className="flex items-center gap-1 text-brand-700 font-medium">
-                            <User className="w-3.5 h-3.5 text-brand-600" />
-                            Paciente: {act.patient.fullName}
-                          </span>
+                          <span>Paciente: <strong>{act.patient.fullName}</strong></span>
                         )}
-
                         {act.dueDate && (
-                          <span className="flex items-center gap-1 text-slate-500">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-stone-400" />
                             Prazo: {new Date(act.dueDate).toLocaleDateString('pt-BR')}
                           </span>
                         )}
@@ -283,7 +271,7 @@ export const ActivitiesPage: React.FC = () => {
 
                   <button
                     onClick={() => handleDeleteActivity(act.id)}
-                    className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-colors shrink-0"
+                    className="p-1 text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 rounded transition-colors"
                     title="Excluir Atividade"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -293,15 +281,14 @@ export const ActivitiesPage: React.FC = () => {
             })}
           </div>
         ) : (
-          <div className="p-12 text-center">
-            <CheckSquare className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-slate-700">Nenhuma atividade encontrada</p>
-            <p className="text-xs text-slate-400 mt-1">
-              Crie uma nova tarefa para organizar sua rotina clínica.
+          <div className="p-14 text-center">
+            <p className="text-xs font-semibold text-stone-700 dark:text-stone-300">Nenhuma atividade encontrada</p>
+            <p className="text-[11px] text-stone-400 mt-0.5">
+              Crie uma nova tarefa para organizar sua rotina do consultório.
             </p>
             <button
               onClick={handleOpenModal}
-              className="mt-4 inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 text-xs font-medium px-3.5 py-2 rounded-lg transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Nova Atividade</span>
@@ -310,23 +297,30 @@ export const ActivitiesPage: React.FC = () => {
         )}
       </div>
 
-      {/* Modal de Nova Tarefa */}
+      {/* Modal de Nova Tarefa Sóbrio */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
-              <h2 className="text-lg font-bold text-slate-900">Nova Atividade</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 dark:border-stone-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3 mb-4">
+              <div>
+                <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
+                  Operacional
+                </span>
+                <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
+                  Nova Atividade Clínica
+                </h2>
+              </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateActivity} className="space-y-4">
+            <form onSubmit={handleCreateActivity} className="space-y-4 text-xs font-sans">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Título da Tarefa *
                 </label>
                 <input
@@ -334,20 +328,20 @@ export const ActivitiesPage: React.FC = () => {
                   required
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Ex: Enviar orientações de exercícios para casa"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  placeholder="Ex: Enviar protocolo de exercícios domiciliares"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Categoria
                   </label>
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none bg-white"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   >
                     <option value="Acompanhamento">Acompanhamento</option>
                     <option value="Contato">Contato com Paciente</option>
@@ -358,13 +352,13 @@ export const ActivitiesPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Prioridade
                   </label>
                   <select
                     value={formData.priority}
-                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none bg-white"
+                    onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   >
                     <option value="LOW">Baixa Prioridade</option>
                     <option value="MEDIUM">Média Prioridade</option>
@@ -374,15 +368,15 @@ export const ActivitiesPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Vincular a Paciente (Opcional)
                 </label>
                 <select
                   value={formData.patientId}
                   onChange={(e) => setFormData({ ...formData, patientId: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none bg-white"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 >
-                  <option value="">Nenhum (Tarefa Interna / Geral)</option>
+                  <option value="">Nenhum (Tarefa Interna Geral)</option>
                   {patients.map((pt) => (
                     <option key={pt.id} value={pt.id}>
                       {pt.fullName}
@@ -392,41 +386,41 @@ export const ActivitiesPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Prazo de Conclusão (Opcional)
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  Prazo Limite (Opcional)
                 </label>
                 <input
                   type="date"
                   value={formData.dueDate}
                   onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Descrição detalhada
                 </label>
                 <textarea
                   rows={3}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Instruções adicionais sobre a execução da tarefa..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  placeholder="Orientações e detalhes para a tarefa..."
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-200 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl text-slate-600 text-sm font-medium hover:bg-slate-100 transition-colors"
+                  className="px-3.5 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-md shadow-brand-600/20 transition-all"
+                  className="px-4 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-semibold shadow-sm transition-colors"
                 >
                   Salvar Atividade
                 </button>

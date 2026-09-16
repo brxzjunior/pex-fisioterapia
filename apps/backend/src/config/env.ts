@@ -13,6 +13,8 @@ const envSchema = z.object({
   SESSION_SECRET: z.string().min(32, 'SESSION_SECRET deve ter no mínimo 32 caracteres').default('super-secret-key-32-chars-long-at-least-fisio-pro'),
   ALLOWED_ADMIN_EMAIL: z.string().email().default('fisioterapeuta@exemplo.com'),
   FRONTEND_URL: z.string().url().default('http://localhost:5173'),
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM_EMAIL: z.string().default('onboarding@resend.dev'),
 });
 
 const _env = envSchema.safeParse(process.env);

@@ -8,11 +8,13 @@ async function main() {
   // 1. Cria ou atualiza a fisioterapeuta padrão
   const user = await prisma.user.upsert({
     where: { email: 'fisioterapeuta@exemplo.com' },
-    update: {},
+    update: {
+      name: 'Dra. Letícia Souza de Moraes',
+    },
     create: {
       email: 'fisioterapeuta@exemplo.com',
-      name: 'Dra. Camila Vasconcelos',
-      phone: '(11) 98765-4321',
+      name: 'Dra. Letícia Souza de Moraes',
+      phone: '(92) 99177-9987',
       professionalBio:
         'Fisioterapeuta graduada com foco em Reabilitação Ortopédica, Pilates Clínico e Fisioterapia Desportiva. Atendimento humanizado e individualizado.',
       specialties: 'Ortopedia Funcional, Pilates Clínico, Reabilitação Desportiva, Terapia Manual',

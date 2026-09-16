@@ -9,8 +9,8 @@ import {
   Eye,
   Edit2,
   X,
-  FileText,
   Clock,
+  ShieldAlert,
 } from 'lucide-react';
 
 interface Patient {
@@ -162,50 +162,58 @@ export const PatientsPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header com Ações */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+    <div className="space-y-4 max-w-[1600px] mx-auto text-stone-900 dark:text-stone-100 font-sans">
+      
+      {/* Header Cirúrgico */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-stone-900/90 p-5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm transition-colors">
         <div>
-          <span className="text-xs font-semibold text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-md border border-brand-200 dark:border-brand-800">
-            Gerenciamento
-          </span>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mt-2">Pacientes</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-0.5">
-            Cadastro, histórico e acompanhamento de pacientes atendidos.
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-700 font-semibold">
+              Módulo Prontuários
+            </span>
+            <span className="font-mono text-xs text-stone-500 tabular-nums">
+              Total: {patients.length} registro(s)
+            </span>
+          </div>
+          <h1 className="text-xl font-bold tracking-tight text-stone-950 dark:text-stone-100 mt-1">
+            Gestão de Pacientes & Prontuários
+          </h1>
+          <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
+            Cadastro, histórico clínico biomecânico e acompanhamento de sessões.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreateModal}
-          className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-brand-600/20 transition-all self-start sm:self-auto"
+          className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-medium text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          <span>Novo Paciente</span>
+          <span>Cadastrar Novo Paciente</span>
         </button>
       </div>
 
       {/* Barra de Filtros e Busca */}
-      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center transition-colors">
+      <div className="bg-white dark:bg-stone-900/90 p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col md:flex-row gap-3 justify-between items-center transition-colors">
         <div className="relative w-full md:w-96">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+          <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-3" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Buscar por nome ou telefone..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
+            placeholder="Buscar por nome completo ou telefone..."
+            className="w-full pl-9 pr-4 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:outline-none focus:ring-1 focus:ring-stone-400 dark:focus:ring-stone-600 transition-all font-sans"
           />
         </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto">
+        <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto">
           {(['ALL', 'ACTIVE', 'INACTIVE'] as const).map((filter) => (
             <button
               key={filter}
               onClick={() => setStatusFilter(filter)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all whitespace-nowrap ${
                 statusFilter === filter
-                  ? 'bg-brand-600 text-white shadow-sm'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-950 font-bold shadow-sm'
+                  : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 border border-stone-200 dark:border-stone-700'
               }`}
             >
               {filter === 'ALL' && 'Todos'}
@@ -216,84 +224,90 @@ export const PatientsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Tabela de Pacientes (Desktop) e Cards (Mobile) */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+      {/* Tabela de Pacientes Cirúrgica */}
+      <div className="bg-white dark:bg-stone-900/90 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm overflow-hidden transition-colors">
         {loading ? (
-          <div className="p-8 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-12 bg-slate-100 dark:bg-slate-800 rounded-xl animate-pulse" />
+          <div className="p-6 space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-12 bg-stone-100 dark:bg-stone-800 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : patients.length > 0 ? (
           <>
-            {/* Versão Desktop */}
+            {/* Desktop */}
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-800/50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                    <th className="py-3.5 px-6">Paciente</th>
-                    <th className="py-3.5 px-6">Contato</th>
-                    <th className="py-3.5 px-6">Status</th>
-                    <th className="py-3.5 px-6">Sessões</th>
-                    <th className="py-3.5 px-6 text-right">Ações</th>
+                  <tr className="border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-900/50 text-[10px] font-mono uppercase tracking-widest text-stone-400 dark:text-stone-500">
+                    <th className="py-3 px-5">Paciente</th>
+                    <th className="py-3 px-5">Contato</th>
+                    <th className="py-3 px-5">Status Clínico</th>
+                    <th className="py-3 px-5">Sessões Realizadas</th>
+                    <th className="py-3 px-5 text-right">Ações Rápidas</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                <tbody className="divide-y divide-stone-200/60 dark:divide-stone-800/80 text-xs text-stone-700 dark:text-stone-300">
                   {patients.map((pt) => (
-                    <tr key={pt.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
-                      <td className="py-4 px-6">
-                        <p className="font-bold text-slate-900 dark:text-white text-sm">{pt.fullName}</p>
+                    <tr key={pt.id} className="hover:bg-stone-50/60 dark:hover:bg-stone-800/40 transition-colors">
+                      <td className="py-3.5 px-5">
+                        <p className="font-semibold text-stone-950 dark:text-stone-100 text-xs">{pt.fullName}</p>
                         {pt.birthDate && (
-                          <p className="text-[11px] text-slate-400 flex items-center gap-1 mt-0.5">
-                            <Calendar className="w-3 h-3" />
-                            Nascimento: {new Date(pt.birthDate).toLocaleDateString('pt-BR')}
+                          <p className="text-[11px] font-mono text-stone-400 flex items-center gap-1 mt-0.5">
+                            <Calendar className="w-3 h-3 text-stone-400" />
+                            Nasc: {new Date(pt.birthDate).toLocaleDateString('pt-BR')}
                           </p>
                         )}
                       </td>
-                      <td className="py-4 px-6">
-                        <p className="flex items-center gap-1.5 font-medium text-slate-800">
-                          <Phone className="w-3.5 h-3.5 text-brand-600" />
+                      <td className="py-3.5 px-5 font-mono text-xs">
+                        <a
+                          href={`https://wa.me/55${pt.phone.replace(/\D/g, '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
+                        >
+                          <Phone className="w-3 h-3 text-stone-500" />
                           {pt.phone}
-                        </p>
-                        {pt.email && <p className="text-[11px] text-slate-400 mt-0.5">{pt.email}</p>}
+                        </a>
+                        {pt.email && <p className="text-[11px] text-stone-400 mt-0.5">{pt.email}</p>}
                       </td>
-                      <td className="py-4 px-6">
+                      <td className="py-3.5 px-5">
                         <button
                           onClick={() => handleToggleStatus(pt.id)}
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded font-mono text-[10px] font-semibold border transition-colors ${
                             pt.status === 'ACTIVE'
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
-                              : 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200'
+                              ? 'bg-stone-100 text-stone-900 border-stone-300 dark:bg-stone-800 dark:text-stone-100 dark:border-stone-700'
+                              : 'bg-stone-100 text-stone-500 border-stone-200 dark:bg-stone-800 dark:text-stone-400 dark:border-stone-700'
                           }`}
                         >
                           <span
                             className={`w-1.5 h-1.5 rounded-full ${
-                              pt.status === 'ACTIVE' ? 'bg-emerald-500' : 'bg-slate-400'
+                              pt.status === 'ACTIVE' ? 'bg-stone-900 dark:bg-stone-100' : 'bg-stone-400'
                             }`}
                           />
-                          {pt.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
+                          {pt.status === 'ACTIVE' ? 'ATIVO' : 'INATIVO'}
                         </button>
                       </td>
-                      <td className="py-4 px-6">
-                        <span className="text-slate-600 font-medium">
-                          {pt._count?.appointments ?? 0} agendamento(s)
+                      <td className="py-3.5 px-5 font-mono text-xs">
+                        <span className="text-stone-900 dark:text-stone-100 font-bold tabular-nums">
+                          {pt._count?.appointments ?? 0}
                         </span>
+                        <span className="text-stone-400 text-[11px] ml-1">sessões</span>
                       </td>
-                      <td className="py-4 px-6 text-right">
-                        <div className="inline-flex items-center gap-2">
+                      <td className="py-3.5 px-5 text-right">
+                        <div className="inline-flex items-center gap-1">
                           <button
                             onClick={() => handleViewDetails(pt.id)}
-                            className="p-2 text-slate-500 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
-                            title="Ver Detalhes e Histórico"
+                            className="p-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded border border-transparent hover:border-stone-200 dark:hover:border-stone-700 transition-all"
+                            title="Visualizar Prontuário & Histórico"
                           >
-                            <Eye className="w-4 h-4" />
+                            <Eye className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleOpenEditModal(pt)}
-                            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
-                            title="Editar Dados"
+                            className="p-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded border border-transparent hover:border-stone-200 dark:hover:border-stone-700 transition-all"
+                            title="Editar Cadastro"
                           >
-                            <Edit2 className="w-4 h-4" />
+                            <Edit2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </td>
@@ -303,43 +317,45 @@ export const PatientsPage: React.FC = () => {
               </table>
             </div>
 
-            {/* Versão Mobile (Cards) */}
-            <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800 p-3 space-y-3">
+            {/* Versão Mobile */}
+            <div className="md:hidden divide-y divide-stone-200/80 dark:divide-stone-800 p-3 space-y-3">
               {patients.map((pt) => (
-                <div key={pt.id} className="p-4 bg-slate-50 dark:bg-slate-800/60 rounded-xl space-y-3 border border-slate-100 dark:border-slate-700/60">
+                <div key={pt.id} className="p-3.5 bg-stone-50 dark:bg-stone-800/60 rounded-xl space-y-3 border border-stone-200/70 dark:border-stone-700/60">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="font-bold text-slate-900 dark:text-white text-base">{pt.fullName}</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
-                        <Phone className="w-3.5 h-3.5 text-brand-600 dark:text-brand-400" />
+                      <p className="font-semibold text-stone-900 dark:text-white text-sm">{pt.fullName}</p>
+                      <p className="text-xs font-mono text-stone-500 dark:text-stone-400 flex items-center gap-1 mt-0.5">
+                        <Phone className="w-3 h-3 text-stone-500" />
                         {pt.phone}
                       </p>
                     </div>
                     <span
-                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                      className={`text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded border ${
                         pt.status === 'ACTIVE'
-                          ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300'
-                          : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                          ? 'bg-stone-100 text-stone-900 border-stone-300 dark:bg-stone-800 dark:text-stone-100 dark:border-stone-700'
+                          : 'bg-stone-100 text-stone-500 border-stone-200 dark:bg-stone-800 dark:text-stone-400 dark:border-stone-700'
                       }`}
                     >
                       {pt.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-200/60 dark:border-slate-700/60 text-xs">
-                    <span className="text-slate-500 dark:text-slate-400">{pt._count?.appointments ?? 0} atendimentos</span>
+                  <div className="flex items-center justify-between pt-2 border-t border-stone-200 dark:border-stone-700 text-xs">
+                    <span className="font-mono text-stone-400 text-[11px]">
+                      {pt._count?.appointments ?? 0} atendimentos
+                    </span>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleViewDetails(pt.id)}
-                        className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-brand-600 dark:text-brand-400 rounded-lg"
+                        className="p-1.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded text-xs"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleOpenEditModal(pt)}
-                        className="p-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg"
+                        className="p-1.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded text-xs"
                       >
-                        <Edit2 className="w-4 h-4" />
+                        <Edit2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
@@ -348,15 +364,15 @@ export const PatientsPage: React.FC = () => {
             </div>
           </>
         ) : (
-          <div className="p-12 text-center">
-            <Users className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">Nenhum paciente encontrado</p>
-            <p className="text-xs text-slate-400 mt-1">
-              Cadastre um novo paciente para começar a registrar atendimentos.
+          <div className="p-14 text-center">
+            <Users className="w-8 h-8 text-stone-300 dark:text-stone-700 mx-auto mb-2" />
+            <p className="text-xs font-semibold text-stone-700 dark:text-stone-300">Nenhum paciente cadastrado no momento</p>
+            <p className="text-[11px] text-stone-400 mt-0.5">
+              Cadastre um novo paciente para iniciar a rotina de prontuários e atendimentos.
             </p>
             <button
               onClick={handleOpenCreateModal}
-              className="mt-4 inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 text-xs font-medium px-3.5 py-2 rounded-lg transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Cadastrar Primeiro Paciente</span>
@@ -365,25 +381,30 @@ export const PatientsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Modal de Cadastro / Edição */}
+      {/* Modal de Cadastro / Edição Sóbrio */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-4">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                {editingPatient ? 'Editar Paciente' : 'Novo Paciente'}
-              </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 dark:border-stone-800 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3 mb-4">
+              <div>
+                <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
+                  Ficha Cadastral
+                </span>
+                <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
+                  {editingPatient ? 'Editar Ficha do Paciente' : 'Cadastrar Novo Paciente'}
+                </h2>
+              </div>
               <button
                 onClick={() => setModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg"
+                className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleSavePatient} className="space-y-4">
+            <form onSubmit={handleSavePatient} className="space-y-4 text-xs font-sans">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   Nome Completo *
                 </label>
                 <input
@@ -392,40 +413,40 @@ export const PatientsPage: React.FC = () => {
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   placeholder="Ex: Ana Maria dos Santos"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Telefone (WhatsApp) *
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                    Telefone / WhatsApp *
                   </label>
                   <input
                     type="text"
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="(11) 99999-9999"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                    placeholder="(92) 99999-9999"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                     Data de Nascimento
                   </label>
                   <input
                     type="date"
                     value={formData.birthDate}
                     onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                    className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
                   E-mail
                 </label>
                 <input
@@ -433,49 +454,49 @@ export const PatientsPage: React.FC = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder="paciente@exemplo.com"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Endereço / Bairro
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  Endereço / Localização
                 </label>
                 <input
                   type="text"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="Ex: Rua das Flores, 120 - Bairro Centro"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  placeholder="Ex: Rua das Flores, 120"
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Observações Administrativas
+                <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  Observações Clínicas & Histórico Pregresso
                 </label>
                 <textarea
                   rows={3}
                   value={formData.administrativeNotes}
                   onChange={(e) => setFormData({ ...formData, administrativeNotes: e.target.value })}
-                  placeholder="Ex: Preferência por horários no final da tarde; indicação de médico parceiro."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none"
+                  placeholder="Ex: Queixa de dor crônica em joelho direito; cirurgia prévia de LCA há 2 anos."
+                  className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-200 dark:border-stone-800">
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl text-slate-600 text-sm font-medium hover:bg-slate-100 transition-colors"
+                  className="px-3.5 py-2 rounded-lg text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold shadow-md shadow-brand-600/20 transition-all"
+                  className="px-4 py-2 rounded-lg bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-semibold shadow-sm transition-colors"
                 >
-                  {editingPatient ? 'Salvar Alterações' : 'Cadastrar Paciente'}
+                  {editingPatient ? 'Salvar Alterações' : 'Concluir Cadastro'}
                 </button>
               </div>
             </form>
@@ -483,84 +504,97 @@ export const PatientsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Detalhes e Histórico */}
+      {/* Modal de Detalhes e Prontuário */}
       {detailsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs">
+          <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-stone-200 dark:border-stone-800 max-h-[90vh] overflow-y-auto space-y-6">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
               <div>
-                <h2 className="text-xl font-bold text-slate-900">
+                <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
+                  Prontuário Clínico Completo
+                </span>
+                <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100">
                   {selectedPatientDetails?.fullName || 'Ficha do Paciente'}
                 </h2>
-                <p className="text-xs text-slate-500">Histórico e informações de gestão do paciente</p>
               </div>
               <button
                 onClick={() => setDetailsModalOpen(false)}
-                className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg"
+                className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {loadingDetails ? (
-              <div className="p-8 text-center text-slate-500 text-xs">Carregando ficha...</div>
+              <div className="p-8 text-center text-stone-400 text-xs">Carregando prontuário...</div>
             ) : selectedPatientDetails ? (
-              <div className="space-y-6">
-                {/* Cartão de Informações Básicas */}
-                <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="space-y-5 text-xs">
+                {/* Informações Básicas */}
+                <div className="bg-stone-50 dark:bg-stone-800/50 p-4 rounded-xl border border-stone-200/80 dark:border-stone-700 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <span className="text-slate-400 font-medium">Telefone:</span>
-                    <p className="font-bold text-slate-800">{selectedPatientDetails.phone}</p>
+                    <span className="text-stone-400 font-mono text-[10px] uppercase block">Telefone:</span>
+                    <p className="font-semibold text-stone-900 dark:text-stone-100 font-mono">{selectedPatientDetails.phone}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-medium">E-mail:</span>
-                    <p className="font-bold text-slate-800">{selectedPatientDetails.email || 'Não informado'}</p>
+                    <span className="text-stone-400 font-mono text-[10px] uppercase block">E-mail:</span>
+                    <p className="font-semibold text-stone-900 dark:text-stone-100">{selectedPatientDetails.email || 'Não cadastrado'}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-medium">Endereço:</span>
-                    <p className="font-bold text-slate-800">{selectedPatientDetails.address || 'Não informado'}</p>
+                    <span className="text-stone-400 font-mono text-[10px] uppercase block">Endereço:</span>
+                    <p className="font-semibold text-stone-900 dark:text-stone-100">{selectedPatientDetails.address || 'Não cadastrado'}</p>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-medium">Status:</span>
-                    <p className="font-bold text-brand-700">
-                      {selectedPatientDetails.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}
+                    <span className="text-stone-400 font-mono text-[10px] uppercase block">Status Clínico:</span>
+                    <p className="font-semibold text-stone-900 dark:text-stone-100 font-mono">
+                      {selectedPatientDetails.status === 'ACTIVE' ? 'ATIVO EM TRATAMENTO' : 'ALTA / INATIVO'}
                     </p>
                   </div>
                 </div>
 
-                {/* Observações */}
+                {/* Observações Clínicas / Histórico Pregresso */}
                 {selectedPatientDetails.administrativeNotes && (
-                  <div className="p-4 bg-teal-50/50 rounded-2xl border border-teal-100">
-                    <span className="text-xs font-bold text-teal-900 flex items-center gap-1 mb-1">
-                      <FileText className="w-3.5 h-3.5" /> Observações Administrativas
+                  <div className="p-4 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700 text-stone-800 dark:text-stone-200">
+                    <span className="text-xs font-semibold flex items-center gap-1.5 mb-1 text-stone-900 dark:text-stone-100">
+                      <ShieldAlert className="w-3.5 h-3.5 text-stone-500" /> Anotação Clínica Prévia
                     </span>
-                    <p className="text-xs text-teal-800 leading-relaxed">
+                    <p className="text-xs leading-relaxed">
                       {selectedPatientDetails.administrativeNotes}
                     </p>
                   </div>
                 )}
 
-                {/* Linha do Tempo / Histórico Administrativo */}
+                {/* Histórico das Sessões e Prontuários Salvos */}
                 <div>
-                  <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-brand-600" />
-                    Histórico de Eventos
+                  <h3 className="text-xs font-mono uppercase tracking-wider text-stone-500 font-semibold mb-3 flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-stone-500" />
+                    Histórico de Evoluções & Atendimentos
                   </h3>
 
-                  {selectedPatientDetails.history.length > 0 ? (
-                    <div className="space-y-2 border-l-2 border-brand-200 ml-3 pl-4">
-                      {selectedPatientDetails.history.map((hist) => (
-                        <div key={hist.id} className="relative text-xs space-y-0.5">
-                          <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-brand-500 border-2 border-white" />
-                          <p className="font-medium text-slate-800">{hist.description}</p>
-                          <p className="text-[10px] text-slate-400">
-                            {new Date(hist.createdAt).toLocaleString('pt-BR')}
-                          </p>
+                  {selectedPatientDetails.appointments.length > 0 ? (
+                    <div className="space-y-3">
+                      {selectedPatientDetails.appointments.map((apt) => (
+                        <div
+                          key={apt.id}
+                          className="p-3.5 rounded-lg border border-stone-200/80 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-800/40 space-y-1.5"
+                        >
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-mono font-bold text-stone-900 dark:text-stone-100">
+                              {new Date(apt.scheduledAt).toLocaleDateString('pt-BR')} • {apt.type}
+                            </span>
+                            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-stone-200/80 dark:bg-stone-700 text-stone-700 dark:text-stone-300">
+                              {apt.status}
+                            </span>
+                          </div>
+                          {apt.notes && (
+                            <p className="text-xs text-stone-600 dark:text-stone-300 whitespace-pre-wrap pt-1 border-t border-stone-200/60 dark:border-stone-700/60 font-sans">
+                              {apt.notes}
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-slate-400">Nenhum evento registrado ainda.</p>
+                    <p className="text-xs text-stone-400">Nenhum atendimento concluído registrado.</p>
                   )}
                 </div>
               </div>

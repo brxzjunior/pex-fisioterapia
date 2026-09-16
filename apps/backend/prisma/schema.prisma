@@ -47,15 +47,21 @@ enum ActivityStatus {
 // ----------------------------------------------------
 
 model User {
-  id              String   @id @default(uuid())
-  email           String   @unique
-  name            String
-  avatarUrl       String?  @map("avatar_url")
-  googleId        String?  @unique @map("google_id")
-  phone           String?
-  professionalBio String?  @map("professional_bio")
-  specialties     String?  // Ex: "Ortopedia, Fisioterapia Esportiva, Pilates"
-  role            UserRole @default(ADMIN)
+  id                        String    @id @default(uuid())
+  email                     String    @unique
+  name                      String
+  passwordHash              String?   @map("password_hash")
+  isEmailVerified           Boolean   @default(false) @map("is_email_verified")
+  emailVerificationCode     String?   @map("email_verification_code")
+  emailVerificationExpires  DateTime? @map("email_verification_expires")
+  resetPasswordToken        String?   @map("reset_password_token")
+  resetPasswordExpires      DateTime? @map("reset_password_expires")
+  avatarUrl                 String?   @map("avatar_url")
+  googleId                  String?   @unique @map("google_id")
+  phone                     String?
+  professionalBio           String?   @map("professional_bio")
+  specialties               String?   // Ex: "Ortopedia, Fisioterapia Esportiva, Pilates"
+  role                      UserRole  @default(ADMIN)
 
   patients        Patient[]
   appointments    Appointment[]
