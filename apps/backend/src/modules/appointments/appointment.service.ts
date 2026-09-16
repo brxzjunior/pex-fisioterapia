@@ -149,4 +149,32 @@ export class AppointmentService {
 
     return updated;
   }
+
+  /**
+   * Remove permanentemente um atendimento
+   */
+  static async delete(userId: string, id: string) {
+    const appointment = await prisma.appointment.findFirst({
+      where: { id, userId },
+    });
+
+    if (!appointment) {
+      throw new AppError('Atendimento não encontrado.', 404, 'APPOINTMENT_NOT_FOUND');
+    }
+
+    await prisma.appointment.delete({
+      where: { id },
+    });
+
+    await prisma.patientHistory.create({
+      data: {
+        patientId: appointment.patientId,
+        userId,
+        actionType: 'APPOINTMENT_CANCELLED',
+        description: `Agendamento de "${appointment.type}" foi excluído da agenda.`,
+      },
+    });
+
+    return { message: 'Atendimento removido com sucesso.' };
+  }
 }

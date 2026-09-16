@@ -48,4 +48,15 @@ export async function appointmentRoutes(app: FastifyInstance) {
 
   app.patch('/:id', handleUpdateAppointment);
   app.patch('/:id/status', handleUpdateAppointment);
+
+  /**
+   * DELETE /api/appointments/:id
+   * Remove permanentemente uma sessão
+   */
+  app.delete('/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user!.sub;
+    const { id } = z.object({ id: z.string().uuid() }).parse(request.params);
+    const result = await AppointmentService.delete(userId, id);
+    return reply.send(result);
+  });
 }

@@ -12,6 +12,9 @@ import {
   Phone,
   ArrowUpRight,
   ShieldAlert,
+  History,
+  Edit2,
+  Check,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -64,8 +67,37 @@ export const ClinicalDashboard: React.FC = () => {
   const [painLevel, setPainLevel] = useState<number>(4);
   const [clinicalConduct, setClinicalConduct] = useState<string>('');
   const [homeExercise, setHomeExercise] = useState<string>('');
+  const [additionalNotes, setAdditionalNotes] = useState<string>('');
   const [savingEvolution, setSavingEvolution] = useState<boolean>(false);
   const [evolutionFeedback, setEvolutionFeedback] = useState<string | null>(null);
+
+  // Histórico de anotações do paciente e Edição
+  const [patientNotesList, setPatientNotesList] = useState<Array<{ id: string; date: string; notes: string; type: string }>>([]);
+  const [loadingNotesHistory, setLoadingNotesHistory] = useState<boolean>(false);
+  const [showAllNotes, setShowAllNotes] = useState<boolean>(false);
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingNoteText, setEditingNoteText] = useState<string>('');
+  const [savingEditNote, setSavingEditNote] = useState<boolean>(false);
+
+  const fetchPatientNotesHistory = async (patientId: string) => {
+    try {
+      setLoadingNotesHistory(true);
+      const res = await api.get<AppointmentItem[]>(`/appointments?patientId=${patientId}`);
+      const notesWithData = (res.data || [])
+        .filter((apt) => apt.notes && apt.notes.trim().length > 0)
+        .map((apt) => ({
+          id: apt.id,
+          date: apt.scheduledAt,
+          notes: apt.notes!,
+          type: apt.type,
+        }));
+      setPatientNotesList(notesWithData);
+    } catch (err) {
+      console.error('Erro ao buscar histórico de anotações:', err);
+    } finally {
+      setLoadingNotesHistory(false);
+    }
+  };
 
   const fetchStats = async () => {
     try {
@@ -73,7 +105,9 @@ export const ClinicalDashboard: React.FC = () => {
       const res = await api.get<DashboardStats>('/dashboard/stats');
       setStats(res.data);
       if (res.data?.upcomingAppointments?.length > 0 && !selectedAppointment) {
-        setSelectedAppointment(res.data.upcomingAppointments[0]);
+        const firstApt = res.data.upcomingAppointments[0];
+        setSelectedAppointment(firstApt);
+        fetchPatientNotesHistory(firstApt.patient.id);
       }
     } catch (err) {
       console.error('Erro ao carregar dados do prontuário operacional:', err);
@@ -85,6 +119,54 @@ export const ClinicalDashboard: React.FC = () => {
   useEffect(() => {
     fetchStats();
   }, []);
+
+  // Quando o paciente selecionado mudar, carrega o histórico dele
+  useEffect(() => {
+    if (selectedAppointment?.patient?.id) {
+      fetchPatientNotesHistory(selectedAppointment.patient.id);
+      setShowAllNotes(false);
+      setEditingNoteId(null);
+    }
+  }, [selectedAppointment?.patient?.id]);
+
+  const handleStartEditNote = (id: string, currentNote: string) => {
+    setEditingNoteId(id);
+    setEditingNoteText(currentNote);
+  };
+
+  const handleCancelEditNote = () => {
+    setEditingNoteId(null);
+    setEditingNoteText('');
+  };
+
+  const handleSaveEditedNote = async (id: string) => {
+    if (!editingNoteText.trim()) return;
+    setSavingEditNote(true);
+    try {
+      await api.patch(`/appointments/${id}/status`, {
+        notes: editingNoteText.trim(),
+      });
+      // Atualiza na lista local de histórico
+      setPatientNotesList((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, notes: editingNoteText.trim() } : n))
+      );
+      // Se for a sessão atual selecionada, atualiza também
+      if (selectedAppointment && selectedAppointment.id === id) {
+        setSelectedAppointment({
+          ...selectedAppointment,
+          notes: editingNoteText.trim(),
+        });
+      }
+      setEditingNoteId(null);
+      setEditingNoteText('');
+      setEvolutionFeedback('Anotação atualizada com sucesso!');
+      setTimeout(() => setEvolutionFeedback(null), 3000);
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erro ao salvar alteração da anotação.');
+    } finally {
+      setSavingEditNote(false);
+    }
+  };
 
   const handleStatusChange = async (appointmentId: string, nextStatus: string) => {
     try {
@@ -106,6 +188,8 @@ export const ClinicalDashboard: React.FC = () => {
 
     const fullNote = `[EVA: ${painLevel}/10] Conduta: ${clinicalConduct}${
       homeExercise ? ` | Exercícios Domiciliares: ${homeExercise}` : ''
+    }${
+      additionalNotes ? ` | Observações Gerais: ${additionalNotes}` : ''
     }`;
 
     try {
@@ -128,8 +212,11 @@ export const ClinicalDashboard: React.FC = () => {
           ),
         };
       });
+      // Atualiza lista completa de histórico
+      fetchPatientNotesHistory(selectedAppointment.patient.id);
       setClinicalConduct('');
       setHomeExercise('');
+      setAdditionalNotes('');
       setTimeout(() => setEvolutionFeedback(null), 3500);
     } catch (err: any) {
       console.error('Falha ao registrar evolução clínica:', err);
@@ -527,15 +614,122 @@ export const ClinicalDashboard: React.FC = () => {
                   />
                 </div>
 
-                {/* Histórico Anterior */}
-                {selectedAppointment.notes && (
-                  <div className="p-3 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/30 text-xs text-stone-600 dark:text-stone-300">
-                    <span className="font-mono text-[10px] uppercase text-stone-400 block mb-1 font-semibold">
-                      Última Anotação Salva na Consulta:
-                    </span>
-                    <p className="whitespace-pre-wrap">{selectedAppointment.notes}</p>
+                {/* Anotações Gerais & Intercorrências Clínicas */}
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-mono uppercase text-stone-600 dark:text-stone-400 font-semibold">
+                    Anotações Gerais & Observações da Sessão
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={additionalNotes}
+                    onChange={(e) => setAdditionalNotes(e.target.value)}
+                    placeholder="Ex: Paciente relatou melhora ao subir escadas. Reagendou retorno para terça-feira..."
+                    className="w-full text-xs font-sans p-3 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-400"
+                  />
+                </div>
+
+                {/* Histórico de Anotações Clínicas com 'Mostrar Mais' e Edição */}
+                <div className="p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50/70 dark:bg-stone-800/30 text-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-stone-700 dark:text-stone-300 font-semibold">
+                      <History className="w-3.5 h-3.5 text-stone-500" />
+                      <span>Histórico de Anotações Clínicas ({patientNotesList.length})</span>
+                    </div>
+
+                    {patientNotesList.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => setShowAllNotes(!showAllNotes)}
+                        className="text-[11px] font-mono text-stone-600 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white underline"
+                      >
+                        {showAllNotes ? 'Mostrar Menos' : `Mostrar Mais (${patientNotesList.length})`}
+                      </button>
+                    )}
                   </div>
-                )}
+
+                  {loadingNotesHistory ? (
+                    <div className="h-10 bg-stone-200/50 dark:bg-stone-700/40 rounded animate-pulse" />
+                  ) : patientNotesList.length > 0 ? (
+                    <div className="space-y-2.5">
+                      {(showAllNotes ? patientNotesList : patientNotesList.slice(0, 1)).map((item, idx) => {
+                        const itemDate = new Date(item.date);
+                        const isEditing = editingNoteId === item.id;
+
+                        return (
+                          <div
+                            key={item.id}
+                            className="p-3 rounded-lg border border-stone-200/90 dark:border-stone-700/80 bg-white dark:bg-stone-900/60 shadow-2xs space-y-2"
+                          >
+                            <div className="flex items-center justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-1.5">
+                              <div className="flex items-center gap-2 font-mono text-[10px] text-stone-500 dark:text-stone-400">
+                                <span className="font-semibold text-stone-800 dark:text-stone-200">
+                                  {idx === 0 ? 'Última Consulta' : `Consulta Anterior #${patientNotesList.length - idx}`}
+                                </span>
+                                <span>•</span>
+                                <span>
+                                  {itemDate.toLocaleDateString('pt-BR')} às{' '}
+                                  {itemDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                                <span>•</span>
+                                <span className="text-stone-600 dark:text-stone-300">{item.type}</span>
+                              </div>
+
+                              {!isEditing && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleStartEditNote(item.id, item.notes)}
+                                  className="inline-flex items-center gap-1 text-[10px] font-mono text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 px-1.5 py-0.5 rounded hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
+                                  title="Editar esta anotação"
+                                >
+                                  <Edit2 className="w-3 h-3" />
+                                  <span>Editar</span>
+                                </button>
+                              )}
+                            </div>
+
+                            {isEditing ? (
+                              <div className="space-y-2 pt-1">
+                                <textarea
+                                  rows={3}
+                                  value={editingNoteText}
+                                  onChange={(e) => setEditingNoteText(e.target.value)}
+                                  className="w-full text-xs font-sans p-2.5 rounded-lg border border-stone-300 dark:border-stone-600 bg-stone-50/50 dark:bg-stone-800/80 text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-1 focus:ring-stone-400"
+                                />
+                                <div className="flex items-center justify-end gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={handleCancelEditNote}
+                                    disabled={savingEditNote}
+                                    className="px-2.5 py-1 text-[11px] font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100 rounded"
+                                  >
+                                    Cancelar
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleSaveEditedNote(item.id)}
+                                    disabled={savingEditNote || !editingNoteText.trim()}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 text-[11px] font-semibold rounded-md shadow-xs transition-colors"
+                                  >
+                                    <Check className="w-3 h-3" />
+                                    <span>{savingEditNote ? 'Salvando...' : 'Salvar Alteração'}</span>
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="text-xs text-stone-700 dark:text-stone-300 whitespace-pre-wrap leading-relaxed">
+                                {item.notes}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-stone-400 font-mono py-1">
+                      Nenhuma anotação prévia registrada para este paciente. As próximas evoluções salvas aparecerão aqui.
+                    </p>
+                  )}
+                </div>
 
                 {/* Feedback e Salvar */}
                 <div className="flex items-center justify-between pt-2 border-t border-stone-200 dark:border-stone-800">

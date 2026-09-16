@@ -10,6 +10,7 @@ import {
   CalendarCheck,
   X,
   FileText,
+  Trash2,
 } from 'lucide-react';
 
 interface PatientOption {
@@ -118,9 +119,23 @@ export const AppointmentsPage: React.FC = () => {
   ) => {
     try {
       await api.patch(`/appointments/${id}/status`, { status: newStatus });
-      fetchAppointments();
-    } catch (err) {
-      alert('Erro ao atualizar status do atendimento.');
+      await fetchAppointments();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erro ao atualizar status do atendimento.');
+    }
+  };
+
+  const handleDeleteAppointment = async (id: string, patientName: string) => {
+    const confirmDelete = window.confirm(
+      `Deseja realmente apagar o atendimento de ${patientName}? Esta ação removerá o registro permanentemente.`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/appointments/${id}`);
+      await fetchAppointments();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erro ao excluir o atendimento.');
     }
   };
 
@@ -308,15 +323,25 @@ export const AppointmentsPage: React.FC = () => {
                       </button>
                     )}
 
+                    {/* Botão de Cancelar Sessão (X) */}
                     {apt.status !== 'COMPLETED' && apt.status !== 'CANCELLED' && (
                       <button
                         onClick={() => handleUpdateStatus(apt.id, 'CANCELLED')}
-                        className="p-1.5 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 rounded border border-transparent hover:border-stone-300 dark:hover:border-stone-700 transition-colors"
+                        className="p-1.5 text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg border border-transparent hover:border-stone-200 dark:hover:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors"
                         title="Cancelar Atendimento"
                       >
                         <XCircle className="w-4 h-4" />
                       </button>
                     )}
+
+                    {/* Botão de Apagar Permanentemente (Lixeira) */}
+                    <button
+                      onClick={() => handleDeleteAppointment(apt.id, apt.patient.fullName)}
+                      className="p-1.5 text-stone-400 hover:text-rose-600 dark:hover:text-rose-400 rounded-lg border border-transparent hover:border-rose-200 dark:hover:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
+                      title="Apagar Atendimento da Agenda"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               );
