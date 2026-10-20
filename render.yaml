@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: fisiopro-backend
+    env: node
+    plan: free
+    region: ohio
+    buildCommand: npm ci && npm run prisma:generate --workspace=backend && npm run build --workspace=backend
+    startCommand: node apps/backend/dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3333
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://pex-fisioterapia.vercel.app
+      - key: ALLOWED_ADMIN_EMAIL
+        value: fisioterapeuta@gmail.com
+      - key: RESEND_FROM_EMAIL
+        value: onboarding@resend.dev

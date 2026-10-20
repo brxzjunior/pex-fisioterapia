@@ -131,6 +131,25 @@ npm run dev:frontend
 ```
 *(Disponível em `http://localhost:5173`)*
 
+### 5. Verificação Automatizada e Testes
+Para rodar a verificação estrita de tipagem (TypeScript) e build de produção de todo o monorepo:
+```bash
+npm test
+```
+
+### 6. Geração dos Relatórios Acadêmicos Oficiais
+Os relatórios formatados conforme as diretrizes do Centro Universitário Descomplica podem ser recompilados a qualquer momento:
+```bash
+# Gera o relatório em DOCX (.docx) com capa, tabelas ABNT e capturas reais
+npm run report:docx
+
+# Gera o relatório diagramado em PDF (.pdf) pronto para submissão
+npm run report:pdf
+```
+Os arquivos gerados são salvos na raiz do repositório:
+- `Relatorio_PEX_FisioPro.docx`
+- `Relatorio_PEX_FisioPro.pdf`
+
 ---
 
 ## 🎓 Demonstração Acadêmica e Apresentação no PEX

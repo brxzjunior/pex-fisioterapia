@@ -5,6 +5,13 @@ import rateLimit from '@fastify/rate-limit';
 import cookie from '@fastify/cookie';
 import { env } from './config/env.js';
 import { errorHandler } from './shared/errors/errorHandler.js';
+import { authRoutes } from './modules/auth/auth.routes.js';
+import { dashboardRoutes } from './modules/dashboard/dashboard.routes.js';
+import { patientRoutes } from './modules/patients/patient.routes.js';
+import { appointmentRoutes } from './modules/appointments/appointment.routes.js';
+import { activityRoutes } from './modules/activities/activity.routes.js';
+import { historyRoutes } from './modules/history/history.routes.js';
+import { profileRoutes } from './modules/profile/profile.routes.js';
 
 export async function buildApp() {
   const app = fastify({
@@ -39,33 +46,13 @@ export async function buildApp() {
   app.setErrorHandler(errorHandler);
 
   // Registro dos módulos de rotas
-  await app.register(import('./modules/auth/auth.routes.js').then(m => m.authRoutes), {
-    prefix: '/api/auth',
-  });
-
-  await app.register(import('./modules/dashboard/dashboard.routes.js').then(m => m.dashboardRoutes), {
-    prefix: '/api/dashboard',
-  });
-
-  await app.register(import('./modules/patients/patient.routes.js').then(m => m.patientRoutes), {
-    prefix: '/api/patients',
-  });
-
-  await app.register(import('./modules/appointments/appointment.routes.js').then(m => m.appointmentRoutes), {
-    prefix: '/api/appointments',
-  });
-
-  await app.register(import('./modules/activities/activity.routes.js').then(m => m.activityRoutes), {
-    prefix: '/api/activities',
-  });
-
-  await app.register(import('./modules/history/history.routes.js').then(m => m.historyRoutes), {
-    prefix: '/api/history',
-  });
-
-  await app.register(import('./modules/profile/profile.routes.js').then(m => m.profileRoutes), {
-    prefix: '/api/profile',
-  });
+  await app.register(authRoutes, { prefix: '/api/auth' });
+  await app.register(dashboardRoutes, { prefix: '/api/dashboard' });
+  await app.register(patientRoutes, { prefix: '/api/patients' });
+  await app.register(appointmentRoutes, { prefix: '/api/appointments' });
+  await app.register(activityRoutes, { prefix: '/api/activities' });
+  await app.register(historyRoutes, { prefix: '/api/history' });
+  await app.register(profileRoutes, { prefix: '/api/profile' });
 
   // Health check básico da aplicação
   app.get('/health', async () => {
