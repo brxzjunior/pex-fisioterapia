@@ -1,4 +1,5 @@
 import os
+import shutil
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -17,8 +18,9 @@ def create_fisiopro_document(output_path):
     section.bottom_margin = Inches(0.8)
     section.left_margin = Inches(0.8)
     section.right_margin = Inches(0.8)
+    section.different_first_page_header_footer = True
 
-    # 2. Header and Footer
+    # 2. Header and Footer (Páginas 2+)
     header = section.header
     p_head = header.paragraphs[0]
     p_head.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -33,10 +35,12 @@ def create_fisiopro_document(output_path):
     footer = section.footer
     p_foot = footer.paragraphs[0]
     p_foot.paragraph_format.space_before = Pt(4)
+    pBdr_foot = parse_xml(f'<w:pBdr {nsdecls("w")}><w:top w:val="single" w:sz="4" w:space="4" w:color="CBD5E1"/></w:pBdr>')
+    p_foot._p.get_or_add_pPr().append(pBdr_foot)
     r_foot1 = p_foot.add_run("Braz Gonçalo Batista da Gama Junior — Matrícula: 2314588   |   Polo Manaus/AM")
     r_foot1.font.name = "Calibri"
     r_foot1.font.size = Pt(8.5)
-    r_foot1.font.color.rgb = RGBColor(0x78, 0x71, 0x6C)
+    r_foot1.font.color.rgb = RGBColor(0x64, 0x74, 0x8B)
 
     # Styling Helpers
     def set_cell_margins(cell, top=80, bottom=80, left=120, right=120):
@@ -50,12 +54,15 @@ def create_fisiopro_document(output_path):
 
     def add_h1(text):
         p = doc.add_paragraph()
-        p.paragraph_format.space_before = Pt(12)
+        p.paragraph_format.space_before = Pt(14)
         p.paragraph_format.space_after = Pt(4)
+        p.paragraph_format.left_indent = Inches(0.12)
         p.paragraph_format.keep_with_next = True
+        pBdr = parse_xml(f'<w:pBdr {nsdecls("w")}><w:left w:val="single" w:sz="24" w:space="8" w:color="047857"/></w:pBdr>')
+        p._p.get_or_add_pPr().append(pBdr)
         run = p.add_run(text)
         run.font.name = "Calibri"
-        run.font.size = Pt(14)
+        run.font.size = Pt(13.5)
         run.font.bold = True
         run.font.color.rgb = RGBColor(0x06, 0x4E, 0x3B)
         return p
@@ -114,6 +121,8 @@ def create_fisiopro_document(output_path):
         p.paragraph_format.line_spacing = 1.15
         pBdr = parse_xml(f'<w:pBdr {nsdecls("w")}><w:left w:val="single" w:sz="24" w:space="10" w:color="047857"/></w:pBdr>')
         p._p.get_or_add_pPr().append(pBdr)
+        shd = parse_xml(f'<w:shd {nsdecls("w")} w:fill="F0FDF4"/>')
+        p._p.get_or_add_pPr().append(shd)
         run = p.add_run(f'“{quote_text}”')
         run.font.name = "Calibri"
         run.font.size = Pt(9.5)
@@ -697,6 +706,13 @@ def create_fisiopro_document(output_path):
 
     doc.save(output_path)
     print(f"Relatório DOCX gerado com sucesso em: {output_path}")
+
+    # Salva também cópia direta na pasta Downloads do usuário
+    dl_dir = os.path.expanduser(r"~\Downloads")
+    if os.path.exists(dl_dir):
+        dl_file = os.path.join(dl_dir, "Relatorio_PEX_FisioPro.docx")
+        shutil.copy2(output_path, dl_file)
+        print(f"Cópia atualizada em: {dl_file}")
 
 if __name__ == "__main__":
     out_file = r"C:\Users\Gama\Documents\GitHub\pex-fisioterapia\Relatorio_PEX_FisioPro.docx"
