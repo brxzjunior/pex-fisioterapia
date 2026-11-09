@@ -71,6 +71,16 @@ export async function buildApp() {
   await app.register(profileRoutes, { prefix: '/api/profile' });
   await app.register(analyticsRoutes, { prefix: '/api/analytics' });
 
+  // Rota raiz para monitoramento de infraestrutura (Render / Uptime)
+  app.get('/', async () => {
+    return {
+      message: 'FisioPro API is live and operational',
+      status: 'ok',
+      docs: '/api',
+      timestamp: new Date().toISOString(),
+    };
+  });
+
   // Health check básico da aplicação
   app.get('/health', async () => {
     return {
