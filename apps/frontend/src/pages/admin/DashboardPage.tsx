@@ -15,8 +15,17 @@ import {
   History,
   Edit2,
   Check,
+  Printer,
+  MessageSquare,
 } from 'lucide-react';
+
 import { Link } from 'react-router-dom';
+import { PatientReportModal } from '../../components/patients/PatientReportModal';
+import {
+  WhatsAppReminderModal,
+  AppointmentDataForReminder,
+} from '../../components/appointments/WhatsAppReminderModal';
+
 
 interface AppointmentItem {
   id: string;
@@ -78,6 +87,24 @@ export const ClinicalDashboard: React.FC = () => {
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [editingNoteText, setEditingNoteText] = useState<string>('');
   const [savingEditNote, setSavingEditNote] = useState<boolean>(false);
+
+  // Modais de Prontuário PDF e Lembrete WhatsApp
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportPatientId, setReportPatientId] = useState<string | null>(null);
+  const [reminderModalOpen, setReminderModalOpen] = useState(false);
+  const [selectedAppointmentForReminder, setSelectedAppointmentForReminder] =
+    useState<AppointmentDataForReminder | null>(null);
+
+  const handleOpenReportModal = (patientId: string) => {
+    setReportPatientId(patientId);
+    setReportModalOpen(true);
+  };
+
+  const handleOpenReminderModal = (apt: AppointmentItem) => {
+    setSelectedAppointmentForReminder(apt);
+    setReminderModalOpen(true);
+  };
+
 
   const fetchPatientNotesHistory = async (patientId: string) => {
     try {
@@ -409,23 +436,25 @@ export const ClinicalDashboard: React.FC = () => {
                         }`}
                       />
                       {apt.patient.phone && (
-                        <a
-                          href={`https://wa.me/55${apt.patient.phone.replace(/\D/g, '')}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-[11px] font-mono text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 flex items-center gap-1"
-                          title="Contato direto com paciente"
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenReminderModal(apt);
+                          }}
+                          className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center gap-1 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/50 transition-colors"
+                          title="Disparar Lembrete WhatsApp"
                         >
-                          <Phone className="w-3 h-3 text-stone-400" />
-                          <span>WhatsApp</span>
-                        </a>
+                          <Phone className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                          <span>Lembrete</span>
+                        </button>
                       )}
                     </div>
                   </div>
                 );
               })}
             </div>
+
           )}
 
           {/* Tarefas Operacionais */}
@@ -496,8 +525,28 @@ export const ClinicalDashboard: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* Ações de Status da Sessão */}
-                  <div className="flex items-center gap-2">
+                  {/* Ações de Status e Atendimento da Sessão */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenReminderModal(selectedAppointment)}
+                      className="inline-flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
+                      title="Enviar Lembrete WhatsApp para este paciente"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>WhatsApp</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleOpenReportModal(selectedAppointment.patient.id)}
+                      className="inline-flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
+                      title="Emitir Prontuário Clínico Oficial (PDF)"
+                    >
+                      <Printer className="w-3.5 h-3.5 text-stone-600 dark:text-stone-300" />
+                      <span>Prontuário PDF</span>
+                    </button>
+
                     {selectedAppointment.status !== 'IN_PROGRESS' && selectedAppointment.status !== 'COMPLETED' && (
                       <button
                         type="button"
@@ -525,9 +574,10 @@ export const ClinicalDashboard: React.FC = () => {
                       className="inline-flex items-center gap-1 text-xs border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 px-3 py-2 rounded-lg font-medium text-stone-700 dark:text-stone-300 transition-colors"
                     >
                       <User className="w-3.5 h-3.5" />
-                      <span>Ver Ficha Completa</span>
+                      <span>Ficha Completa</span>
                     </Link>
                   </div>
+
                 </div>
 
                 {/* Observações Prévias */}
@@ -767,8 +817,23 @@ export const ClinicalDashboard: React.FC = () => {
 
       </div>
 
+      {/* Modal de Prontuário Clínico & Exportação PDF */}
+      <PatientReportModal
+        isOpen={reportModalOpen}
+        patientId={reportPatientId}
+        onClose={() => setReportModalOpen(false)}
+      />
+
+      {/* Modal de Disparo de Lembretes WhatsApp */}
+      <WhatsAppReminderModal
+        isOpen={reminderModalOpen}
+        appointment={selectedAppointmentForReminder}
+        onClose={() => setReminderModalOpen(false)}
+      />
+
     </div>
   );
 };
 
 export const DashboardPage = ClinicalDashboard;
+

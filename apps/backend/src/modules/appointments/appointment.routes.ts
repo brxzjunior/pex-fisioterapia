@@ -9,8 +9,31 @@ import {
 import { ensureAuthenticated } from '../../shared/middlewares/ensureAuthenticated.js';
 
 export async function appointmentRoutes(app: FastifyInstance) {
-  // Todas as rotas de atendimentos exigem autenticação
-  app.addHook('preHandler', ensureAuthenticated);
+  /**
+   * POST /api/appointments/reminders/webhook
+   * Webhook público de recepção de confirmações e respostas do WhatsApp (versão 2.0)
+   */
+  app.post('/reminders/webhook', async (request: FastifyRequest, reply: FastifyReply) => {
+    const payload = request.body as any;
+    const result = await AppointmentService.handleWebhookNotification(payload || {});
+    return reply.send(result);
+  });
+
+  // Rotas de atendimento exigem autenticação do profissional
+  app.addHook('preHandler', async (request, reply) => {
+    if (request.url.includes('/reminders/webhook')) return;
+    await ensureAuthenticated(request, reply);
+  });
+
+  /**
+   * POST /api/appointments/reminders/broadcast
+   * Disparo automatizado de lembretes prévios das próximas 24h
+   */
+  app.post('/reminders/broadcast', async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user!.sub;
+    const result = await AppointmentService.broadcastUpcomingReminders(userId);
+    return reply.send(result);
+  });
 
   /**
    * POST /api/appointments
@@ -59,4 +82,21 @@ export async function appointmentRoutes(app: FastifyInstance) {
     const result = await AppointmentService.delete(userId, id);
     return reply.send(result);
   });
+
+  /**
+   * POST /api/appointments/:id/reminder
+   * Registra disparo de lembrete via WhatsApp no histórico
+   */
+  app.post('/:id/reminder', async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user!.sub;
+    const { id } = z.object({ id: z.string().uuid() }).parse(request.params);
+    const body = z.object({ messagePreview: z.string().optional() }).safeParse(request.body);
+    const result = await AppointmentService.registerReminder(
+      userId,
+      id,
+      body.success ? body.data.messagePreview : undefined
+    );
+    return reply.send(result);
+  });
 }
+

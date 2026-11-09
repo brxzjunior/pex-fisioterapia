@@ -13,7 +13,13 @@ import {
   ChevronRight,
   User,
   Phone,
+  MessageSquare,
 } from 'lucide-react';
+import {
+  WhatsAppReminderModal,
+  AppointmentDataForReminder,
+} from '../../../components/appointments/WhatsAppReminderModal';
+
 
 interface PatientOption {
   id: string;
@@ -42,6 +48,25 @@ export const AppointmentsPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [expandedPatientIds, setExpandedPatientIds] = useState<Record<string, boolean>>({});
+  const [broadcasting, setBroadcasting] = useState(false);
+  const [broadcastFeedback, setBroadcastFeedback] = useState<string | null>(null);
+
+  const handleBroadcastReminders = async () => {
+    try {
+      setBroadcasting(true);
+      const res = await api.post('/appointments/reminders/broadcast');
+      const data = res.data;
+      setBroadcastFeedback(
+        `Disparados com sucesso ${data.processed} lembrete(s) de sessões para as próximas 24 horas!`
+      );
+      setTimeout(() => setBroadcastFeedback(null), 6000);
+      fetchAppointments();
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erro ao processar lembretes automáticos.');
+    } finally {
+      setBroadcasting(false);
+    }
+  };
 
   // Controle de Modal de Agendamento
   const [modalOpen, setModalOpen] = useState(false);
@@ -52,6 +77,17 @@ export const AppointmentsPage: React.FC = () => {
     type: 'Sessão Fisioterapia Ortopédica',
     notes: '',
   });
+
+  // Controle de Modal de Lembretes WhatsApp
+  const [reminderModalOpen, setReminderModalOpen] = useState(false);
+  const [selectedAppointmentForReminder, setSelectedAppointmentForReminder] =
+    useState<AppointmentDataForReminder | null>(null);
+
+  const handleOpenReminderModal = (apt: Appointment) => {
+    setSelectedAppointmentForReminder(apt);
+    setReminderModalOpen(true);
+  };
+
 
   const toggleExpandPatient = (patientId: string) => {
     setExpandedPatientIds((prev) => ({
@@ -243,14 +279,41 @@ export const AppointmentsPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={handleOpenModal}
-          className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-medium text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors self-start sm:self-auto"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Novo Agendamento</span>
-        </button>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <button
+            onClick={handleBroadcastReminders}
+            disabled={broadcasting}
+            className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs px-3.5 py-2.5 rounded-lg shadow-sm transition-colors cursor-pointer disabled:opacity-60"
+            title="Dispara automaticamente lembretes e registra auditoria para todas as sessões agendadas nas próximas 24 horas"
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>{broadcasting ? 'Disparando...' : 'Lembretes 24h'}</span>
+          </button>
+
+          <button
+            onClick={handleOpenModal}
+            className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-stone-200 font-medium text-xs px-4 py-2.5 rounded-lg shadow-sm transition-colors cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Novo Agendamento</span>
+          </button>
+        </div>
       </div>
+
+      {broadcastFeedback && (
+        <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs rounded-xl flex items-center justify-between shadow-xs animate-in fade-in duration-200">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-medium">{broadcastFeedback}</span>
+          </div>
+          <button
+            onClick={() => setBroadcastFeedback(null)}
+            className="text-emerald-600 hover:text-emerald-800 dark:hover:text-emerald-200 p-1"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Barra de Busca e Filtros Integrados */}
       <div className="bg-white dark:bg-stone-900/90 p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -409,7 +472,19 @@ export const AppointmentsPage: React.FC = () => {
 
                             {/* Ações da Sessão */}
                             <div className="flex items-center gap-2 self-end md:self-center flex-wrap pt-1 md:pt-0">
+                              {/* Botão de Lembrete WhatsApp */}
+                              <button
+                                type="button"
+                                onClick={() => handleOpenReminderModal(apt)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-mono font-semibold rounded-lg border border-emerald-200 dark:border-emerald-800/60 transition-colors"
+                                title="Enviar Lembrete / Confirmação no WhatsApp"
+                              >
+                                <MessageSquare className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                <span>WhatsApp</span>
+                              </button>
+
                               {apt.status === 'SCHEDULED' && (
+
                                 <button
                                   onClick={() => handleUpdateStatus(apt.id, 'CONFIRMED')}
                                   className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-mono font-semibold rounded-lg border border-stone-300 dark:border-stone-600 transition-colors"
@@ -612,6 +687,15 @@ export const AppointmentsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Modal de Disparo de Lembretes WhatsApp */}
+      <WhatsAppReminderModal
+        isOpen={reminderModalOpen}
+        appointment={selectedAppointmentForReminder}
+        onClose={() => setReminderModalOpen(false)}
+        onReminderSent={fetchAppointments}
+      />
     </div>
   );
 };
+

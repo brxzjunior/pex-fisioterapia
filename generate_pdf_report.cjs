@@ -511,17 +511,18 @@ async function generateReportPDF() {
           <td>Autenticação com JWT transmitido em cookies <code>HttpOnly</code> e senhas protegidas com bcrypt.</td>
         </tr>
         <tr>
-          <td><span class="badge badge-amber">Planejado</span></td>
-          <td><strong>Integração WhatsApp API</strong></td>
-          <td>Disparo automatizado de lembretes prévios de sessão via webhook oficial (para versão 2.0).</td>
+          <td><span class="badge badge-green">Implementado</span></td>
+          <td><strong>Integração WhatsApp & Lembretes</strong></td>
+          <td>Disparo automatizado de lembretes prévios de sessão e mensagens estruturadas com registro em auditoria.</td>
         </tr>
         <tr>
-          <td><span class="badge badge-amber">Planejado</span></td>
+          <td><span class="badge badge-green">Implementado</span></td>
           <td><strong>Exportação PDF de Prontuários</strong></td>
-          <td>Geração de relatórios de evolução física em documento PDF para entrega ao paciente.</td>
+          <td>Geração e impressão de relatórios de evolução física e prontuário timbrado oficial (PDF) para entrega ao paciente.</td>
         </tr>
       </tbody>
     </table>
+
 
     <h2>4.2 Stack Tecnológica Utilizada</h2>
     <table>

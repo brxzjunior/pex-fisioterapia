@@ -11,7 +11,11 @@ import {
   X,
   Clock,
   ShieldAlert,
+  FileDown,
+  Printer,
 } from 'lucide-react';
+import { PatientReportModal } from '../../../components/patients/PatientReportModal';
+
 
 interface Patient {
   id: string;
@@ -73,6 +77,16 @@ export const PatientsPage: React.FC = () => {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [selectedPatientDetails, setSelectedPatientDetails] = useState<PatientDetails | null>(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
+
+  // Controle de Modal de Emissão de Prontuário em PDF
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportPatientId, setReportPatientId] = useState<string | null>(null);
+
+  const handleOpenReportModal = (patientId: string) => {
+    setReportPatientId(patientId);
+    setReportModalOpen(true);
+  };
+
 
   const fetchPatients = async () => {
     try {
@@ -296,6 +310,13 @@ export const PatientsPage: React.FC = () => {
                       <td className="py-3.5 px-5 text-right">
                         <div className="inline-flex items-center gap-1">
                           <button
+                            onClick={() => handleOpenReportModal(pt.id)}
+                            className="p-1.5 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 rounded border border-transparent hover:border-emerald-200 dark:hover:border-emerald-800/60 transition-all"
+                            title="Emitir Prontuário & Relatório de Evolução (PDF)"
+                          >
+                            <FileDown className="w-3.5 h-3.5" />
+                          </button>
+                          <button
                             onClick={() => handleViewDetails(pt.id)}
                             className="p-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 hover:bg-stone-100 dark:hover:bg-stone-800 rounded border border-transparent hover:border-stone-200 dark:hover:border-stone-700 transition-all"
                             title="Visualizar Prontuário & Histórico"
@@ -311,6 +332,7 @@ export const PatientsPage: React.FC = () => {
                           </button>
                         </div>
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -346,6 +368,13 @@ export const PatientsPage: React.FC = () => {
                     </span>
                     <div className="flex items-center gap-2">
                       <button
+                        onClick={() => handleOpenReportModal(pt.id)}
+                        className="p-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 rounded text-xs"
+                        title="Emitir Prontuário PDF"
+                      >
+                        <FileDown className="w-3.5 h-3.5" />
+                      </button>
+                      <button
                         onClick={() => handleViewDetails(pt.id)}
                         className="p-1.5 bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 rounded text-xs"
                       >
@@ -358,6 +387,7 @@ export const PatientsPage: React.FC = () => {
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
+
                   </div>
                 </div>
               ))}
@@ -508,7 +538,7 @@ export const PatientsPage: React.FC = () => {
       {detailsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs">
           <div className="bg-white dark:bg-stone-900 rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-stone-200 dark:border-stone-800 max-h-[90vh] overflow-y-auto space-y-6">
-            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
+            <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3 gap-3">
               <div>
                 <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
                   Prontuário Clínico Completo
@@ -517,13 +547,26 @@ export const PatientsPage: React.FC = () => {
                   {selectedPatientDetails?.fullName || 'Ficha do Paciente'}
                 </h2>
               </div>
-              <button
-                onClick={() => setDetailsModalOpen(false)}
-                className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                {selectedPatientDetails && (
+                  <button
+                    onClick={() => handleOpenReportModal(selectedPatientDetails.id)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm transition-all"
+                    title="Emitir Prontuário em PDF com formatação oficial"
+                  >
+                    <Printer className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Emitir Prontuário PDF</span>
+                  </button>
+                )}
+                <button
+                  onClick={() => setDetailsModalOpen(false)}
+                  className="p-1.5 text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 rounded-lg"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
+
 
             {loadingDetails ? (
               <div className="p-8 text-center text-stone-400 text-xs">Carregando prontuário...</div>
@@ -602,6 +645,15 @@ export const PatientsPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Modal de Prontuário Clínico & Exportação PDF */}
+
+      <PatientReportModal
+        isOpen={reportModalOpen}
+        patientId={reportPatientId}
+        onClose={() => setReportModalOpen(false)}
+      />
     </div>
   );
 };
+

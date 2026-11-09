@@ -63,4 +63,16 @@ export async function patientRoutes(app: FastifyInstance) {
     const updated = await PatientService.toggleStatus(userId, id);
     return reply.send(updated);
   });
+
+  /**
+   * GET /api/patients/:id/report
+   * Dados completos para emissão de Prontuário e Relatório de Evolução Física em PDF
+   */
+  app.get('/:id/report', async (request: FastifyRequest, reply: FastifyReply) => {
+    const userId = request.user!.sub;
+    const { id } = z.object({ id: z.string().uuid() }).parse(request.params);
+    const reportData = await PatientService.getReportData(userId, id);
+    return reply.send(reportData);
+  });
 }
+

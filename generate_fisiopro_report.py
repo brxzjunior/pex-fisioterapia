@@ -343,9 +343,10 @@ def create_fisiopro_document(output_path):
         ["Implementado", "Dashboard em Tempo Real", "Métricas consolidadas de pacientes ativos, sessões do dia e atalhos de navegação."],
         ["Implementado", "Atividades Clínicas", "Tarefas internas categorizadas (material, contato, protocolo) com níveis de prioridade."],
         ["Implementado", "Sessões com Cookies Seguros", "Autenticação com JWT transmitido em cookies HttpOnly e senhas protegidas com bcrypt."],
-        ["Planejado", "Integração WhatsApp API", "Disparo automatizado de lembretes prévios de sessão via webhook oficial (versão 2.0)."],
-        ["Planejado", "Exportação PDF de Prontuários", "Geração de relatórios de evolução física em documento PDF para entrega ao paciente."]
+        ["Implementado", "Integração WhatsApp & Lembretes", "Disparo automatizado de lembretes prévios de sessão e mensagens estruturadas com registro em auditoria."],
+        ["Implementado", "Exportação PDF de Prontuários", "Geração e impressão de relatórios de evolução física e prontuário timbrado oficial (PDF) para entrega ao paciente."]
     ]
+
     style_table(t_escopo, [1.1, 2.0, 3.5], t_escopo_headers, t_escopo_rows)
 
     add_h2("4.2 Stack Tecnológica Utilizada")

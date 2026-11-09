@@ -148,4 +148,40 @@ export class PatientService {
 
     return updated;
   }
+
+  /**
+   * Obtém os dados clínicos completos para emissão de Prontuário / Relatório de Evolução em PDF
+   */
+  static async getReportData(userId: string, id: string) {
+    const patient = await prisma.patient.findFirst({
+      where: { id, userId },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+            specialties: true,
+            professionalBio: true,
+          },
+        },
+        appointments: {
+          orderBy: { scheduledAt: 'asc' },
+        },
+        activities: {
+          orderBy: { createdAt: 'desc' },
+        },
+        history: {
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    });
+
+    if (!patient) {
+      throw new AppError('Paciente não encontrado.', 404, 'PATIENT_NOT_FOUND');
+    }
+
+    return patient;
+  }
 }
+
