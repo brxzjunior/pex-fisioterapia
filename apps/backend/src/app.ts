@@ -33,15 +33,23 @@ export async function buildApp() {
   // CORS configurado para aceitar frontend local, produção e deploys Vercel
   await app.register(cors, {
     origin: (origin, cb) => {
+      // Permite requisições sem origin (como curl, mobile apps, testes de saúde)
       if (!origin) return cb(null, true);
       const allowed = [env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'];
-      if (allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+      if (
+        allowed.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')
+      ) {
         return cb(null, true);
       }
-      return cb(new Error('Origem não permitida pelo CORS'), false);
+      return cb(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['Set-Cookie'],
   });
 
   // Prevenção contra abusos e força bruta
