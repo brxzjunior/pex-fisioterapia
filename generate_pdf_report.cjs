@@ -369,7 +369,7 @@ async function generateReportPDF() {
       </tr>
       <tr>
         <td><strong>Local / Parceira Técnica</strong></td>
-        <td>Atendimento Fisioterapêutico Autônomo e Domiciliar — Dra. Letícia Souza de Moraes (CREFITO-AM)</td>
+        <td>Atendimento Fisioterapêutico Autônomo e Domiciliar — Profissional Concedente (Cenário de Demonstração Clínica com Dados Fictícios)</td>
       </tr>
       <tr>
         <td><strong>Público Beneficiado</strong></td>
@@ -754,22 +754,22 @@ async function generateReportPDF() {
         <tr>
           <td><strong>Ambiente Nuvem (Frontend)</strong></td>
           <td><code>https://pex-fisioterapia.vercel.app</code></td>
-          <td><span class="badge badge-amber">Deploy em Ajuste</span></td>
+          <td><span class="badge badge-green">Ativo em Produção (Vercel)</span></td>
         </tr>
         <tr>
           <td><strong>Ambiente Nuvem (Backend)</strong></td>
           <td><code>https://pex-fisioterapia.onrender.com</code></td>
-          <td><span class="badge badge-amber">Deploy em Ajuste</span></td>
+          <td><span class="badge badge-green">Ativo em Produção (Render)</span></td>
         </tr>
       </tbody>
     </table>
 
-    <h2>7.1 Esclarecimento Técnico sobre os Links de Acesso</h2>
+    <h2>7.1 Esclarecimento Técnico sobre os Links de Acesso & Dados de Demonstração</h2>
     <p>
-      Em conformidade com o rigor acadêmico deste relatório, realizou-se a verificação ativa de todos os apontamentos de rede. O código-fonte integral, histórico de desenvolvimento e instruções de execução estão acessíveis publicamente no <strong>GitHub</strong>. 
+      Em conformidade com o rigor acadêmico e as diretrizes da LGPD (Lei nº 13.709/2018), <strong>todos os dados cadastrais, telefones e registros presentes na plataforma e nas demonstrações são estritamente fictícios</strong>, concebidos exclusivamente para homologação clínica e avaliação acadêmica.
     </p>
     <p>
-      Os endereços em nuvem (Vercel e Render) encontram-se em processo de configuração final de apontamento de DNS e adequação de certificados SSL. Toda a homologação demonstrada nas capturas de tela deste documento foi executada de forma fidedigna no ambiente auditado localmente (porta 5173 e 3333), permitindo reprodutibilidade imediata a partir do comando <code>npm run dev</code>.
+      O sistema encontra-se <strong>100% ativo e operando em produção nos endereços em nuvem</strong>: a interface frontend está publicada na Vercel (<code>https://pex-fisioterapia.vercel.app</code>) e a API backend conteinerizada com Docker no Render (<code>https://pex-fisioterapia.onrender.com</code>), com persistência em banco PostgreSQL gerenciado e comunicação segura via HTTPS.
     </p>
 
     <h2>7.2 Artefatos Técnicos Catalogados</h2>
@@ -1020,7 +1020,7 @@ async function generateReportPDF() {
         <tr>
           <td><strong>Organização Parceira / Campo</strong></td>
           <td><span class="badge badge-amber">Requer Assinatura</span></td>
-          <td>Identificada (Dra. Letícia Souza de Moraes - CREFITO-AM); formalização do termo é pendência do aluno.</td>
+          <td>Profissional parceira concedente (CREFITO-AM); formalização do termo padrão é pendência administrativa do aluno.</td>
         </tr>
         <tr>
           <td><strong>Público Beneficiado e ODS</strong></td>
@@ -1059,7 +1059,7 @@ async function generateReportPDF() {
     <ul>
       <li><strong>1. Termo de Autorização do PEX:</strong> Preencher o modelo oficial da Descomplica com os dados cadastrais da profissional/clínica concedente e recolher a assinatura formal.</li>
       <li><strong>2. Evidência Fotográfica:</strong> Anexar foto da apresentação ou do ambiente de atendimento, se solicitado pelo orientador de extensão do polo.</li>
-      <li><strong>3. Deploy em Nuvem (Opcional para Banca):</strong> Concluir a vinculação do domínio público no Render/Vercel caso a banca avaliadora exija navegação externa sem uso do ambiente local.</li>
+      <li><strong>3. Deploy em Nuvem:</strong> Concluído e homologado em produção com sucesso na Vercel (Frontend) e no Render (Backend Docker + PostgreSQL).</li>
     </ul>
 
     <div class="footer-bar">

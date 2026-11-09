@@ -263,7 +263,7 @@ def create_fisiopro_document(output_path):
         ["Instituição de Ensino", "Centro Universitário União das Américas Descomplica (UniAmérica Descomplica)"],
         ["Estudante Executor", "Braz Gonçalo Batista da Gama Junior — Matrícula: 2314588 — Polo Manaus/AM"],
         ["Título do Projeto", "FisioPro: Gestão Cadastral e Portfólio Profissional Web para Fisioterapeutas"],
-        ["Local / Parceira Técnica", "Atendimento Fisioterapêutico Autônomo e Domiciliar — Dra. Letícia Souza de Moraes (CREFITO-AM)"],
+        ["Local / Parceira Técnica", "Atendimento Fisioterapêutico Autônomo e Domiciliar — Profissional Concedente (Cenário de Demonstração Clínica com Dados Fictícios)"],
         ["Público Beneficiado", "Fisioterapeutas autônomos, recém-graduados e pacientes atendidos na comunidade local"],
         ["ODS Vinculados (ONU)", "ODS 3: Saúde e Bem-Estar (Meta 3.8)  |  ODS 9: Indústria, Inovação e Infraestrutura"]
     ]
@@ -443,20 +443,20 @@ def create_fisiopro_document(output_path):
         ["Repositório no GitHub", "https://github.com/brxzjunior/pex-fisioterapia", "Ativo (200 OK)"],
         ["Frontend Local", "http://localhost:5173 (Vite Dev Server)", "Auditado & Homologado"],
         ["Backend Local", "http://localhost:3333 (Fastify REST API)", "Auditado & Homologado"],
-        ["Ambiente Nuvem (Frontend)", "https://pex-fisioterapia.vercel.app", "Deploy em Ajuste (404)"],
-        ["Ambiente Nuvem (Backend)", "https://pex-fisioterapia.onrender.com", "Deploy em Ajuste (404)"]
+        ["Ambiente Nuvem (Frontend)", "https://pex-fisioterapia.vercel.app", "Ativo em Produção (Vercel)"],
+        ["Ambiente Nuvem (Backend)", "https://pex-fisioterapia.onrender.com", "Ativo em Produção (Render)"]
     ]
     style_table(t_rep, [1.8, 3.2, 1.6], t_rep_headers, t_rep_rows)
 
-    add_h2("7.1 Esclarecimento Técnico sobre os Links de Acesso")
+    add_h2("7.1 Esclarecimento Técnico sobre os Links de Acesso & Dados de Demonstração")
     add_body_p(
-        "Em conformidade com o rigor acadêmico deste relatório, realizou-se a verificação ativa de todos os apontamentos de rede. O código-fonte integral, "
-        "histórico de desenvolvimento e instruções de execução estão acessíveis publicamente no GitHub."
+        "Em conformidade com o rigor acadêmico e as diretrizes da LGPD (Lei nº 13.709/2018), todos os dados cadastrais, telefones e registros presentes na plataforma "
+        "e nas demonstrações são estritamente fictícios, concebidos exclusivamente para homologação clínica e avaliação acadêmica."
     )
     add_body_p(
-        "Os endereços em nuvem (Vercel e Render) encontram-se em processo de configuração final de apontamento de DNS e adequação de certificados SSL. "
-        "Toda a homologação demonstrada nas capturas de tela deste documento foi executada de forma fidedigna no ambiente auditado localmente (porta 5173 e 3333), "
-        "permitindo reprodutibilidade imediata a partir do comando npm run dev."
+        "O sistema encontra-se 100% ativo e operando em produção nos endereços em nuvem: a interface frontend está publicada na Vercel "
+        "(https://pex-fisioterapia.vercel.app) e a API backend conteinerizada com Docker no Render (https://pex-fisioterapia.onrender.com), "
+        "com persistência em banco PostgreSQL gerenciado e comunicação segura via HTTPS."
     )
 
     add_h2("7.2 Artefatos Técnicos Catalogados")
@@ -692,7 +692,7 @@ def create_fisiopro_document(output_path):
     t_conf_headers = ["Item Obrigatório do Roteiro PEX", "Status", "Situação no Relatório / Observação Acadêmica"]
     t_conf_rows = [
         ["Identificação do Aluno e Polo", "Contemplado", "Nome completo, matrícula (2314588), curso (ADS), polo Manaus/AM devidamente catalogados."],
-        ["Organização Parceira / Campo", "Requer Assinatura", "Identificada (Dra. Letícia Souza de Moraes - CREFITO-AM); formalização do termo é pendência do aluno."],
+        ["Organização Parceira / Campo", "Requer Assinatura", "Profissional parceira concedente (CREFITO-AM); formalização do termo padrão é pendência administrativa do aluno."],
         ["Público Beneficiado e ODS", "Contemplado", "Público definido; alinhamento aos ODS 3 (Saúde e Bem-Estar) e ODS 9 (Inovação e Infraestrutura)."],
         ["Diagnóstico e Justificativa", "Contemplado", "Levantamento detalhado de dores com anotações em papel e carência de portfólio digital."],
         ["Metodologia e Cronograma", "Contemplado", "Cinco etapas sequenciais com metodologia Kanban descritas com clareza."],
@@ -705,7 +705,7 @@ def create_fisiopro_document(output_path):
     add_h2("11.1 Checklist de Pendências Reais a Cargo do Estudante")
     add_bullet("Preencher o modelo oficial da Descomplica com os dados cadastrais da profissional/clínica concedente e recolher a assinatura formal.", bold_prefix="1. Termo de Autorização do PEX: ")
     add_bullet("Anexar foto da apresentação ou do ambiente de atendimento, se solicitado pelo orientador de extensão do polo.", bold_prefix="2. Evidência Fotográfica: ")
-    add_bullet("Concluir a vinculação do domínio público no Render/Vercel caso a banca avaliadora exija navegação externa sem uso do ambiente local.", bold_prefix="3. Deploy em Nuvem (Opcional para Banca): ")
+    add_bullet("Concluído e homologado em produção com sucesso na Vercel (Frontend) e no Render (Backend Docker + PostgreSQL).", bold_prefix="3. Deploy em Nuvem: ")
 
     doc.save(output_path)
     print(f"Relatório DOCX gerado com sucesso em: {output_path}")
