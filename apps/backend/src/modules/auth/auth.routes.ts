@@ -23,6 +23,20 @@ export async function authRoutes(app: FastifyInstance) {
   };
 
   /**
+   * Helper para determinar a URL do frontend em produção
+   */
+  const getDynamicFrontendUrl = (request: FastifyRequest) => {
+    if (env.FRONTEND_URL && !env.FRONTEND_URL.includes('localhost')) {
+      return env.FRONTEND_URL;
+    }
+    const isRender = process.env.RENDER === 'true' || request.hostname.includes('onrender.com');
+    if (isRender || (request.headers['x-forwarded-proto'] && !request.hostname.includes('localhost'))) {
+      return 'https://pex-fisioterapia.vercel.app';
+    }
+    return env.FRONTEND_URL;
+  };
+
+  /**
    * Helper para determinar o redirect_uri dinâmico em produção
    */
   const getDynamicRedirectUri = (request: FastifyRequest) => {
@@ -58,8 +72,10 @@ export async function authRoutes(app: FastifyInstance) {
 
     const { code, error } = callbackQuerySchema.parse(request.query);
 
+    const targetFrontend = getDynamicFrontendUrl(request);
+
     if (error || !code) {
-      return reply.redirect(`${env.FRONTEND_URL}/login?error=oauth_denied`);
+      return reply.redirect(`${targetFrontend}/login?error=oauth_denied`);
     }
 
     try {
@@ -102,10 +118,10 @@ export async function authRoutes(app: FastifyInstance) {
 
       setSessionCookie(reply, token);
 
-      return reply.redirect(`${env.FRONTEND_URL}/admin/dashboard?token=${token}`);
+      return reply.redirect(`${targetFrontend}/admin/dashboard?token=${token}`);
     } catch (err) {
       request.log.error(err);
-      return reply.redirect(`${env.FRONTEND_URL}/login?error=oauth_failed`);
+      return reply.redirect(`${targetFrontend}/login?error=oauth_failed`);
     }
   });
 
