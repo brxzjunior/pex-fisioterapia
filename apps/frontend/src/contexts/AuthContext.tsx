@@ -45,6 +45,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   useEffect(() => {
+    // Captura token vindo de callback OAuth na query string (?token=...)
+    try {
+      const searchParams = new URLSearchParams(window.location.search);
+      const urlToken = searchParams.get('token');
+      if (urlToken) {
+        localStorage.setItem('fisio_token', urlToken);
+        // Limpa o token da URL da barra do navegador
+        searchParams.delete('token');
+        const remainingQuery = searchParams.toString();
+        const newUrl = window.location.pathname + (remainingQuery ? `?${remainingQuery}` : '');
+        window.history.replaceState({}, document.title, newUrl);
+      }
+    } catch {
+      // Ignora erro de parsing
+    }
+
     refreshUser();
   }, []);
 

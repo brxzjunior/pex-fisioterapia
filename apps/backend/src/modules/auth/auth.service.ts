@@ -145,10 +145,12 @@ export class AuthService {
   /**
    * Monta a URL de redirecionamento oficial para o Google OAuth 2.0
    */
-  static getGoogleAuthUrl(): string {
+  static getGoogleAuthUrl(overrideRedirectUri?: string): string {
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+    const redirectUri = overrideRedirectUri || env.GOOGLE_REDIRECT_URI;
+
     const options = {
-      redirect_uri: env.GOOGLE_REDIRECT_URI,
+      redirect_uri: redirectUri,
       client_id: env.GOOGLE_CLIENT_ID,
       access_type: 'offline',
       response_type: 'code',
@@ -166,7 +168,9 @@ export class AuthService {
   /**
    * Troca o código temporário recebido da Google pelo token de acesso e dados do perfil
    */
-  static async exchangeGoogleCode(code: string): Promise<{ id: string; email: string; name: string; picture?: string }> {
+  static async exchangeGoogleCode(code: string, overrideRedirectUri?: string): Promise<{ id: string; email: string; name: string; picture?: string }> {
+    const redirectUri = overrideRedirectUri || env.GOOGLE_REDIRECT_URI;
+
     // 1. Troca o código temporário pelo token de acesso
     const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
       method: 'POST',
@@ -175,7 +179,7 @@ export class AuthService {
         code,
         client_id: env.GOOGLE_CLIENT_ID,
         client_secret: env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: env.GOOGLE_REDIRECT_URI,
+        redirect_uri: redirectUri,
         grant_type: 'authorization_code',
       }),
     });

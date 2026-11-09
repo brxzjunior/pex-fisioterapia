@@ -23,11 +23,27 @@ export async function authRoutes(app: FastifyInstance) {
   };
 
   /**
+   * Helper para determinar o redirect_uri dinâmico em produção
+   */
+  const getDynamicRedirectUri = (request: FastifyRequest) => {
+    if (env.GOOGLE_REDIRECT_URI && !env.GOOGLE_REDIRECT_URI.includes('localhost')) {
+      return env.GOOGLE_REDIRECT_URI;
+    }
+    const isRender = process.env.RENDER === 'true' || request.hostname.includes('onrender.com');
+    if (isRender || (request.headers['x-forwarded-proto'] && !request.hostname.includes('localhost'))) {
+      const proto = (request.headers['x-forwarded-proto'] as string) || 'https';
+      return `${proto}://${request.hostname}/api/auth/google/callback`;
+    }
+    return env.GOOGLE_REDIRECT_URI;
+  };
+
+  /**
    * GET /api/auth/google/url
    * Retorna a URL de autorização do Google OAuth 2.0
    */
-  app.get('/google/url', async () => {
-    return { url: AuthService.getGoogleAuthUrl() };
+  app.get('/google/url', async (request: FastifyRequest) => {
+    const redirectUri = getDynamicRedirectUri(request);
+    return { url: AuthService.getGoogleAuthUrl(redirectUri) };
   });
 
   /**
@@ -47,7 +63,8 @@ export async function authRoutes(app: FastifyInstance) {
     }
 
     try {
-      const googleUser = await AuthService.exchangeGoogleCode(code);
+      const redirectUri = getDynamicRedirectUri(request);
+      const googleUser = await AuthService.exchangeGoogleCode(code, redirectUri);
 
       // Busca ou cria o usuário pelo googleId ou email
       let user = await prisma.user.findFirst({
@@ -85,7 +102,7 @@ export async function authRoutes(app: FastifyInstance) {
 
       setSessionCookie(reply, token);
 
-      return reply.redirect(`${env.FRONTEND_URL}/admin/dashboard`);
+      return reply.redirect(`${env.FRONTEND_URL}/admin/dashboard?token=${token}`);
     } catch (err) {
       request.log.error(err);
       return reply.redirect(`${env.FRONTEND_URL}/login?error=oauth_failed`);
