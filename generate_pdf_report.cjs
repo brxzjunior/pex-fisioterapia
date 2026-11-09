@@ -559,6 +559,11 @@ async function generateReportPDF() {
           <td>Zod</td>
           <td>Contratos de dados uniformes entre cliente e servidor, impedindo payloads malformados.</td>
         </tr>
+        <tr>
+          <td><strong>Infraestrutura & Deploy</strong></td>
+          <td>Docker + Docker Compose + Vercel</td>
+          <td>Conteinerização multi-stage reprodutível, Nginx para SPA e orquestração de banco PostgreSQL.</td>
+        </tr>
       </tbody>
     </table>
 
@@ -687,6 +692,11 @@ async function generateReportPDF() {
           <td>Agrupamento dinâmico exibido no Dashboard filtrando atendimentos no intervalo de 7 dias.</td>
         </tr>
         <tr>
+          <td><span class="badge badge-green">Medido Efetivamente</span></td>
+          <td><strong>Disparo de Lembretes & Prontuário PDF</strong></td>
+          <td>Geração imediata de relatórios de evolução clínica e disparos automatizados de lembretes prévios via WhatsApp.</td>
+        </tr>
+        <tr>
           <td><span class="badge badge-amber">Planejado (Longo Prazo)</span></td>
           <td><strong>Taxa de Conversão WhatsApp</strong></td>
           <td>Percentual de visitantes da landing page que acionam o botão de contato (requer métricas de tráfego contínuo).</td>
@@ -766,6 +776,7 @@ async function generateReportPDF() {
     <ul>
       <li><strong>README.md:</strong> Manual de instalação, variáveis de ambiente necessárias e comandos de execução rápida.</li>
       <li><strong>PLANEJAMENTO.md:</strong> Documento de análise de sistemas, modelagem de banco de dados e regras de negócio.</li>
+      <li><strong>Infraestrutura & Deploy:</strong> Configuração Docker multi-stage (<code>Dockerfile</code>), orquestração de banco e serviços (<code>docker-compose.yml</code>) e deploy contínuo SPA (<code>vercel.json</code>).</li>
       <li><strong>Seed de Banco de Dados:</strong> Script automatizado (<code>npm run db:seed</code>) para inserção de dados fictícios de demonstração para bancas acadêmicas.</li>
     </ul>
 

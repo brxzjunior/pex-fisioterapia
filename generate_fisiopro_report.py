@@ -357,7 +357,8 @@ def create_fisiopro_document(output_path):
         ["Design & Ícones", "Tailwind CSS + Lucide React", "Design system sóbrio na paleta clínica (Emerald/Stone), responsividade e leveza."],
         ["Backend API", "Node.js + Fastify + TypeScript", "Alta performance de requisições, plugins modulares e validação de schema integrada."],
         ["Persistência & ORM", "PostgreSQL + Prisma ORM", "Integridade relacional ACID, migrações automatizadas e consultas tipadas contra SQL Injection."],
-        ["Validação de Dados", "Zod", "Contratos de dados uniformes entre cliente e servidor, impedindo payloads malformados."]
+        ["Validação de Dados", "Zod", "Contratos de dados uniformes entre cliente e servidor, impedindo payloads malformados."],
+        ["Infraestrutura & Deploy", "Docker + Docker Compose + Vercel", "Conteinerização multi-stage reprodutível, Nginx para SPA e orquestração de banco PostgreSQL."]
     ]
     style_table(t_stack, [1.5, 2.2, 2.9], t_stack_headers, t_stack_rows)
 

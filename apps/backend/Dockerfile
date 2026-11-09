@@ -39,3 +39,4 @@ COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 EXPOSE 3333
 
 CMD ["node", "apps/backend/dist/server.js"]
+
