@@ -12,11 +12,12 @@ export async function authRoutes(app: FastifyInstance) {
    * Helper para gravar cookie seguro com o token JWT
    */
   const setSessionCookie = (reply: FastifyReply, token: string) => {
+    const isProduction = env.NODE_ENV === 'production' || process.env.RENDER === 'true';
     reply.setCookie(AuthService.COOKIE_NAME, token, {
       path: '/',
       httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 60 * 60 * 24 * 7, // 7 dias
     });
   };

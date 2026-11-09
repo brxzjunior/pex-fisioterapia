@@ -5,6 +5,15 @@ export const api = axios.create({
   withCredentials: true, // Garante o envio automático de cookies HttpOnly
 });
 
+// Interceptor de requisição: injeta o Bearer token como alternativa resiliente a cookies cross-site
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('fisio_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Interceptor para capturar respostas não autorizadas (401)
 api.interceptors.response.use(
   (response) => response,

@@ -67,6 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.data?.user) {
         setUser(response.data.user);
       }
+      if (response.data?.token) {
+        localStorage.setItem('fisio_token', response.data.token);
+      }
       return response.data;
     } catch (err: any) {
       console.error('Erro ao efetuar login:', err);
@@ -96,6 +99,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (response.data?.user) {
         setUser(response.data.user);
       }
+      if (response.data?.token) {
+        localStorage.setItem('fisio_token', response.data.token);
+      }
     } catch (err) {
       console.error('Erro ao verificar e-mail:', err);
       throw err;
@@ -124,6 +130,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await api.post('/auth/dev-login', { email });
       setUser(response.data.user);
+      if (response.data?.token) {
+        localStorage.setItem('fisio_token', response.data.token);
+      }
     } catch (err) {
       console.warn('Backend indisponível para dev-login. Ativando modo de homologação/demonstração clínica:', err);
       // Fallback para permitir navegação e testes de banca acadêmica mesmo com backend em cold-start ou offline
@@ -146,6 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (err) {
       console.warn('Erro ao chamar logout no servidor:', err);
     } finally {
+      localStorage.removeItem('fisio_token');
       setUser(null);
     }
   };
