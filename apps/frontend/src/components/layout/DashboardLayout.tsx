@@ -16,9 +16,17 @@ import {
 } from 'lucide-react';
 
 export const DashboardLayout: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+
+  const getInitials = (name?: string) => {
+    if (!name) return 'LM';
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'LM';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -93,18 +101,26 @@ export const DashboardLayout: React.FC = () => {
             </div>
           </div>
 
-          {/* Badge da Responsável Técnica */}
+          {/* Badge do Usuário / Profissional Autenticado */}
           <div className="p-3.5 mx-3 my-4 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-stone-200 dark:bg-stone-700/80 text-stone-800 dark:text-emerald-400 flex items-center justify-center font-mono font-bold text-xs border border-stone-300/80 dark:border-stone-600/50 shrink-0">
-              LM
-            </div>
+            {user?.avatarUrl ? (
+              <img
+                src={user.avatarUrl}
+                alt={user.name}
+                className="w-9 h-9 rounded-lg object-cover border border-stone-300/80 dark:border-stone-600/50 shrink-0"
+              />
+            ) : (
+              <div className="w-9 h-9 rounded-lg bg-stone-200 dark:bg-stone-700/80 text-stone-800 dark:text-emerald-400 flex items-center justify-center font-mono font-bold text-xs border border-stone-300/80 dark:border-stone-600/50 shrink-0">
+                {getInitials(user?.name)}
+              </div>
+            )}
             <div className="overflow-hidden min-w-0">
-              <p className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title="Dra. Letícia Souza de Moraes">
-                Dra. Letícia Souza de Moraes
+              <p className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title={user?.name || 'Profissional Clínico'}>
+                {user?.name || 'Dra. Letícia Souza de Moraes'}
               </p>
               <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700 dark:text-emerald-400">
                 <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span className="truncate">Responsável Técnica</span>
+                <span className="truncate">{user?.role === 'ADMIN' ? 'Responsável Técnica' : 'Equipe Clínica'}</span>
               </div>
             </div>
           </div>

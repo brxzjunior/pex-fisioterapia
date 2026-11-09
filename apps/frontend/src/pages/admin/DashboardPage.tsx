@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import {
   Clock,
@@ -75,6 +76,7 @@ interface DashboardStats {
 }
 
 export const ClinicalDashboard: React.FC = () => {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [selectedAppointment, setSelectedAppointment] = useState<AppointmentItem | null>(null);
@@ -300,29 +302,45 @@ export const ClinicalDashboard: React.FC = () => {
   const activeAppointments = stats?.upcomingAppointments || [];
   const inProgressApt = activeAppointments.find((a) => a.status === 'IN_PROGRESS');
 
+  const getInitials = (name?: string) => {
+    if (!name) return 'LM';
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'LM';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
   return (
     <div className="space-y-4 max-w-[1600px] mx-auto text-stone-900 dark:text-stone-100 font-sans">
       
       {/* 1. STATUS BAR SUPERIOR */}
       <header className="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-xl px-5 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm transition-colors">
         
-        {/* Identificação da Responsável Técnica & CREFITO */}
+        {/* Identificação do Usuário / Profissional Autenticado */}
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center font-mono font-bold text-sm text-stone-700 dark:text-stone-300">
-            LM
-          </div>
+          {user?.avatarUrl ? (
+            <img
+              src={user.avatarUrl}
+              alt={user.name}
+              className="w-10 h-10 rounded-lg object-cover border border-stone-200 dark:border-stone-700 shadow-xs shrink-0"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 flex items-center justify-center font-mono font-bold text-sm text-stone-700 dark:text-stone-300 shrink-0">
+              {getInitials(user?.name)}
+            </div>
+          )}
 
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-sm font-semibold tracking-tight text-stone-950 dark:text-stone-100">
-                Dra. Letícia Souza de Moraes
+                {user?.name || 'Dra. Letícia Souza de Moraes'}
               </h1>
               <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700">
                 CREFITO ATIVO
               </span>
             </div>
-            <p className="text-xs text-stone-500 dark:text-stone-400">
-              Prontuário Eletrônico & Acesso Operacional Clínico
+            <p className="text-xs text-stone-500 dark:text-stone-400 font-mono">
+              {user?.email || 'Prontuário Eletrônico & Acesso Operacional Clínico'}
             </p>
           </div>
         </div>
