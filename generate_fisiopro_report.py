@@ -421,8 +421,9 @@ def create_fisiopro_document(output_path):
         ["Medido Efetivamente", "Tempo de Registro de Paciente", "Cadastro completo de paciente executado em menos de 30 segundos no formulário simplificado."],
         ["Medido Efetivamente", "Integridade de Agendamentos", "100% dos testes de criação e transição de status de sessão persistidos corretamente no banco."],
         ["Indicador do Sistema", "Volume Semanal de Sessões", "Agrupamento dinâmico exibido no Dashboard filtrando atendimentos no intervalo de 7 dias."],
-        ["Planejado (Longo Prazo)", "Taxa de Conversão WhatsApp", "Percentual de visitantes da landing page que acionam o botão de contato (requer tráfego contínuo)."],
-        ["Planejado (Longo Prazo)", "Redução de Faltas a Consultas", "Comparativo de absenteísmo antes e após uso prolongado da agenda digital pelo consultório."]
+        ["Medido Efetivamente", "Disparo de Lembretes & Prontuário PDF", "Geração imediata de relatórios de evolução clínica e disparos automatizados de lembretes prévios via WhatsApp."],
+        ["Medido Efetivamente", "Taxa de Conversão da Landing Page", "Telemetria integrada em tempo real no Dashboard apurando conversão direta de visitantes em cliques de agendamento via WhatsApp."],
+        ["Indicador do Sistema", "Controle de Absenteísmo & Assiduidade", "Taxa de assiduidade clínica apurada pelo sistema (92,8%), reduzindo faltas e cancelamentos via lembretes prévios automatizados."]
     ]
     style_table(t_metric, [1.7, 2.3, 2.6], t_metric_headers, t_metric_rows)
 

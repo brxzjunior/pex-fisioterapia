@@ -12,6 +12,7 @@ import { appointmentRoutes } from './modules/appointments/appointment.routes.js'
 import { activityRoutes } from './modules/activities/activity.routes.js';
 import { historyRoutes } from './modules/history/history.routes.js';
 import { profileRoutes } from './modules/profile/profile.routes.js';
+import { analyticsRoutes } from './modules/analytics/analytics.routes.js';
 
 export async function buildApp() {
   const app = fastify({
@@ -53,6 +54,7 @@ export async function buildApp() {
   await app.register(activityRoutes, { prefix: '/api/activities' });
   await app.register(historyRoutes, { prefix: '/api/history' });
   await app.register(profileRoutes, { prefix: '/api/profile' });
+  await app.register(analyticsRoutes, { prefix: '/api/analytics' });
 
   // Health check básico da aplicação
   app.get('/health', async () => {

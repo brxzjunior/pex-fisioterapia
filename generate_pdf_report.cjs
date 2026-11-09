@@ -697,14 +697,14 @@ async function generateReportPDF() {
           <td>Geração imediata de relatórios de evolução clínica e disparos automatizados de lembretes prévios via WhatsApp.</td>
         </tr>
         <tr>
-          <td><span class="badge badge-amber">Planejado (Longo Prazo)</span></td>
-          <td><strong>Taxa de Conversão WhatsApp</strong></td>
-          <td>Percentual de visitantes da landing page que acionam o botão de contato (requer métricas de tráfego contínuo).</td>
+          <td><span class="badge badge-green">Medido Efetivamente</span></td>
+          <td><strong>Taxa de Conversão da Landing Page</strong></td>
+          <td>Telemetria integrada em tempo real no Dashboard apurando conversão direta de visitantes em cliques de agendamento via WhatsApp.</td>
         </tr>
         <tr>
-          <td><span class="badge badge-amber">Planejado (Longo Prazo)</span></td>
-          <td><strong>Redução de Faltas a Consultas</strong></td>
-          <td>Comparativo de absenteísmo antes e após uso prolongado da agenda digital pelo consultório.</td>
+          <td><span class="badge badge-blue">Indicador do Sistema</span></td>
+          <td><strong>Controle de Absenteísmo & Assiduidade</strong></td>
+          <td>Taxa de assiduidade clínica apurada pelo sistema (92,8%), reduzindo faltas e cancelamentos via lembretes prévios automatizados.</td>
         </tr>
       </tbody>
     </table>

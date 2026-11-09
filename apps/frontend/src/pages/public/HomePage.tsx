@@ -46,11 +46,18 @@ export const HomePage: React.FC = () => {
       }
     };
 
+    // Registra visualização de página para telemetria de conversão
+    api.post('/analytics/track', { event: 'PAGE_VIEW' }).catch(() => {});
+
     fetchProfile();
   }, []);
 
   const cleanPhone = (profile.phone || '92991779987').replace(/\D/g, '');
   const whatsappUrl = `https://wa.me/55${cleanPhone}?text=Olá,%20Dra.%20Letícia.%20Gostaria%20de%20agendar%20uma%20avaliação%20funcional.`;
+
+  const handleWhatsAppClick = () => {
+    api.post('/analytics/track', { event: 'WHATSAPP_CLICK' }).catch(() => {});
+  };
 
   // Linhas de cuidado estruturadas com rigor clínico
   const clinicalServices = [
@@ -146,6 +153,7 @@ export const HomePage: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                 <a
                   href={whatsappUrl}
+                  onClick={handleWhatsAppClick}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 bg-stone-900 hover:bg-emerald-800 text-stone-50 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-emerald-100 font-medium px-7 py-4 rounded-xl text-base transition-colors duration-200 shadow-sm"
@@ -392,6 +400,7 @@ export const HomePage: React.FC = () => {
 
           <a
             href={whatsappUrl}
+            onClick={handleWhatsAppClick}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 bg-white text-stone-900 hover:bg-emerald-50 hover:text-emerald-900 font-semibold text-sm px-7 py-4 rounded-xl shadow-sm transition-colors shrink-0"

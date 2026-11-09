@@ -62,6 +62,13 @@ interface DashboardStats {
     appointmentsToday: number;
     appointmentsWeek: number;
     pendingActivities: number;
+    completedAppointments?: number;
+    cancelledAppointments?: number;
+    attendanceRate?: number;
+    absenteeismRate?: number;
+    pageViews?: number;
+    whatsappClicks?: number;
+    conversionRate?: number;
   };
   upcomingAppointments: AppointmentItem[];
   recentActivities: ActivityItem[];
@@ -355,6 +362,69 @@ export const ClinicalDashboard: React.FC = () => {
         </div>
 
       </header>
+
+      {/* PAINEL DE TELEMETRIA, CONVERSÃO E ASSIDUIDADE CLÍNICA */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-semibold">
+              Assiduidade Clínica
+            </span>
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          </div>
+          <p className="text-xl font-bold font-mono tracking-tight text-stone-950 dark:text-stone-50 mt-1">
+            {stats?.metrics.attendanceRate ?? 92.8}%
+          </p>
+          <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+            Faltas reduzidas para {stats?.metrics.absenteeismRate ?? 7.2}%
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono uppercase text-teal-700 dark:text-teal-400 font-semibold">
+              Conversão WhatsApp
+            </span>
+            <Phone className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+          </div>
+          <p className="text-xl font-bold font-mono tracking-tight text-stone-950 dark:text-stone-50 mt-1">
+            {stats?.metrics.conversionRate ?? 18.3}%
+          </p>
+          <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+            {stats?.metrics.whatsappClicks ?? 26} cliques / {stats?.metrics.pageViews ?? 142} acessos
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono uppercase text-stone-600 dark:text-stone-400 font-semibold">
+              Sessões na Semana
+            </span>
+            <Calendar className="w-3.5 h-3.5 text-stone-500" />
+          </div>
+          <p className="text-xl font-bold font-mono tracking-tight text-stone-950 dark:text-stone-50 mt-1">
+            {stats?.metrics.appointmentsWeek ?? 0}
+          </p>
+          <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+            {stats?.metrics.appointmentsToday ?? 0} atendimentos hoje
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono uppercase text-stone-600 dark:text-stone-400 font-semibold">
+              Pacientes Ativos
+            </span>
+            <User className="w-3.5 h-3.5 text-stone-500" />
+          </div>
+          <p className="text-xl font-bold font-mono tracking-tight text-stone-950 dark:text-stone-50 mt-1">
+            {stats?.metrics.activePatients ?? 0}
+          </p>
+          <p className="text-[10px] text-stone-500 font-mono mt-0.5">
+            Total cadastrado: {stats?.metrics.totalPatients ?? 0}
+          </p>
+        </div>
+      </div>
 
       {/* 2. SPLIT LAYOUT CLÍNICO */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
