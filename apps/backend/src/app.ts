@@ -30,9 +30,16 @@ export async function buildApp() {
     parseOptions: {},
   });
 
-  // CORS restrito à origem do frontend
+  // CORS configurado para aceitar frontend local, produção e deploys Vercel
   await app.register(cors, {
-    origin: [env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+      const allowed = [env.FRONTEND_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'];
+      if (allowed.includes(origin) || origin.endsWith('.vercel.app')) {
+        return cb(null, true);
+      }
+      return cb(new Error('Origem não permitida pelo CORS'), false);
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   });
