@@ -3,40 +3,42 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copia manifestos de dependência
+# Copia manifestos de dependência do backend
 COPY package*.json ./
-COPY apps/backend/package*.json ./apps/backend/
-COPY apps/frontend/package*.json ./apps/frontend/
 
-# Instala dependências
-RUN npm ci
+# Instala dependências (incluindo devDependencies necessárias para compilação)
+RUN npm install
 
-# Copia código fonte do backend e prisma schema
-COPY apps/backend ./apps/backend
-
-# Gera cliente Prisma e compila TypeScript
-WORKDIR /app/apps/backend
+# Copia prisma schema e gera o cliente Prisma
+COPY prisma ./prisma
 RUN npx prisma generate
+
+# Copia arquivos de configuração e código fonte TypeScript
+COPY tsconfig.json ./
+COPY src ./src
+
+# Compila o backend para JavaScript (dist/)
 RUN npm run build
 
-# Runner de Produção
+# -----------------------------------------------------------
+# Runner de Produção Leve
+# -----------------------------------------------------------
 FROM node:20-alpine AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3333
 
+# Copia manifesto e instala somente dependências de produção
 COPY package*.json ./
-COPY apps/backend/package*.json ./apps/backend/
+RUN npm install --omit=dev
 
-RUN npm ci --omit=dev --workspace=backend
-
-COPY --from=builder /app/apps/backend/dist ./apps/backend/dist
-COPY --from=builder /app/apps/backend/prisma ./apps/backend/prisma
+# Copia build e cliente Prisma compilados
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 3333
 
-CMD ["node", "apps/backend/dist/server.js"]
-
+CMD ["node", "dist/server.js"]

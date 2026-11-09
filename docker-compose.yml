@@ -21,8 +21,8 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: apps/backend/Dockerfile
+      context: ./apps/backend
+      dockerfile: Dockerfile
     container_name: fisiopro-backend
     restart: always
     ports:
@@ -42,8 +42,8 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: apps/frontend/Dockerfile
+      context: ./apps/frontend
+      dockerfile: Dockerfile
       args:
         VITE_API_URL: http://localhost:3333/api
     container_name: fisiopro-frontend

@@ -3,28 +3,22 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Argumentos de build
+# Argumentos de build para API em produção
 ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 
 COPY package*.json ./
-COPY apps/backend/package*.json ./apps/backend/
-COPY apps/frontend/package*.json ./apps/frontend/
+RUN npm install
 
-RUN npm ci
-
-COPY apps/frontend ./apps/frontend
-
-WORKDIR /app/apps/frontend
+COPY . ./
 RUN npm run build
 
-# Nginx Alpine para servir o SPA
+# Nginx Alpine para servir o SPA com compressão e rewrites
 FROM nginx:1.25-alpine AS runner
 
-COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
-COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
-
