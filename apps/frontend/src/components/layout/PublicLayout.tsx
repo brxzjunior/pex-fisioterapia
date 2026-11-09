@@ -35,7 +35,7 @@ export const PublicLayout: React.FC = () => {
             <ThemeToggle />
 
             <a
-              href="https://wa.me/5592991779987?text=Olá,%20Dra.%20Letícia.%20Gostaria%20de%20solicitar%20uma%20avaliação."
+              href="https://wa.me/5592988880000?text=Olá,%20gostaria%20de%20solicitar%20uma%20avaliação%20fisioterapêutica."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-stone-900 hover:bg-emerald-800 text-stone-50 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-emerald-100 text-xs font-medium px-3.5 py-2 rounded-lg transition-colors"
@@ -66,7 +66,7 @@ export const PublicLayout: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center sm:text-left">
             <p className="font-semibold text-stone-800 dark:text-stone-200">FisioPro — Atendimento Fisioterapêutico Integrado</p>
-            <p className="text-[11px] text-stone-400">Responsável Técnica: Dra. Letícia Souza de Moraes • Cuidado baseado em evidências.</p>
+            <p className="text-[11px] text-stone-400">Ambiente de Demonstração Clínica • FisioPro • Cuidado baseado em evidências.</p>
           </div>
           <div className="flex items-center gap-4 text-xs">
             <Link to="/login" className="hover:underline text-stone-600 dark:text-stone-400">Acesso Clínico</Link>

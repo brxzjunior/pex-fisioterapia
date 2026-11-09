@@ -5,16 +5,17 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Populando banco de dados com dados de teste acadêmico...');
 
-  // 1. Cria ou atualiza a fisioterapeuta padrão
+  // 1. Cria ou atualiza a fisioterapeuta padrão de demonstração
   const user = await prisma.user.upsert({
     where: { email: 'fisioterapeuta@exemplo.com' },
     update: {
-      name: 'Dra. Letícia Souza de Moraes',
+      name: 'Dra. Letícia Souza (Demonstração)',
+      phone: '(92) 98888-0000',
     },
     create: {
       email: 'fisioterapeuta@exemplo.com',
-      name: 'Dra. Letícia Souza de Moraes',
-      phone: '(92) 99177-9987',
+      name: 'Dra. Letícia Souza (Demonstração)',
+      phone: '(92) 98888-0000',
       professionalBio:
         'Fisioterapeuta graduada com foco em Reabilitação Ortopédica, Pilates Clínico e Fisioterapia Desportiva. Atendimento humanizado e individualizado.',
       specialties: 'Ortopedia Funcional, Pilates Clínico, Reabilitação Desportiva, Terapia Manual',

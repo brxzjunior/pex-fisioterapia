@@ -94,18 +94,23 @@ export async function authRoutes(app: FastifyInstance) {
           data: {
             googleId: googleUser.id,
             email: googleUser.email,
-            name: googleUser.name,
+            name: googleUser.name || 'Profissional Clínico',
             avatarUrl: googleUser.picture || null,
             role: 'ADMIN',
+            phone: '(92) 98888-0000',
             professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica e pilates clínico.',
             specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reabilitação Postural',
           },
         });
-      } else if (!user.googleId) {
-        // Vincula o Google ID caso a conta já existisse pelo e-mail
+      } else {
+        // Atualiza os dados com as informações mais recentes do Google (respeitando o nome da conta do Google)
         user = await prisma.user.update({
           where: { id: user.id },
-          data: { googleId: googleUser.id, avatarUrl: googleUser.picture || user.avatarUrl },
+          data: {
+            googleId: googleUser.id,
+            name: googleUser.name || user.name,
+            avatarUrl: googleUser.picture || user.avatarUrl,
+          },
         });
       }
 
@@ -485,10 +490,10 @@ export async function authRoutes(app: FastifyInstance) {
         user = await prisma.user.create({
           data: {
             email: targetEmail,
-            name: 'Dra. Letícia Souza de Moraes',
+            name: 'Dra. Letícia Souza (Demonstração)',
             professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico.',
             specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reabilitação Postural',
-            phone: '(92) 99177-9987',
+            phone: '(92) 98888-0000',
             role: 'ADMIN',
           },
         });
@@ -499,7 +504,7 @@ export async function authRoutes(app: FastifyInstance) {
       user = {
         id: 'dev-fisioterapeuta-id',
         email: targetEmail,
-        name: 'Dra. Letícia Souza de Moraes',
+        name: 'Dra. Letícia Souza (Demonstração)',
         role: 'ADMIN',
       };
     }

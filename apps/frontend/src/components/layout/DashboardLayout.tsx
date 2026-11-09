@@ -116,7 +116,7 @@ export const DashboardLayout: React.FC = () => {
             )}
             <div className="overflow-hidden min-w-0">
               <p className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title={user?.name || 'Profissional Clínico'}>
-                {user?.name || 'Dra. Letícia Souza de Moraes'}
+                {user?.name || 'Dra. Letícia Souza (Demonstração)'}
               </p>
               <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700 dark:text-emerald-400">
                 <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />

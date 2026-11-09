@@ -333,7 +333,7 @@ export const ClinicalDashboard: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-sm font-semibold tracking-tight text-stone-950 dark:text-stone-100">
-                {user?.name || 'Dra. Letícia Souza de Moraes'}
+                {user?.name || 'Dra. Letícia Souza (Demonstração)'}
               </h1>
               <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700">
                 CREFITO ATIVO

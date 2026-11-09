@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
 import {
   X,
@@ -40,6 +41,7 @@ export const WhatsAppReminderModal: React.FC<WhatsAppReminderModalProps> = ({
   onClose,
   onReminderSent,
 }) => {
+  const { user } = useAuth();
   const [templateType, setTemplateType] = useState<'reminder' | 'confirmation' | 'post_care' | 'custom'>('reminder');
   const [customMessage, setCustomMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -51,16 +53,17 @@ export const WhatsAppReminderModal: React.FC<WhatsAppReminderModalProps> = ({
   const dateFormatted = dateObj.toLocaleDateString('pt-BR');
   const timeFormatted = dateObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   const patientFirstName = appointment ? appointment.patient.fullName.split(' ')[0] : 'Paciente';
+  const professionalName = user?.name || 'FisioPro';
 
   const generateDefaultMessage = (type: typeof templateType) => {
     if (!appointment) return '';
 
     switch (type) {
       case 'reminder':
-        return `Olá, *${appointment.patient.fullName}*! Tudo bem? 👋\n\nAqui é do consultório da *Dra. Letícia Souza (FisioPro)*. Passando para confirmar sua sessão de *${appointment.type}* agendada para:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted} (${appointment.durationMinutes} minutos)\n\n📍 *Orientações:* Pedimos chegar com 5 minutos de antecedência e vestir roupas leves para a realização dos movimentos.\n\nPor favor, responda com *"Confirmado"* para garantirmos seu atendimento. Muito obrigado(a)!`;
+        return `Olá, *${appointment.patient.fullName}*! Tudo bem? 👋\n\nAqui é do consultório de fisioterapia (*${professionalName}*). Passando para confirmar sua sessão de *${appointment.type}* agendada para:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted} (${appointment.durationMinutes} minutos)\n\n📍 *Orientações:* Pedimos chegar com 5 minutos de antecedência e vestir roupas leves para a realização dos movimentos.\n\nPor favor, responda com *"Confirmado"* para garantirmos seu atendimento. Muito obrigado(a)!`;
 
       case 'confirmation':
-        return `Olá, *${appointment.patient.fullName}*! 🩺\n\nSua sessão de *${appointment.type}* com a *Dra. Letícia Souza* foi agendada com sucesso no *FisioPro*:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted}\n\nCaso necessite de remarcação ou tenha algum imprevisto, solicitamos aviso com no mínimo 24h de antecedência. Até breve!`;
+        return `Olá, *${appointment.patient.fullName}*! 🩺\n\nSua sessão de *${appointment.type}* com *${professionalName}* foi agendada com sucesso:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted}\n\nCaso necessite de remarcação ou tenha algum imprevisto, solicitamos aviso com no mínimo 24h de antecedência. Até breve!`;
 
       case 'post_care':
         return `Olá, *${patientFirstName}*! Como você está se sentindo após a sessão de hoje? 🌿\n\nEsperamos que esteja bem! Gostaríamos de reforçar os cuidados fisioterapêuticos recomendados:\n• Mantenha uma boa hidratação ao longo do dia;\n• Realize os exercícios domiciliares de mobilidade conforme orientamos;\n• Evite sobrecargas posturais agudas nas próximas horas.\n\nQualquer desconforto atípico, estamos à sua disposição!`;

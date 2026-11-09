@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { api } from '../../../services/api';
 import { User, Phone, BookOpen, Award, CheckCircle2 } from 'lucide-react';
@@ -11,6 +11,16 @@ export const ProfilePage: React.FC = () => {
   const [professionalBio, setProfessionalBio] = useState(user?.professionalBio || '');
   const [saving, setSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  // Sincroniza os dados do formulário quando o usuário logado for carregado
+  useEffect(() => {
+    if (user) {
+      if (user.name) setName(user.name);
+      if (user.phone) setPhone(user.phone);
+      if (user.specialties) setSpecialties(user.specialties);
+      if (user.professionalBio) setProfessionalBio(user.professionalBio);
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +79,7 @@ export const ProfilePage: React.FC = () => {
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Dra. Letícia Souza de Moraes"
+              placeholder="Ex: Dra. Letícia Souza (Demonstração)"
               className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
             />
           </div>
@@ -83,7 +93,7 @@ export const ProfilePage: React.FC = () => {
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="(92) 99177-9987"
+              placeholder="(92) 98888-0000"
               className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
             />
           </div>

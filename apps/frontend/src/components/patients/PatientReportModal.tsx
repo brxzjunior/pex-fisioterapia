@@ -159,7 +159,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
       <p class="subtitle">Clínica de Fisioterapia Especializada e Reabilitação Funcional</p>
     </div>
     <div style="text-align: right; font-size: 10px; color: #57534e;">
-      <strong>${report.user.name || 'Dra. Letícia Souza de Moraes'}</strong><br>
+      <strong>${report.user.name || 'Dra. Letícia Souza (Demonstração)'}</strong><br>
       CREFITO 12345-F / AM • Fisioterapeuta Responsável<br>
       Emissão: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
     </div>
@@ -248,7 +248,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
       Paciente ou Responsável Legal
     </div>
     <div class="sig-line">
-      <strong>${report.user.name || 'Dra. Letícia Souza de Moraes'}</strong><br>
+      <strong>${report.user.name || 'Dra. Letícia Souza (Demonstração)'}</strong><br>
       Fisioterapeuta • CREFITO 12345-F / AM
     </div>
   </div>
@@ -274,7 +274,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
     if (!report) return;
     const cleanPhone = report.phone.replace(/\D/g, '');
     const sessionsCount = report.appointments.length;
-    const message = `*FisioPro - Resumo do Prontuário Clínico*\n\nOlá, *${report.fullName}*!\n\nSegue o resumo do seu prontuário fisioterapêutico sob os cuidados da *${report.user.name || 'Dra. Letícia Souza de Moraes'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Alta Clínica'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções clínicas encontra-se disponível no consultório. Para dúvidas ou esclarecimentos, permanecemos à disposição!`;
+    const message = `*FisioPro - Resumo do Prontuário Clínico*\n\nOlá, *${report.fullName}*!\n\nSegue o resumo do seu prontuário fisioterapêutico sob os cuidados de *${report.user.name || 'Dra. Letícia Souza (Demonstração)'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Alta Clínica'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções clínicas encontra-se disponível no consultório. Para dúvidas ou esclarecimentos, permanecemos à disposição!`;
 
     window.open(`https://wa.me/55${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -396,7 +396,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
 
                 <div className="text-left sm:text-right font-mono text-xs text-stone-600 dark:text-stone-400 shrink-0">
                   <p className="font-bold text-stone-900 dark:text-stone-100">
-                    {report.user.name || 'Dra. Letícia Souza de Moraes'}
+                    {report.user.name || 'Dra. Letícia Souza (Demonstração)'}
                   </p>
                   <p className="text-[11px] text-stone-500">CREFITO 12345-F / AM • Fisioterapeuta</p>
                   <p className="text-[10px] text-stone-400 mt-1">
@@ -614,7 +614,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                 <div className="space-y-1 pt-6">
                   <div className="w-56 mx-auto border-t border-stone-400 dark:border-stone-600 mb-1" />
                   <p className="font-bold text-stone-900 dark:text-stone-100">
-                    {report.user.name || 'Dra. Letícia Souza de Moraes'}
+                    {report.user.name || 'Dra. Letícia Souza (Demonstração)'}
                   </p>
                   <p className="text-[10px] text-stone-500 font-mono">Fisioterapeuta • CREFITO 12345-F / AM</p>
                   <p className="text-[9px] text-stone-400 font-mono">Carimbo & Assinatura Profissional</p>

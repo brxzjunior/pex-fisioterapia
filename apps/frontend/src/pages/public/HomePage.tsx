@@ -23,8 +23,8 @@ interface PublicProfile {
 
 export const HomePage: React.FC = () => {
   const [profile, setProfile] = useState<PublicProfile>({
-    name: 'Dra. Letícia Souza de Moraes',
-    phone: '(92) 99177-9987',
+    name: 'Dra. Letícia Souza (Demonstração)',
+    phone: '(92) 98888-0000',
     professionalBio:
       'Diagnóstico funcional, reabilitação musculoesquelética e reeducação do movimento baseados em literatura científica contemporânea.',
     specialties: 'Ortopedia Clínica, Terapia Manual, Reabilitação Desportiva, Controle Motor',
@@ -35,11 +35,7 @@ export const HomePage: React.FC = () => {
       try {
         const res = await api.get<PublicProfile>('/profile/public');
         if (res.data) {
-          // O nome da Responsável Técnica é fixo e institucional (Dra. Letícia Souza de Moraes)
-          setProfile({
-            ...res.data,
-            name: 'Dra. Letícia Souza de Moraes',
-          });
+          setProfile(res.data);
         }
       } catch {
         // Fallback seguro em caso de indisponibilidade momentânea
@@ -52,8 +48,8 @@ export const HomePage: React.FC = () => {
     fetchProfile();
   }, []);
 
-  const cleanPhone = (profile.phone || '92991779987').replace(/\D/g, '');
-  const whatsappUrl = `https://wa.me/55${cleanPhone}?text=Olá,%20Dra.%20Letícia.%20Gostaria%20de%20agendar%20uma%20avaliação%20funcional.`;
+  const cleanPhone = (profile.phone || '92988880000').replace(/\D/g, '');
+  const whatsappUrl = `https://wa.me/55${cleanPhone}?text=Olá,%20gostaria%20de%20agendar%20uma%20avaliação%20fisioterapêutica.`;
 
   const handleWhatsAppClick = () => {
     api.post('/analytics/track', { event: 'WHATSAPP_CLICK' }).catch(() => {});
@@ -196,7 +192,7 @@ export const HomePage: React.FC = () => {
                     <div className="w-full max-w-[280px] sm:max-w-none overflow-hidden rounded-2xl border border-stone-200/80 dark:border-stone-800 bg-stone-200/40 dark:bg-stone-950/60 p-2 flex items-center justify-center">
                       <img
                         src="/Dra%20Leticia.jpg"
-                        alt="Dra. Letícia Souza de Moraes - Fisioterapeuta"
+                        alt={`${profile.name || 'Dra. Letícia Souza'} - Fisioterapeuta`}
                         className="w-full h-auto max-h-[420px] object-contain rounded-xl transition-transform duration-300 hover:scale-[1.02]"
                       />
                     </div>
@@ -380,7 +376,7 @@ export const HomePage: React.FC = () => {
               Triagem & Informações
             </span>
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tighter text-white">
-              Inicie seu acompanhamento com a Dra. Letícia.
+              Inicie seu acompanhamento com {profile.name || 'a Dra. Letícia (Demonstração)'}.
             </h2>
             <p className="text-stone-400 text-sm leading-relaxed max-w-xl">
               Entre em contato para alinhar suas queixas articulares ou musculares, 
