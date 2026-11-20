@@ -199,7 +199,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
     </div>
   </div>
 
-  <div class="section-title">1. Diagnóstico Funcional, Queixas & Observações Clínicas</div>
+  <div class="section-title">1. Queixas Funcionais & Observações Didáticas da Sessão</div>
   <p style="background: #fafaf9; border: 1px solid #e7e5e4; padding: 10px; border-radius: 6px; font-size: 11px; margin: 6px 0 14px 0;">
     ${report.administrativeNotes || 'Sem observações ou histórico patológico prévio cadastrado.'}
   </p>
@@ -221,7 +221,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
         <th style="width: 15%;">Data / Hora</th>
         <th style="width: 28%;">Procedimento / Tipo</th>
         <th style="width: 14%;">Status</th>
-        <th>Evolução Clínica & Condutas Adotadas</th>
+        <th>Evolução da Sessão & Exercícios Realizados</th>
       </tr>
     </thead>
     <tbody>
@@ -274,14 +274,14 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
     if (!report) return;
     const cleanPhone = report.phone.replace(/\D/g, '');
     const sessionsCount = report.appointments.length;
-    const message = `*FisioPro - Resumo Demonstrativo de Prontuário*\n\nOlá, *${report.fullName}*!\n\nSegue a simulação didática do prontuário fisioterapêutico sob coordenação de *${report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Alta Clínica'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções simuladas encontra-se disponível no sistema acadêmico FisioPro.`;
+    const message = `*FisioPro - Resumo Demonstrativo de Prontuário*\n\nOlá, *${report.fullName}*!\n\nSegue a simulação didática do prontuário fisioterapêutico sob coordenação de *${report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Conclusão do Ciclo'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções simuladas encontra-se disponível no sistema acadêmico FisioPro.`;
 
     window.open(`https://wa.me/55${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
   const handleCopySummary = () => {
     if (!report) return;
-    const text = `PRONTUÁRIO CLÍNICO - FISIOPRO\nPaciente: ${report.fullName}\nTelefone: ${report.phone}\nStatus: ${report.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}\nSessões: ${report.appointments.length}\nAdmissão: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\nAnotações: ${report.administrativeNotes || 'Nenhuma'}`;
+    const text = `PRONTUÁRIO DEMONSTRATIVO - FISIOPRO\nPaciente: ${report.fullName}\nTelefone: ${report.phone}\nStatus: ${report.status === 'ACTIVE' ? 'Ativo' : 'Inativo'}\nSessões: ${report.appointments.length}\nAdmissão: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\nAnotações: ${report.administrativeNotes || 'Nenhuma'}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
@@ -364,7 +364,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
           {loading ? (
             <div className="p-12 text-center space-y-3">
               <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
-              <p className="text-xs text-stone-500 font-mono">Consolidando histórico clínico e sessões...</p>
+              <p className="text-xs text-stone-500 font-mono">Consolidando histórico didático e sessões...</p>
             </div>
           ) : error ? (
             <div className="p-8 text-center text-rose-500 text-xs bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 rounded-xl">
@@ -375,7 +375,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
               id="clinical-report-printable"
               className="bg-white dark:bg-stone-900 p-8 sm:p-10 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-md space-y-6 text-stone-900 dark:text-stone-100"
             >
-              {/* Cabeçalho Oficial Clínico */}
+              {/* Cabeçalho do Prontuário Demonstrativo */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b-2 border-stone-900 dark:border-stone-100 pb-4">
                 <div>
                   <div className="flex items-center gap-2">
@@ -472,7 +472,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                   <p className="text-lg font-black text-teal-900 dark:text-teal-200 font-mono mt-0.5">
                     -{painReduction}%
                   </p>
-                  <span className="text-[9px] text-teal-600 dark:text-teal-400 font-mono font-medium">Melhora Clínica</span>
+                  <span className="text-[9px] text-teal-600 dark:text-teal-400 font-mono font-medium">Evolução do Caso</span>
                 </div>
 
                 <div className="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200 dark:border-stone-700/80 text-center">
@@ -496,7 +496,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                 </div>
               </div>
 
-              {/* Queixa Principal e Observações Clínicas */}
+              {/* Queixa Principal e Observações Didáticas */}
               <div>
                 <h3 className="text-xs font-mono uppercase tracking-wider text-stone-500 dark:text-stone-400 font-bold mb-2 flex items-center gap-1.5">
                   <Shield className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
@@ -536,7 +536,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                 </div>
               </div>
 
-              {/* Tabela de Atendimentos & Evolução Clínica */}
+              {/* Tabela de Atendimentos & Evolução da Sessão */}
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-xs font-mono uppercase tracking-wider text-stone-500 dark:text-stone-400 font-bold flex items-center gap-1.5">

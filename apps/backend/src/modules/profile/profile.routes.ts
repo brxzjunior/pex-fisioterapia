@@ -55,7 +55,7 @@ export async function profileRoutes(app: FastifyInstance) {
 
   /**
    * PUT /api/profile
-   * Atualiza os dados do perfil profissional autenticado
+   * Atualiza os dados do perfil acadêmico autenticado
    */
   app.put('/', { preHandler: [ensureAuthenticated] }, async (request: FastifyRequest, reply: FastifyReply) => {
     const userId = request.user!.sub;

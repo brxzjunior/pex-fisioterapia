@@ -137,10 +137,10 @@ export const ActivitiesPage: React.FC = () => {
             </span>
           </div>
           <h1 className="text-xl font-bold tracking-tight text-stone-950 dark:text-stone-100 mt-1">
-            Atividades Clínicas & Gestão Interna
+            Atividades Acadêmicas & Gestão de Rotina
           </h1>
           <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
-            Checklist de pendências, protocolos domiciliares e preparo de materiais.
+            Checklist de pendências, protocolos didáticos e preparo de materiais.
           </p>
         </div>
 
@@ -284,7 +284,7 @@ export const ActivitiesPage: React.FC = () => {
           <div className="p-14 text-center">
             <p className="text-xs font-semibold text-stone-700 dark:text-stone-300">Nenhuma atividade encontrada</p>
             <p className="text-[11px] text-stone-400 mt-0.5">
-              Crie uma nova tarefa para organizar sua rotina do consultório.
+              Crie uma nova tarefa para organizar sua rotina de estudos e simulações.
             </p>
             <button
               onClick={handleOpenModal}
@@ -307,7 +307,7 @@ export const ActivitiesPage: React.FC = () => {
                   Operacional
                 </span>
                 <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-                  Nova Atividade Clínica
+                  Nova Atividade Acadêmica
                 </h2>
               </div>
               <button

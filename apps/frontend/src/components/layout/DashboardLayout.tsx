@@ -34,11 +34,11 @@ export const DashboardLayout: React.FC = () => {
   };
 
   const navItems = [
-    { label: 'Visão Clínica', icon: LayoutDashboard, path: '/admin/dashboard' },
+    { label: 'Visão Geral', icon: LayoutDashboard, path: '/admin/dashboard' },
     { label: 'Pacientes', icon: Users, path: '/admin/pacientes' },
     { label: 'Agenda de Sessões', icon: Calendar, path: '/admin/atendimentos' },
-    { label: 'Atividades Clínicas', icon: CheckSquare, path: '/admin/atividades' },
-    { label: 'Perfil Profissional', icon: UserIcon, path: '/admin/perfil' },
+    { label: 'Atividades & Tarefas', icon: CheckSquare, path: '/admin/atividades' },
+    { label: 'Perfil Acadêmico', icon: UserIcon, path: '/admin/perfil' },
   ];
 
   return (
@@ -53,7 +53,7 @@ export const DashboardLayout: React.FC = () => {
               Fisio<span className="text-emerald-800 dark:text-emerald-400">Pro</span>
             </span>
             <span className="text-[9px] font-mono text-stone-400 tracking-wider uppercase">
-              Clinical OS
+              Academic OS
             </span>
           </div>
         </div>
@@ -125,7 +125,7 @@ export const DashboardLayout: React.FC = () => {
             </div>
           </div>
 
-          {/* Links de Navegação Clínica */}
+          {/* Links de Navegação */}
           <nav className="px-3 space-y-1">
             <span className="px-3 text-[10px] font-mono uppercase tracking-widest text-stone-400 dark:text-stone-500 block mb-2 font-semibold">
               Módulos de Trabalho

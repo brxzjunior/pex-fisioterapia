@@ -7,12 +7,24 @@ O projeto foi concebido em parceria com **pessoa física** (Letícia Souza, estu
 
 ---
 
+## 🏛️ Alinhamento com as Diretrizes Oficiais da Tutoria Descomplica
+
+Em resposta formal da tutoria acadêmica da Descomplica para este PEX, foram validadas as seguintes diretrizes institucionais:
+1. **Parceria com Pessoa Física**: É plenamente permitido firmar parceria extensionista com pessoa física (estudante de Fisioterapia), utilizando CPF em substituição ao CNPJ.
+2. **Estudante sem CREFITO**: A parceira atua na condição de graduanda/estudante, não sendo exigido registro no conselho de classe (CREFITO) para fins de colaboração acadêmica extensionista.
+3. **Formalização Digital Gov.br**: O Termo de Parceria e Ciência assinado digitalmente através da plataforma Gov.br possui plena validade documental acadêmica.
+4. **Caráter Demonstrativo e Dados Fictícios**: A plataforma tem propósito didático-demonstrativo com dados sintéticos/simulados, sem operação de clínica comercial nem prestação de serviços de saúde.
+5. **Benefício Social e Ação Extensionista Complementar**: Para além do benefício direto à estudante parceira, a apresentação gratuita da plataforma para outros estudantes de Fisioterapia constitui atividade extensionista recomendada pela instituição, a qual será realizada e documentada complementarmente com registros de feedback e avaliação.
+
+---
+
 ## 🎯 Finalidade e Público Beneficiado
 - **Público Beneficiado**: A estudante parceira, outros estudantes de graduação em Fisioterapia e pessoas interessadas na adoção de tecnologias de gestão no ambiente de saúde.
 - **Portfólio Acadêmico**: Área pública responsiva para apresentação didática de áreas de estudo, projetos acadêmicos e canais de contato simulados.
-- **Gestão Organizacional Demonstrativa**: Simulação de controle cadastral de atendimentos, agendamento de sessões, acompanhamento da evolução funcional e organização de tarefas administrativas.
+- **Gestão Organizacional Demonstrativa**: Simulação de controle cadastral de atendimentos, agendamento de sessões, acompanhamento didático da evolução funcional e organização de tarefas de rotina.
 - **Privacidade e LGPD**: Minimização estrita de campos, uso exclusivo de dados sintéticos/fictícios, autenticação segura com OAuth 2.0 (Google), cookies `HttpOnly`, `Secure` e `SameSite`, proteção contra SQL Injection com Prisma ORM e sem exposição de dados pessoais reais.
-- **Ação Extensionista**: Preparado para workshop/apresentação gratuita com demonstração prática das funcionalidades para estudantes de Fisioterapia.
+- **Segurança de Borda & Demonstração Blindada**: O endpoint `/api/auth/dev-login` opera com verificação estrita restrita à conta de testes padrão configurada (`ALLOWED_ADMIN_EMAIL`), impedindo a criação ou apropriação indevida de privilégios de administrador por e-mails arbitrários em produção.
+- **Ação Extensionista Complementar**: Preparado para workshop e apresentação gratuita com demonstração prática das funcionalidades para estudantes de Fisioterapia, a ser realizada e documentada subsequentemente.
 
 ---
 

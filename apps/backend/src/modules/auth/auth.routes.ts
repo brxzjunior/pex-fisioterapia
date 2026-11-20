@@ -94,12 +94,12 @@ export async function authRoutes(app: FastifyInstance) {
           data: {
             googleId: googleUser.id,
             email: googleUser.email,
-            name: googleUser.name || 'Profissional Clínico',
+            name: googleUser.name || 'Estudante de Fisioterapia',
             avatarUrl: googleUser.picture || null,
             role: 'ADMIN',
             phone: '(92) 98888-0000',
-            professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica e pilates clínico.',
-            specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reabilitação Postural',
+            professionalBio: 'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Foco em organização de dados e portfólio acadêmico.',
+            specialties: 'Estudos em Ortopedia, Cinesiologia, Pilates no Contexto Acadêmico, Avaliação Biomecânica',
           },
         });
       } else {
@@ -178,8 +178,8 @@ export async function authRoutes(app: FastifyInstance) {
         emailVerificationCode: verificationCode,
         emailVerificationExpires: verificationExpires,
         role: 'ADMIN',
-        professionalBio: 'Fisioterapeuta clínica e reabilitação funcional.',
-        specialties: 'Ortopedia, Terapia Manual, Reabilitação',
+        professionalBio: 'Estudante de Fisioterapia no âmbito do Projeto de Extensão Universitária (PEX).',
+        specialties: 'Estudos em Ortopedia, Cinesiologia, Prontuário Acadêmico, Avaliação Didática',
       },
     });
 
@@ -468,8 +468,8 @@ export async function authRoutes(app: FastifyInstance) {
 
   /**
    * POST /api/auth/dev-login
-   * Login facilitado para testes locais e banca acadêmica
-   * Cria ou busca o usuário padrão da fisioterapeuta
+   * Login demonstrativo seguro para avaliação acadêmica
+   * Opera exclusivamente sobre a conta de demonstração didática homologada
    */
   app.post('/dev-login', async (request: FastifyRequest, reply: FastifyReply) => {
     const devLoginSchema = z.object({
@@ -477,9 +477,18 @@ export async function authRoutes(app: FastifyInstance) {
     });
 
     const { email } = devLoginSchema.parse(request.body || {});
-    const targetEmail = email || env.ALLOWED_ADMIN_EMAIL;
+    const demoEmail = env.ALLOWED_ADMIN_EMAIL;
 
-    // Busca ou cria usuário no banco
+    // SEGURANÇA: Bloqueio estrito de e-mails arbitrários.
+    // Impede enumeração, sequestro de contas reais ou elevação indevida de privilégios.
+    if (email && email.toLowerCase() !== demoEmail.toLowerCase()) {
+      request.log.warn(`[SEGURANÇA] Tentativa de dev-login com e-mail não autorizado: ${email}`);
+      throw new AppError('O modo de demonstração é restrito à conta didática padrão do projeto.', 403);
+    }
+
+    const targetEmail = demoEmail;
+
+    // Busca ou cria o usuário padrão de demonstração no banco
     let user;
     try {
       user = await prisma.user.findUnique({
@@ -502,7 +511,7 @@ export async function authRoutes(app: FastifyInstance) {
       // Caso o banco ainda não tenha sido conectado em ambiente de teste rápido, cria sessão simulada
       request.log.warn('Banco offline ou não configurado ainda. Emitindo sessão dev simulada.');
       user = {
-        id: 'dev-fisioterapeuta-id',
+        id: 'dev-demo-admin-id',
         email: targetEmail,
         name: 'Letícia Souza (Estudante de Fisioterapia)',
         role: 'ADMIN',
@@ -519,7 +528,7 @@ export async function authRoutes(app: FastifyInstance) {
     setSessionCookie(reply, token);
 
     return reply.send({
-      message: 'Login realizado com sucesso.',
+      message: 'Login demonstrativo realizado com sucesso.',
       user: {
         id: user.id,
         name: user.name,

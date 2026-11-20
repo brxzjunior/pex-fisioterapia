@@ -14,7 +14,7 @@ export class EmailService {
     }
 
     try {
-      const recipientName = name ? name.split(' ')[0] : 'Profissional';
+      const recipientName = name ? name.split(' ')[0] : 'Estudante';
       const response = await resend.emails.send({
         from: env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
         to: [email],
@@ -22,12 +22,12 @@ export class EmailService {
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; background-color: #ffffff; color: #1c1917; border-radius: 16px; border: 1px solid #e7e5e4;">
             <div style="margin-bottom: 24px;">
-              <h2 style="font-size: 20px; font-weight: 700; color: #1c1917; margin: 0 0 6px 0;">Confirmação de Acesso Clínico</h2>
-              <p style="font-size: 14px; color: #78716c; margin: 0;">FisioPro — Gestão & Reabilitação Fisioterapêutica</p>
+              <h2 style="font-size: 20px; font-weight: 700; color: #1c1917; margin: 0 0 6px 0;">Confirmação de Acesso Acadêmico</h2>
+              <p style="font-size: 14px; color: #78716c; margin: 0;">FisioPro — Plataforma Demonstrativa de Gestão e Prontuário Didático</p>
             </div>
 
             <p style="font-size: 14px; line-height: 1.6; color: #44403c; margin-bottom: 20px;">
-              Olá, <strong>${recipientName}</strong>. Use o código de verificação abaixo para confirmar sua conta profissional:
+              Olá, <strong>${recipientName}</strong>. Use o código de verificação abaixo para confirmar seu acesso ao sistema acadêmico:
             </p>
 
             <div style="background-color: #f5f5f4; border: 1px solid #d6d3d1; border-radius: 12px; padding: 20px; text-align: center; margin: 24px 0;">
@@ -42,7 +42,7 @@ export class EmailService {
             </p>
 
             <div style="border-top: 1px solid #e7e5e4; padding-top: 16px; font-size: 11px; color: #a8a29e;">
-              © ${new Date().getFullYear()} FisioPro. Segurança e conformidade técnica para prontuário clínico.
+              © ${new Date().getFullYear()} FisioPro. Projeto de Extensão Universitária • Plataforma didática com dados demonstrativos fictícios.
             </div>
           </div>
         `,

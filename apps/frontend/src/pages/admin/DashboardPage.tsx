@@ -212,7 +212,7 @@ export const ClinicalDashboard: React.FC = () => {
         setSelectedAppointment({ ...selectedAppointment, status: nextStatus as any });
       }
     } catch (err) {
-      alert('Falha ao atualizar status do atendimento clínico.');
+      alert('Falha ao atualizar status do atendimento.');
     }
   };
 
@@ -232,7 +232,7 @@ export const ClinicalDashboard: React.FC = () => {
       const res = await api.patch(`/appointments/${selectedAppointment.id}/status`, {
         notes: fullNote,
       });
-      setEvolutionFeedback('Evolução clínica registrada com sucesso.');
+      setEvolutionFeedback('Anotação da sessão registrada com sucesso.');
       const updatedNotes = res.data?.notes || fullNote;
       setSelectedAppointment({
         ...selectedAppointment,
@@ -255,7 +255,7 @@ export const ClinicalDashboard: React.FC = () => {
       setAdditionalNotes('');
       setTimeout(() => setEvolutionFeedback(null), 3500);
     } catch (err: any) {
-      console.error('Falha ao registrar evolução clínica:', err);
+      console.error('Falha ao registrar anotação da sessão:', err);
       setEvolutionFeedback(err.response?.data?.message || 'Falha temporária ao registrar evolução.');
       setTimeout(() => setEvolutionFeedback(null), 4000);
     } finally {
@@ -381,12 +381,12 @@ export const ClinicalDashboard: React.FC = () => {
 
       </header>
 
-      {/* PAINEL DE TELEMETRIA, CONVERSÃO E ASSIDUIDADE CLÍNICA */}
+      {/* PAINEL DE TELEMETRIA, CONVERSÃO E ASSIDUIDADE */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl p-3.5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-semibold">
-              Assiduidade Clínica
+              Assiduidade das Sessões
             </span>
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
           </div>
@@ -444,7 +444,7 @@ export const ClinicalDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. SPLIT LAYOUT CLÍNICO */}
+      {/* 2. SPLIT LAYOUT DE SESSÕES */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         
         {/* COLUNA ESQUERDA (5 cols): Timeline Operacional da Agenda */}
@@ -579,7 +579,7 @@ export const ClinicalDashboard: React.FC = () => {
 
         </section>
 
-        {/* COLUNA DIREITA (7 cols): Prontuário Rápido & Atendimento Clínico Ativo */}
+        {/* COLUNA DIREITA (7 cols): Registro Rápido & Sessão Ativa */}
         <section className="lg:col-span-7 space-y-4">
           
           {selectedAppointment ? (
@@ -629,7 +629,7 @@ export const ClinicalDashboard: React.FC = () => {
                       type="button"
                       onClick={() => handleOpenReportModal(selectedAppointment.patient.id)}
                       className="inline-flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-200 dark:border-stone-700 px-3 py-2 rounded-lg text-xs font-semibold transition-colors"
-                      title="Emitir Prontuário Clínico Oficial (PDF)"
+                      title="Emitir Prontuário Demonstrativo (PDF)"
                     >
                       <Printer className="w-3.5 h-3.5 text-stone-600 dark:text-stone-300" />
                       <span>Prontuário PDF</span>
@@ -674,7 +674,7 @@ export const ClinicalDashboard: React.FC = () => {
                     <ShieldAlert className="w-4 h-4 text-stone-500 shrink-0 mt-0.5" />
                     <div>
                       <strong className="font-semibold block font-mono text-[10px] uppercase text-stone-400">
-                        Atenção Clínica Prévia:
+                        Observação Didática Prévia:
                       </strong>
                       {selectedAppointment.patient.administrativeNotes}
                     </div>
@@ -752,7 +752,7 @@ export const ClinicalDashboard: React.FC = () => {
                   />
                 </div>
 
-                {/* Anotações Gerais & Intercorrências Clínicas */}
+                {/* Anotações Gerais & Observações da Sessão */}
                 <div className="space-y-1.5">
                   <label className="block text-xs font-mono uppercase text-stone-600 dark:text-stone-400 font-semibold">
                     Anotações Gerais & Observações da Sessão
@@ -771,7 +771,7 @@ export const ClinicalDashboard: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-stone-700 dark:text-stone-300 font-semibold">
                       <History className="w-3.5 h-3.5 text-stone-500" />
-                      <span>Histórico de Anotações Clínicas ({patientNotesList.length})</span>
+                      <span>Histórico de Anotações das Sessões ({patientNotesList.length})</span>
                     </div>
 
                     {patientNotesList.length > 1 && (
@@ -905,7 +905,7 @@ export const ClinicalDashboard: React.FC = () => {
 
       </div>
 
-      {/* Modal de Prontuário Clínico & Exportação PDF */}
+      {/* Modal de Prontuário Demonstrativo & Exportação PDF */}
       <PatientReportModal
         isOpen={reportModalOpen}
         patientId={reportPatientId}

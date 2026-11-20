@@ -193,7 +193,7 @@ export const PatientsPage: React.FC = () => {
             Gestão de Pacientes & Prontuários
           </h1>
           <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
-            Cadastro, histórico clínico biomecânico e acompanhamento de sessões.
+            Cadastro, registros didáticos e acompanhamento de sessões simuladas.
           </p>
         </div>
 
@@ -255,7 +255,7 @@ export const PatientsPage: React.FC = () => {
                   <tr className="border-b border-stone-200/80 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-900/50 text-[10px] font-mono uppercase tracking-widest text-stone-400 dark:text-stone-500">
                     <th className="py-3 px-5">Paciente</th>
                     <th className="py-3 px-5">Contato</th>
-                    <th className="py-3 px-5">Status Clínico</th>
+                    <th className="py-3 px-5">Status do Caso</th>
                     <th className="py-3 px-5">Sessões Realizadas</th>
                     <th className="py-3 px-5 text-right">Ações Rápidas</th>
                   </tr>
@@ -503,7 +503,7 @@ export const PatientsPage: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
-                  Observações Clínicas & Histórico Pregresso
+                  Observações Didáticas & Histórico Pregresso
                 </label>
                 <textarea
                   rows={3}
@@ -541,7 +541,7 @@ export const PatientsPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-3 gap-3">
               <div>
                 <span className="text-[10px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
-                  Prontuário Clínico Completo
+                  Prontuário Demonstrativo Completo
                 </span>
                 <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100">
                   {selectedPatientDetails?.fullName || 'Ficha do Paciente'}
@@ -587,18 +587,18 @@ export const PatientsPage: React.FC = () => {
                     <p className="font-semibold text-stone-900 dark:text-stone-100">{selectedPatientDetails.address || 'Não cadastrado'}</p>
                   </div>
                   <div>
-                    <span className="text-stone-400 font-mono text-[10px] uppercase block">Status Clínico:</span>
+                    <span className="text-stone-400 font-mono text-[10px] uppercase block">Status do Caso:</span>
                     <p className="font-semibold text-stone-900 dark:text-stone-100 font-mono">
                       {selectedPatientDetails.status === 'ACTIVE' ? 'ATIVO EM TRATAMENTO' : 'ALTA / INATIVO'}
                     </p>
                   </div>
                 </div>
 
-                {/* Observações Clínicas / Histórico Pregresso */}
+                {/* Observações Didáticas / Histórico Pregresso */}
                 {selectedPatientDetails.administrativeNotes && (
                   <div className="p-4 bg-stone-100 dark:bg-stone-800/60 rounded-xl border border-stone-200 dark:border-stone-700 text-stone-800 dark:text-stone-200">
                     <span className="text-xs font-semibold flex items-center gap-1.5 mb-1 text-stone-900 dark:text-stone-100">
-                      <ShieldAlert className="w-3.5 h-3.5 text-stone-500" /> Anotação Clínica Prévia
+                      <ShieldAlert className="w-3.5 h-3.5 text-stone-500" /> Anotação Didática Prévia
                     </span>
                     <p className="text-xs leading-relaxed">
                       {selectedPatientDetails.administrativeNotes}
@@ -646,7 +646,7 @@ export const PatientsPage: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Prontuário Clínico & Exportação PDF */}
+      {/* Modal de Prontuário Demonstrativo & Exportação PDF */}
 
       <PatientReportModal
         isOpen={reportModalOpen}

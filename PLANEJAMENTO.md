@@ -4,11 +4,20 @@ Este documento detalha o planejamento arquitetural, funcional e de engenharia de
 
 ---
 
-## 1. Visão Geral do Sistema
+## 1. Visão Geral do Sistema & Diretrizes do PEX
 
-O **FisioPro** é uma solução web *full-stack* concebida para atender profissionais autônomos de fisioterapia (iniciando pela atuação em estágio/início de carreira). O sistema resolve dois gargalos fundamentais do fisioterapeuta:
-1. **Presença Digital & Atração**: Um portfólio público elegante, moderno e otimizado para conversão, apresentando áreas de atuação, currículo e canal direto de agendamento/contato via WhatsApp.
-2. **Gestão Operacional Simplificada**: Uma área administrativa privada para controle de pacientes, agenda de atendimentos, tarefas internas/externas e histórico de interações administrativas — sem a sobrecarga de prontuários clínicos hospitalares complexos, focando em organização, segurança e conformidade com diretrizes de privacidade (LGPD).
+O **FisioPro** é uma solução tecnológica acadêmica e demonstrativa *full-stack*, concebida no âmbito do Projeto de Extensão Universitária (PEX) em Análise e Desenvolvimento de Sistemas (ADS).
+
+Em estrita consonância com as orientações oficiais da tutoria acadêmica da instituição:
+- O projeto foi desenvolvido em parceria com **pessoa física** (Letícia Souza, estudante de graduação em Fisioterapia), admitindo CPF e termo de parceria assinado via **Gov.br**;
+- A parceira atua como **estudante de Fisioterapia** (sem exigência de CREFITO ou formação concluída);
+- O sistema opera em **modo 100% demonstrativo com dados didáticos fictícios**, não representando nem configurando clínica médica, consultório ou prestação profissional de serviços de saúde;
+- O público beneficiado contempla a estudante parceira, outros estudantes da graduação em Fisioterapia e a comunidade interessada em organização digital;
+- A apresentação e workshop gratuito para outros estudantes de Fisioterapia consiste em uma **atividade extensionista complementar**, planejada para ser realizada e documentada posteriormente com feedbacks e registros fotográficos.
+
+A plataforma resolve duas frentes fundamentais:
+1. **Portfólio Digital Acadêmico**: Uma área pública moderna e responsiva para apresentação das linhas de estudo, projetos e canal simulado de contato via WhatsApp (`wa.me`).
+2. **Gestão Didática Simplificada**: Uma área restrita para demonstração de controle cadastral de atendimentos, agendamento de sessões, acompanhamento didático da evolução funcional e organização de tarefas — com minimização de dados, segurança em conformidade com as boas práticas da LGPD e sem a sobrecarga de prontuários hospitalares reais.
 
 ---
 
@@ -187,17 +196,24 @@ erDiagram
 
 ---
 
-## 6. Fluxo de Autenticação (Google OAuth 2.0)
+## 6. Fluxo de Autenticação e Modo de Demonstração Seguro
 
+### 6.1. Google OAuth 2.0 (Fluxo Principal)
 Para máxima segurança sem expor segredos ao frontend:
 1. **Início do Login**: O frontend redireciona o usuário para `GET /api/auth/google` no backend (ou abre o Google Identity Service pop-up/redirect).
 2. **Consentimento Google**: O usuário autoriza na tela oficial da Google.
 3. **Callback no Backend**: O Google redireciona para `GET /api/auth/google/callback?code=...`.
 4. **Troca de Token no Servidor**: O backend troca o código temporário pelo `id_token` e `access_token` diretamente com os servidores da Google (segredo `GOOGLE_CLIENT_SECRET` nunca sai do backend).
-5. **Validação e Localização/Criação**: O backend valida o e-mail retornado. Se for o e-mail autorizado da fisioterapeuta, obtém/cria o registro `User`.
+5. **Validação e Localização/Criação**: O backend valida o e-mail retornado. O usuário é identificado no perfil acadêmico de estudante/apresentador.
 6. **Emissão de Sessão Segura**: O backend emite um JWT assinado armazenado em cookie `HttpOnly`, `Secure`, `SameSite=Lax`.
 7. **Redirecionamento**: Redireciona o usuário para o dashboard do frontend (`/admin/dashboard`).
 8. **Proteção de Rotas**: Cada requisição do frontend ao backend envia o cookie automaticamente. O middleware de autenticação valida a assinatura do token e injeta `user` na requisição.
+
+### 6.2. Modo de Demonstração Didática (`/api/auth/dev-login`)
+Para viabilizar avaliações acadêmicas da banca examinadora e demonstrações em sala de aula sem atrito de credenciais externas:
+- **Restrição Estrita de Identidade**: O endpoint é rigorosamente restrito ao e-mail pedagógico padrão oficial do projeto (`ALLOWED_ADMIN_EMAIL`), rejeitando qualquer outro e-mail arbitrário com código `403 Forbidden`.
+- **Prevenção de Privilege Escalation**: Nenhum usuário público pode emitir sessões administrativas sob e-mails arbitrários de terceiros.
+- **Isolamento de Dados**: Os dados operacionais associados ao modo de demonstração são completamente sintéticos e fictícios.
 
 ---
 

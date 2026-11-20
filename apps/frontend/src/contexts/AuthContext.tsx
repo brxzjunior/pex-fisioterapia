@@ -150,7 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('fisio_token', response.data.token);
       }
     } catch (err) {
-      console.warn('Backend indisponível para dev-login. Ativando modo de homologação/demonstração clínica:', err);
+      console.warn('Backend indisponível para dev-login. Ativando modo de homologação/demonstração acadêmica:', err);
       // Fallback para permitir navegação e testes de banca acadêmica mesmo com backend em cold-start ou offline
       setUser({
         id: 'dev-demo-admin-id',

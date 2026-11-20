@@ -24,4 +24,8 @@ if (!_env.success) {
   throw new Error('Falha ao carregar as variáveis de ambiente necessárias.');
 }
 
+if (_env.data.NODE_ENV === 'production' && _env.data.SESSION_SECRET === 'super-secret-key-32-chars-long-at-least-fisio-pro') {
+  console.warn('⚠️ AVISO DE SEGURANÇA: SESSION_SECRET padrão está sendo utilizado em ambiente de produção. Recomenda-se definir uma chave criptográfica exclusiva no painel de ambiente.');
+}
+
 export const env = _env.data;

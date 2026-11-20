@@ -120,7 +120,7 @@ export const HomePage: React.FC = () => {
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 pt-10 pb-16 lg:pt-14 lg:pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             
-            {/* Coluna Esquerda: Texto Denso e Manifesto Clínico */}
+            {/* Coluna Esquerda: Apresentação Acadêmica */}
             <div className="lg:col-span-6 space-y-8">
               
               {/* Metadado Sóbrio Superior */}

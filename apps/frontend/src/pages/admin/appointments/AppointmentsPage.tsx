@@ -272,10 +272,10 @@ export const AppointmentsPage: React.FC = () => {
             </span>
           </div>
           <h1 className="text-xl font-bold tracking-tight text-stone-950 dark:text-stone-100 mt-1">
-            Agenda Clínica de Atendimentos
+            Agenda de Sessões Demonstrativas
           </h1>
           <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
-            Controle de sessões, evolução de status e fluxo do paciente no consultório.
+            Controle de sessões, evolução de status e fluxo simulado do paciente.
           </p>
         </div>
 
@@ -573,7 +573,7 @@ export const AppointmentsPage: React.FC = () => {
                   Novo Horário
                 </span>
                 <h2 className="text-base font-bold text-stone-900 dark:text-stone-100">
-                  Agendar Atendimento Clínico
+                  Agendar Sessão Demonstrativa
                 </h2>
               </div>
               <button
@@ -649,7 +649,7 @@ export const AppointmentsPage: React.FC = () => {
                   required
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  placeholder="Ex: Avaliação Fisioterapêutica, Pilates Clínico, Ortopedia"
+                  placeholder="Ex: Avaliação Didática, Cinesiologia, Simulação Ortopédica"
                   className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
                 />
               </div>

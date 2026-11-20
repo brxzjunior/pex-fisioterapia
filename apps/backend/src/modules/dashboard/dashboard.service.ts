@@ -114,7 +114,7 @@ export class DashboardService {
       const finishedTotal = completedAppointments + cancelledAppointments;
       const attendanceRate = finishedTotal > 0
         ? Math.round((completedAppointments / finishedTotal) * 1000) / 10
-        : 92.8; // Taxa de assiduidade média clínica
+        : 92.8; // Taxa de assiduidade média simulada
       const absenteeismRate = Math.round((100 - attendanceRate) * 10) / 10;
 
       const conversion = AnalyticsService.getMetrics();
