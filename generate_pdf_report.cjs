@@ -1020,7 +1020,7 @@ async function generateReportPDF() {
         <tr>
           <td><strong>Organização Parceira / Campo</strong></td>
           <td><span class="badge badge-amber">Requer Assinatura</span></td>
-          <td>Profissional parceira concedente (CREFITO-AM); formalização do termo padrão é pendência administrativa do aluno.</td>
+          <td>Parceira concedente: Letícia Souza (Estudante de Fisioterapia - Pessoa Física); formalização do termo assinado via Gov.br a cargo do aluno.</td>
         </tr>
         <tr>
           <td><strong>Público Beneficiado e ODS</strong></td>

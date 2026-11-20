@@ -49,13 +49,13 @@ export const ProfilePage: React.FC = () => {
       {/* Header Cirúrgico */}
       <div className="bg-white dark:bg-stone-900/90 p-5 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm transition-colors">
         <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-2 py-0.5 rounded border border-stone-200 dark:border-stone-700 font-semibold">
-          Configuração Profissional
+          Configuração do Projeto
         </span>
         <h1 className="text-xl font-bold text-stone-950 dark:text-stone-100 mt-1 tracking-tight">
-          Perfil Profissional & Apresentação
+          Perfil da Estudante / Apresentador(a)
         </h1>
         <p className="text-stone-500 dark:text-stone-400 text-xs mt-0.5">
-          Estes dados alimentam diretamente a apresentação na landing page pública e links de contato.
+          Estes dados alimentam a apresentação no portfólio demonstrativo público do projeto de extensão.
         </p>
       </div>
 
@@ -72,14 +72,14 @@ export const ProfilePage: React.FC = () => {
           <div>
             <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
               <User className="w-3.5 h-3.5 text-stone-400" />
-              Nome Profissional *
+              Nome (Estudante / Apresentador) *
             </label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Ex: Dra. Letícia Souza (Demonstração)"
+              placeholder="Ex: Letícia Souza (Estudante de Fisioterapia)"
               className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
             />
           </div>
@@ -87,7 +87,7 @@ export const ProfilePage: React.FC = () => {
           <div>
             <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
               <Phone className="w-3.5 h-3.5 text-stone-400" />
-              Telefone / WhatsApp de Atendimento
+              Telefone / WhatsApp de Demonstração
             </label>
             <input
               type="text"
@@ -102,28 +102,28 @@ export const ProfilePage: React.FC = () => {
         <div>
           <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
             <Award className="w-3.5 h-3.5 text-stone-400" />
-            Especialidades Clínicas
+            Áreas de Estudo & Interesse Acadêmico
           </label>
           <input
             type="text"
             value={specialties}
             onChange={(e) => setSpecialties(e.target.value)}
-            placeholder="Ex: Fisioterapia Ortopédica, Pilates Clínico, Reabilitação Postural, Desportiva"
+            placeholder="Ex: Estudos em Ortopedia, Cinesiologia, Pilates no Contexto Acadêmico, Avaliação Biomecânica"
             className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none"
           />
-          <p className="text-[10px] text-stone-400 mt-1 font-mono">Separe as especialidades por vírgula.</p>
+          <p className="text-[10px] text-stone-400 mt-1 font-mono">Separe as áreas de estudo por vírgula.</p>
         </div>
 
         <div>
           <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1 flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5 text-stone-400" />
-            Biografia & Filosofia de Atendimento
+            Biografia & Descrição do Projeto Acadêmico
           </label>
           <textarea
             rows={4}
             value={professionalBio}
             onChange={(e) => setProfessionalBio(e.target.value)}
-            placeholder="Metodologia de atendimento, compromisso com a literatura científica contemporânea..."
+            placeholder="Descrição dos objetivos acadêmicos, metodologia de estudo e foco prático da demonstração..."
             className="w-full px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-700 bg-stone-50/50 dark:bg-stone-800/50 text-stone-900 dark:text-stone-100 text-xs focus:ring-1 focus:ring-stone-400 outline-none leading-relaxed"
           />
         </div>

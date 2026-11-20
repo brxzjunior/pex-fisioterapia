@@ -490,9 +490,9 @@ export async function authRoutes(app: FastifyInstance) {
         user = await prisma.user.create({
           data: {
             email: targetEmail,
-            name: 'Dra. Letícia Souza (Demonstração)',
-            professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico.',
-            specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reabilitação Postural',
+            name: 'Letícia Souza (Estudante de Fisioterapia)',
+            professionalBio: 'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Demonstração de ferramentas digitais e portfólio acadêmico.',
+            specialties: 'Estudos em Ortopedia, Cinesiologia, Avaliação Biomecânica, Portfólio Acadêmico',
             phone: '(92) 98888-0000',
             role: 'ADMIN',
           },
@@ -504,7 +504,7 @@ export async function authRoutes(app: FastifyInstance) {
       user = {
         id: 'dev-fisioterapeuta-id',
         email: targetEmail,
-        name: 'Dra. Letícia Souza (Demonstração)',
+        name: 'Letícia Souza (Estudante de Fisioterapia)',
         role: 'ADMIN',
       };
     }

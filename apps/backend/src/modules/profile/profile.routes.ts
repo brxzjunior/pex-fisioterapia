@@ -31,24 +31,24 @@ export async function profileRoutes(app: FastifyInstance) {
 
       if (!professional) {
         return reply.send({
-          name: 'Dra. Letícia Souza (Demonstração)',
+          name: 'Letícia Souza (Estudante de Fisioterapia)',
           phone: '(92) 98888-0000',
-          professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico com atendimento individualizado e humanizado.',
-          specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reeducação Postural',
+          professionalBio: 'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Plataforma para demonstração acadêmica de organização de horários, métricas funcionais e portfólio digital.',
+          specialties: 'Estudos em Ortopedia, Cinesiologia, Avaliação Biomecânica, Portfólio Acadêmico',
         });
       }
 
       return reply.send({
         ...professional,
-        name: professional.name || 'Dra. Letícia Souza (Demonstração)',
+        name: professional.name || 'Letícia Souza (Estudante de Fisioterapia)',
         phone: professional.phone || '(92) 98888-0000',
       });
     } catch (err) {
       return reply.send({
-        name: 'Dra. Letícia Souza (Demonstração)',
+        name: 'Letícia Souza (Estudante de Fisioterapia)',
         phone: '(92) 98888-0000',
-        professionalBio: 'Fisioterapeuta especializada em reabilitação ortopédica, desportiva e pilates clínico com atendimento individualizado.',
-        specialties: 'Ortopedia, Fisioterapia Esportiva, Pilates Clínico, Reeducação Postural',
+        professionalBio: 'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Demonstração de ferramentas digitais para estudantes de Fisioterapia.',
+        specialties: 'Estudos em Ortopedia, Cinesiologia, Avaliação Biomecânica, Portfólio Acadêmico',
       });
     }
   });

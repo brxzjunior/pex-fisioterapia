@@ -1,15 +1,18 @@
-# FisioPro - Sistema Integrado de Gestão e Portfólio Profissional para Fisioterapia
-> Projeto de Extensão Acadêmica (PEX) - Curso de Análise e Desenvolvimento de Sistemas (ADS).
+# FisioPro - Plataforma Tecnológica e Portfólio Digital para Estudantes de Fisioterapia
+> Projeto de Extensão Universitária (PEX) • Curso de Análise e Desenvolvimento de Sistemas (ADS) • Centro Universitário Descomplica (UniAmérica).
 
-O **FisioPro** é uma plataforma web full-stack desacoplada, moderna e segura, projetada para atender fisioterapeutas autônomos e em início de carreira/estágio. O sistema combina uma **área pública de alta conversão** (com portfólio profissional e contato direto via WhatsApp) a um **painel administrativo protegido** para controle de pacientes, agenda de atendimentos clínicos, gestão de tarefas e trilha de auditoria/histórico.
+O **FisioPro** é uma solução tecnológica gratuita e de código aberto, desenvolvida no âmbito da extensão universitária para demonstrar a **estudantes de Fisioterapia** como ferramentas digitais modernas podem contribuir para a organização de informações, gestão de horários e elaboração de portfólios acadêmicos.
+
+O projeto foi concebido em parceria com **pessoa física** (Letícia Souza, estudante de Fisioterapia) e opera de forma **100% demonstrativa com dados fictícios**, não representando uma clínica comercial nem prestando serviços profissionais de saúde. A plataforma foi desenhada para a realização de **apresentações gratuitas a outros estudantes de Fisioterapia**, demonstrando a substituição de controles manuais em papel por fluxos digitais seguros, estruturados e alinhados às boas práticas da LGPD.
 
 ---
 
-## 🎯 Objetivos do Projeto
-- **Presença Profissional**: Portfólio responsivo para apresentação de biografia, especialidades, serviços e agendamento prático via WhatsApp.
-- **Gestão Operacional Simplificada**: Foco estrito em organização cadastral, sessões, status de atendimento e tarefas administrativas — sem complexidade de prontuários hospitalares invasivos.
-- **Segurança & Privacidade (LGPD)**: Minimização de dados cadastrais, autenticação OAuth 2.0 com Google, cookies assinados `HttpOnly`, `Secure` e `SameSite`, cabeçalhos de segurança com Helmet, proteção contra ataques de força bruta com rate-limiting e prepared statements automáticos com Prisma ORM contra SQL Injection.
-- **Custo Zero em Produção**: Arquitetura planejada para operar dentro dos limites gratuitos de serviços em nuvem (Vercel, Render e Neon PostgreSQL).
+## 🎯 Finalidade e Público Beneficiado
+- **Público Beneficiado**: A estudante parceira, outros estudantes de graduação em Fisioterapia e pessoas interessadas na adoção de tecnologias de gestão no ambiente de saúde.
+- **Portfólio Acadêmico**: Área pública responsiva para apresentação didática de áreas de estudo, projetos acadêmicos e canais de contato simulados.
+- **Gestão Organizacional Demonstrativa**: Simulação de controle cadastral de atendimentos, agendamento de sessões, acompanhamento da evolução funcional e organização de tarefas administrativas.
+- **Privacidade e LGPD**: Minimização estrita de campos, uso exclusivo de dados sintéticos/fictícios, autenticação segura com OAuth 2.0 (Google), cookies `HttpOnly`, `Secure` e `SameSite`, proteção contra SQL Injection com Prisma ORM e sem exposição de dados pessoais reais.
+- **Ação Extensionista**: Preparado para workshop/apresentação gratuita com demonstração prática das funcionalidades para estudantes de Fisioterapia.
 
 ---
 
@@ -152,20 +155,22 @@ Os arquivos gerados são salvos na raiz do repositório:
 
 ---
 
-## 🎓 Demonstração Acadêmica e Apresentação no PEX
+## 🎓 Roteiro da Demonstração Acadêmica no PEX
 
-Para facilitar a apresentação na faculdade e em bancas de avaliação:
-1. Acesse `http://localhost:5173` para demonstrar a **Landing Page do Portfólio**.
-2. Clique em **Área Profissional** no topo direito.
-3. Na tela de login, você pode:
-   - Utilizar o botão oficial do **Google OAuth**;
-   - Ou utilizar o campo de **Modo Avaliação Acadêmica** para autenticação instantânea local sem dependência de chaves de nuvem no momento da apresentação.
-4. Navegue pelos módulos:
-   - **Dashboard**: Métricas agregadas em tempo real e lista de próximos atendimentos.
-   - **Pacientes**: Cadastro completo, filtros, ativação/inativação e visualização da ficha com histórico de auditoria.
-   - **Atendimentos**: Agendamento de sessões com o fluxo prático: *Agendado* ➔ *Confirmar* ➔ *Iniciar* ➔ *Finalizar Sessão*.
-   - **Atividades**: Controle de tarefas com prioridades e checkboxes de conclusão.
-   - **Meu Perfil**: Alteração de nome e especialidades, que atualizam em tempo real o portfólio público.
+Para a realização da apresentação e demonstração a estudantes de Fisioterapia:
+1. Acesse `http://localhost:5173` para demonstrar a **Área Pública e Portfólio Acadêmico**.
+2. Destaque a substituição de fichas manuais pela apresentação organizada de áreas de estudo e simulação de contato.
+3. Clique em **Acesso ao Sistema** no topo direito.
+4. Na tela de login, apresente as opções de autenticação:
+   - Login oficial com **Google OAuth**;
+   - Ou o botão **Acesso Rápido de Testes** para demonstração ágil sem dependência de chaves de nuvem no momento da apresentação.
+5. Navegue pelos módulos funcionais demonstrativos:
+   - **Dashboard**: Métricas agregadas em tempo real e visualização de atendimentos simulados.
+   - **Pacientes**: Cadastro didático de pacientes fictícios, filtros, inativação lógica e simulação de ficha com histórico.
+   - **Atendimentos**: Controle de horários e sessões com fluxo de status (*Agendado* ➔ *Confirmar* ➔ *Iniciar* ➔ *Finalizar*).
+   - **Atividades**: Organização de tarefas acadêmicas e operacionais com prioridades.
+   - **Simulação de Prontuário**: Exportação em PDF com métricas da escala EVA e histórico de sessões.
+   - **Meu Perfil**: Atualização de dados cadastrais e áreas de estudo que refletem em tempo real no portfólio.
 
 ---
 

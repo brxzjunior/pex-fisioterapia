@@ -154,11 +154,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Fallback para permitir navegação e testes de banca acadêmica mesmo com backend em cold-start ou offline
       setUser({
         id: 'dev-demo-admin-id',
-        name: 'Dra. Letícia Souza (Demonstração)',
+        name: 'Letícia Souza (Estudante de Fisioterapia)',
         email: email || 'fisioterapeuta@exemplo.com',
         role: 'ADMIN',
-        specialties: 'Ortopedia Clínica, Terapia Manual, Reabilitação Desportiva',
-        professionalBio: 'Diagnóstico funcional e reabilitação musculoesquelética baseados em literatura científica contemporânea.',
+        specialties: 'Estudos em Ortopedia, Cinesiologia, Avaliação Biomecânica, Portfólio Acadêmico',
+        professionalBio: 'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Demonstração de ferramentas digitais para estudantes de Fisioterapia.',
       });
     } finally {
       setLoading(false);

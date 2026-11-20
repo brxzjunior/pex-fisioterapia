@@ -552,7 +552,7 @@ export const PatientsPage: React.FC = () => {
                   <button
                     onClick={() => handleOpenReportModal(selectedPatientDetails.id)}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm transition-all"
-                    title="Emitir Prontuário em PDF com formatação oficial"
+                    title="Emitir Prontuário Acadêmico em PDF"
                   >
                     <Printer className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Emitir Prontuário PDF</span>

@@ -60,7 +60,7 @@ export const WhatsAppReminderModal: React.FC<WhatsAppReminderModalProps> = ({
 
     switch (type) {
       case 'reminder':
-        return `Olá, *${appointment.patient.fullName}*! Tudo bem? 👋\n\nAqui é do consultório de fisioterapia (*${professionalName}*). Passando para confirmar sua sessão de *${appointment.type}* agendada para:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted} (${appointment.durationMinutes} minutos)\n\n📍 *Orientações:* Pedimos chegar com 5 minutos de antecedência e vestir roupas leves para a realização dos movimentos.\n\nPor favor, responda com *"Confirmado"* para garantirmos seu atendimento. Muito obrigado(a)!`;
+        return `Olá, *${appointment.patient.fullName}*! Tudo bem? 👋\n\nAqui é da simulação acadêmica do FisioPro (*${professionalName}*). Passando para confirmar a sessão demonstrativa de *${appointment.type}* agendada para:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted} (${appointment.durationMinutes} minutos)\n\n📍 *Orientações:* Lembrete didático gerado pela plataforma de demonstração acadêmica FisioPro.\n\nPor favor, responda com *"Confirmado"* para fins de teste. Muito obrigado(a)!`;
 
       case 'confirmation':
         return `Olá, *${appointment.patient.fullName}*! 🩺\n\nSua sessão de *${appointment.type}* com *${professionalName}* foi agendada com sucesso:\n\n📅 *Data:* ${dateFormatted}\n⏰ *Horário:* ${timeFormatted}\n\nCaso necessite de remarcação ou tenha algum imprevisto, solicitamos aviso com no mínimo 24h de antecedência. Até breve!`;

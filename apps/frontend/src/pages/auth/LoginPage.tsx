@@ -204,10 +204,10 @@ export const LoginPage: React.FC = () => {
             <img src="/logo.png" alt="Logo FisioPro" className="w-10 h-10 object-contain" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-stone-900 dark:text-stone-100">
-            Acesso Clínico
+            Acesso ao Sistema
           </h1>
           <p className="text-stone-500 dark:text-stone-400 text-xs mt-1">
-            Portal administrativo & prontuário profissional
+            Ambiente Demonstrativo para Estudantes de Fisioterapia • Projeto de Extensão (PEX)
           </p>
         </div>
 
@@ -341,7 +341,7 @@ export const LoginPage: React.FC = () => {
               className="w-full bg-stone-900 hover:bg-stone-800 dark:bg-stone-100 dark:text-stone-950 dark:hover:bg-white text-white text-xs font-semibold py-3 px-4 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 mt-2"
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>{loading ? 'Acessando...' : 'Acessar Acesso Clínico'}</span>
+              <span>{loading ? 'Acessando...' : 'Entrar no Sistema'}</span>
             </button>
           </form>
         )}
@@ -622,12 +622,14 @@ export const LoginPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Informações de Segurança */}
-        <div className="mt-5 pt-4 border-t border-stone-200/80 dark:border-stone-800 flex items-start gap-2.5 text-[11px] text-stone-400 dark:text-stone-500">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-500 shrink-0 mt-0.5" />
-          <p>
-            Criptografia de ponta a ponta com senhas hasheadas e cookies HttpOnly contra vulnerabilidades XSS.
-          </p>
+        {/* Informações de Segurança & Contexto Acadêmico */}
+        <div className="mt-5 pt-4 border-t border-stone-200/80 dark:border-stone-800 space-y-2 text-[11px] text-stone-400 dark:text-stone-500">
+          <div className="flex items-start gap-2.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-500 shrink-0 mt-0.5" />
+            <p>
+              Ambiente demonstrativo do Projeto de Extensão Universitária (PEX) com dados fictícios.
+            </p>
+          </div>
         </div>
 
       </div>

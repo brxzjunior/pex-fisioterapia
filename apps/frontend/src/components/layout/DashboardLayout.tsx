@@ -85,7 +85,7 @@ export const DashboardLayout: React.FC = () => {
                   Fisio<span className="text-emerald-700 dark:text-emerald-400">Pro</span>
                 </span>
                 <span className="text-[10px] font-mono text-stone-400 dark:text-stone-500 uppercase tracking-widest">
-                  Acesso Clínico
+                  Ambiente Acadêmico
                 </span>
               </div>
             </div>
@@ -101,7 +101,7 @@ export const DashboardLayout: React.FC = () => {
             </div>
           </div>
 
-          {/* Badge do Usuário / Profissional Autenticado */}
+          {/* Badge do Usuário / Estudante Autenticado */}
           <div className="p-3.5 mx-3 my-4 bg-stone-50 dark:bg-stone-800/60 rounded-xl border border-stone-200/80 dark:border-stone-700/60 flex items-center gap-3">
             {user?.avatarUrl ? (
               <img
@@ -115,12 +115,12 @@ export const DashboardLayout: React.FC = () => {
               </div>
             )}
             <div className="overflow-hidden min-w-0">
-              <p className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title={user?.name || 'Profissional Clínico'}>
-                {user?.name || 'Dra. Letícia Souza (Demonstração)'}
+              <p className="text-xs font-semibold text-stone-900 dark:text-stone-100 truncate" title={user?.name || 'Estudante de Fisioterapia'}>
+                {user?.name || 'Letícia Souza (Estudante de Fisioterapia)'}
               </p>
               <div className="flex items-center gap-1 text-[10px] font-mono text-emerald-700 dark:text-emerald-400">
                 <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                <span className="truncate">{user?.role === 'ADMIN' ? 'Responsável Técnica' : 'Equipe Clínica'}</span>
+                <span className="truncate">{user?.role === 'ADMIN' ? 'Estudante / Apresentador(a)' : 'Equipe Acadêmica'}</span>
               </div>
             </div>
           </div>
@@ -184,6 +184,13 @@ export const DashboardLayout: React.FC = () => {
 
       {/* Container Principal do Painel */}
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <aside aria-label="Aviso Demonstrativo" className="bg-stone-900 text-stone-200 text-[11px] font-mono py-1.5 px-4 text-center border-b border-stone-800 flex items-center justify-between no-print">
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span><strong>Ambiente Demonstrativo (PEX)</strong> • Dados fictícios para simulação de rotina de Fisioterapia.</span>
+          </span>
+          <span className="hidden sm:inline text-stone-400 text-[10px]">Uso Didático & Acadêmico</span>
+        </aside>
         <main className="p-4 sm:p-5 lg:p-6 flex-1 max-w-[1600px] w-full mx-auto">
           <Outlet />
         </main>

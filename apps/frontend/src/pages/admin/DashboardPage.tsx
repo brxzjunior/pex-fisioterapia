@@ -333,14 +333,14 @@ export const ClinicalDashboard: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-sm font-semibold tracking-tight text-stone-950 dark:text-stone-100">
-                {user?.name || 'Dra. Letícia Souza (Demonstração)'}
+                {user?.name || 'Letícia Souza (Estudante de Fisioterapia)'}
               </h1>
-              <span className="text-[10px] font-mono uppercase bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 px-1.5 py-0.5 rounded border border-stone-200 dark:border-stone-700">
-                CREFITO ATIVO
+              <span className="text-[10px] font-mono uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 font-semibold">
+                PROJETO ACADÊMICO (PEX)
               </span>
             </div>
             <p className="text-xs text-stone-500 dark:text-stone-400 font-mono">
-              {user?.email || 'Prontuário Eletrônico & Acesso Operacional Clínico'}
+              {user?.email || 'Simulação de Gestão e Prontuário Acadêmico (Dados Fictícios)'}
             </p>
           </div>
         </div>
@@ -348,7 +348,7 @@ export const ClinicalDashboard: React.FC = () => {
         {/* Indicadores Clínicos Diretos em Linha */}
         <div className="flex items-center gap-6 divide-x divide-stone-200 dark:divide-stone-800 text-xs">
           <div className="flex items-center gap-2">
-            <span className="text-stone-400 font-mono uppercase text-[11px]">Status Consultório:</span>
+            <span className="text-stone-400 font-mono uppercase text-[11px]">Status da Simulação:</span>
             {inProgressApt ? (
               <span className="inline-flex items-center gap-1.5 text-stone-900 dark:text-stone-100 font-semibold font-mono">
                 <span className="w-2 h-2 rounded-full bg-stone-900 dark:bg-stone-100 animate-pulse" />
@@ -357,7 +357,7 @@ export const ClinicalDashboard: React.FC = () => {
             ) : (
               <span className="inline-flex items-center gap-1.5 text-stone-500 font-medium font-mono text-[11px]">
                 <span className="w-2 h-2 rounded-full bg-stone-400" />
-                Aguardando Paciente
+                Aguardando Atendimento Simulado
               </span>
             )}
           </div>
@@ -549,7 +549,7 @@ export const ClinicalDashboard: React.FC = () => {
           <div className="border-t border-stone-200 dark:border-stone-800 p-4 bg-stone-50/40 dark:bg-stone-900/40">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] font-mono uppercase text-stone-400 tracking-wider font-semibold">
-                Tarefas Operacionais do Consultório
+                Tarefas Operacionais & Acadêmicas
               </span>
               <Link to="/admin/atividades" className="text-xs font-mono text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:underline">
                 Gerenciar

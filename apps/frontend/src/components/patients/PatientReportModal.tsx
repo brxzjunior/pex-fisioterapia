@@ -155,12 +155,12 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
 <body>
   <div class="header">
     <div>
-      <h1 class="title">FisioPro • Prontuário & Evolução Clínica</h1>
-      <p class="subtitle">Clínica de Fisioterapia Especializada e Reabilitação Funcional</p>
+      <h1 class="title">FisioPro • Simulação de Prontuário & Evolução Acadêmica</h1>
+      <p class="subtitle">Projeto de Extensão Universitária • Registro Didático e Demonstrativo</p>
     </div>
     <div style="text-align: right; font-size: 10px; color: #57534e;">
-      <strong>${report.user.name || 'Dra. Letícia Souza (Demonstração)'}</strong><br>
-      CREFITO 12345-F / AM • Fisioterapeuta Responsável<br>
+      <strong>${report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}</strong><br>
+      Estudante de Fisioterapia • Projeto FisioPro<br>
       Emissão: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
     </div>
   </div>
@@ -248,13 +248,13 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
       Paciente ou Responsável Legal
     </div>
     <div class="sig-line">
-      <strong>${report.user.name || 'Dra. Letícia Souza (Demonstração)'}</strong><br>
-      Fisioterapeuta • CREFITO 12345-F / AM
+      <strong>${report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}</strong><br>
+      Estudante de Fisioterapia • Apresentação Acadêmica
     </div>
   </div>
 
   <div class="footer-note">
-    Documento emitido eletronicamente via Sistema FisioPro. Em estrita conformidade com as diretrizes do COFFITO (Resolução nº 414/2012) e com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
+    Documento emitido para fins didáticos e demonstrativos no âmbito do Projeto de Extensão Universitária (PEX). Dados e registros estritamente fictícios para simulação de prontuário, sem valor assistencial ou pericial.
   </div>
 </body>
 </html>`;
@@ -274,7 +274,7 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
     if (!report) return;
     const cleanPhone = report.phone.replace(/\D/g, '');
     const sessionsCount = report.appointments.length;
-    const message = `*FisioPro - Resumo do Prontuário Clínico*\n\nOlá, *${report.fullName}*!\n\nSegue o resumo do seu prontuário fisioterapêutico sob os cuidados de *${report.user.name || 'Dra. Letícia Souza (Demonstração)'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Alta Clínica'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções clínicas encontra-se disponível no consultório. Para dúvidas ou esclarecimentos, permanecemos à disposição!`;
+    const message = `*FisioPro - Resumo Demonstrativo de Prontuário*\n\nOlá, *${report.fullName}*!\n\nSegue a simulação didática do prontuário fisioterapêutico sob coordenação de *${report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}*:\n\n• *Status*: ${report.status === 'ACTIVE' ? 'Ativo em Tratamento' : 'Alta Clínica'}\n• *Sessões Registradas*: ${sessionsCount}\n• *Data de Admissão*: ${new Date(report.createdAt).toLocaleDateString('pt-BR')}\n\nO documento completo com as evoluções simuladas encontra-se disponível no sistema acadêmico FisioPro.`;
 
     window.open(`https://wa.me/55${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
   };
@@ -380,25 +380,25 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono font-bold tracking-widest text-emerald-700 dark:text-emerald-400 uppercase">
-                      FisioPro • Sistema Clínico Integrado
+                      FisioPro • Simulação Acadêmica
                     </span>
                     <span className="text-[10px] px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 font-mono text-stone-500 font-semibold border border-stone-200 dark:border-stone-700">
-                      RESOLUÇÃO COFFITO Nº 414/2012
+                      PROJETO DE EXTENSÃO (PEX)
                     </span>
                   </div>
                   <h1 className="text-xl sm:text-2xl font-black tracking-tight mt-1 text-stone-950 dark:text-stone-50 uppercase">
-                    Prontuário & Evolução Fisioterapêutica
+                    Simulação de Prontuário & Evolução Fisioterapêutica
                   </h1>
                   <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-                    Centro de Reabilitação Biomecânica, Ortopedia e Saúde Integrada
+                    Ambiente Acadêmico de Demonstração para Estudantes de Fisioterapia
                   </p>
                 </div>
 
                 <div className="text-left sm:text-right font-mono text-xs text-stone-600 dark:text-stone-400 shrink-0">
                   <p className="font-bold text-stone-900 dark:text-stone-100">
-                    {report.user.name || 'Dra. Letícia Souza (Demonstração)'}
+                    {report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}
                   </p>
-                  <p className="text-[11px] text-stone-500">CREFITO 12345-F / AM • Fisioterapeuta</p>
+                  <p className="text-[11px] text-stone-500">Estudante de Fisioterapia • Demonstração Acadêmica</p>
                   <p className="text-[10px] text-stone-400 mt-1">
                     Emitido em: {new Date().toLocaleDateString('pt-BR')} às{' '}
                     {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
@@ -614,17 +614,16 @@ export const PatientReportModal: React.FC<PatientReportModalProps> = ({
                 <div className="space-y-1 pt-6">
                   <div className="w-56 mx-auto border-t border-stone-400 dark:border-stone-600 mb-1" />
                   <p className="font-bold text-stone-900 dark:text-stone-100">
-                    {report.user.name || 'Dra. Letícia Souza (Demonstração)'}
+                    {report.user.name || 'Letícia Souza (Estudante de Fisioterapia)'}
                   </p>
-                  <p className="text-[10px] text-stone-500 font-mono">Fisioterapeuta • CREFITO 12345-F / AM</p>
-                  <p className="text-[9px] text-stone-400 font-mono">Carimbo & Assinatura Profissional</p>
+                  <p className="text-[10px] text-stone-500 font-mono">Estudante de Fisioterapia • Projeto FisioPro</p>
+                  <p className="text-[9px] text-stone-400 font-mono">Assinatura Acadêmica / Apresentador</p>
                 </div>
               </div>
 
               {/* Rodapé LGPD e Conformidade */}
               <div className="text-[10px] text-stone-400 font-mono text-center pt-4 border-t border-stone-100 dark:border-stone-800/80">
-                Documento clínico confidencial protegido pela Lei Geral de Proteção de Dados (Lei nº 13.709/2018).
-                Emitido pela plataforma FisioPro.
+                Ambiente didático e demonstrativo do Projeto de Extensão Universitária (PEX). Dados estritamente fictícios para fins de apresentação e aprendizagem.
               </div>
             </div>
           ) : null}

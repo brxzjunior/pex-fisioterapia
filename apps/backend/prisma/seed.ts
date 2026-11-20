@@ -5,25 +5,25 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Populando banco de dados com dados de teste acadêmico...');
 
-  // 1. Cria ou atualiza a fisioterapeuta padrão de demonstração
+  // 1. Cria ou atualiza a estudante parceira padrão de demonstração
   const user = await prisma.user.upsert({
     where: { email: 'fisioterapeuta@exemplo.com' },
     update: {
-      name: 'Dra. Letícia Souza (Demonstração)',
+      name: 'Letícia Souza (Estudante de Fisioterapia)',
       phone: '(92) 98888-0000',
     },
     create: {
       email: 'fisioterapeuta@exemplo.com',
-      name: 'Dra. Letícia Souza (Demonstração)',
+      name: 'Letícia Souza (Estudante de Fisioterapia)',
       phone: '(92) 98888-0000',
       professionalBio:
-        'Fisioterapeuta graduada com foco em Reabilitação Ortopédica, Pilates Clínico e Fisioterapia Desportiva. Atendimento humanizado e individualizado.',
-      specialties: 'Ortopedia Funcional, Pilates Clínico, Reabilitação Desportiva, Terapia Manual',
+        'Estudante de Fisioterapia parceira do Projeto de Extensão Universitária (PEX). Foco em organização de dados acadêmicos, acompanhamento biomecânico e portfólio digital demonstrativo.',
+      specialties: 'Estudos em Ortopedia, Cinesiologia, Pilates no Contexto Acadêmico, Métricas de Mobilidade',
       role: 'ADMIN',
     },
   });
 
-  console.log(`✅ Fisioterapeuta configurada: ${user.name}`);
+  console.log(`✅ Estudante parceira configurada: ${user.name}`);
 
   // 2. Cria pacientes de demonstração
   const patient1 = await prisma.patient.create({

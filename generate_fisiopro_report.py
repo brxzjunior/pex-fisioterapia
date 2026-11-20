@@ -692,7 +692,7 @@ def create_fisiopro_document(output_path):
     t_conf_headers = ["Item Obrigatório do Roteiro PEX", "Status", "Situação no Relatório / Observação Acadêmica"]
     t_conf_rows = [
         ["Identificação do Aluno e Polo", "Contemplado", "Nome completo, matrícula (2314588), curso (ADS), polo Manaus/AM devidamente catalogados."],
-        ["Organização Parceira / Campo", "Requer Assinatura", "Profissional parceira concedente (CREFITO-AM); formalização do termo padrão é pendência administrativa do aluno."],
+        ["Organização Parceira / Campo", "Requer Assinatura", "Parceira concedente: Letícia Souza (Estudante de Fisioterapia - Pessoa Física); formalização do termo assinado via Gov.br a cargo do aluno."],
         ["Público Beneficiado e ODS", "Contemplado", "Público definido; alinhamento aos ODS 3 (Saúde e Bem-Estar) e ODS 9 (Inovação e Infraestrutura)."],
         ["Diagnóstico e Justificativa", "Contemplado", "Levantamento detalhado de dores com anotações em papel e carência de portfólio digital."],
         ["Metodologia e Cronograma", "Contemplado", "Cinco etapas sequenciais com metodologia Kanban descritas com clareza."],
